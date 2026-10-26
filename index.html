@@ -284,6 +284,64 @@
     outline: none;
 }
 
+
+/* Footer Container */
+.site-footer {
+    border-top: 1px solid var(--border-color);
+    background-color: var(--bg-color);
+    padding: 2.5rem 1.5rem;
+    margin-top: 4rem;
+}
+
+/* Inner Layout Wrapper */
+.footer-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+/* Footer Text & Links */
+.footer-text {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.footer-links {
+    display: flex;
+    gap: 1.25rem;
+    align-items: center;
+}
+
+.footer-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+}
+
+.footer-link:hover,
+.footer-link:focus-visible {
+    color: var(--text-color);
+    outline: none;
+}
+
+/* Mobile Alignment (Account for mobile icon sidebar) */
+@media (max-width: 768px) {
+    .site-footer {
+        margin-right: var(--sidebar-width);
+    }
+
+    .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+        
+
         /* Responsive Breakpoints */
         @media (max-width: 768px) {
             .desktop-nav {
@@ -418,18 +476,22 @@
         </div>
 
 
-
-
-
-
-
+ 
         
     </main>
 
-<footer>
-rvfpl on github.io
-</footer> 
-
+<footer class="site-footer">
+    <div class="footer-inner">
+        <p class="footer-text">
+            &copy; 2026 Bobby Fantini. All rights reserved.
+        </p>
+        <nav class="footer-links" aria-label="Footer Navigation">
+            <a href="https://github.com/rvfpl" target="_blank" class="footer-link">GitHub</a>
+            <a href="https://notnewyork.com" target="_blank" class="footer-link">notnewyork.com</a>
+            <a href="#privacy" class="footer-link">Privacy</a>
+        </nav>
+    </div>
+</footer>
     
 
     <script>

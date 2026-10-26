@@ -271,7 +271,18 @@
 
 
 
-        .linkhov:hover {color: red;}
+    .linkhov {
+    color: var(--text-color);
+    text-decoration: none;
+    transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.linkhov:hover,
+.linkhov:focus-visible {
+    color: var(--accent-pink); /* Changes color to accent pink on hover */
+    text-decoration: underline; /* Adds an underline on hover */
+    outline: none;
+}
 
         /* Responsive Breakpoints */
         @media (max-width: 768px) {
@@ -372,7 +383,7 @@
             </div>
             <div class="card">
                 <h3>Something less random</h3>
-                <p><a href="https://notnewyork.com" style="color:var(--text-color);" class="linkhov">NOTnewyork.com &rarr;</a></p>
+               <p><a href="https://notnewyork.com" class="linkhov">NOTnewyork.com &rarr;</a></p>
             </div>
         </div>
     </main>

@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardmarket Vintage MTG Graded Tracker — Nov 14, 2026</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181b23;
+    --surface-hover: #1f2430;
+    --border: #2a303c;
+    --text: #e6e9ef;
+    --muted: #7c8598;
+    --accent: #60a5fa;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 28px 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.45;
+  }
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  h1 {
+    margin: 0 0 4px 0;
+    font-size: 1.55rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .stat-value {
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+    align-items: center;
+  }
+  input[type="text"], select {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    outline: none;
+  }
+  input[type="text"] {
+    min-width: 240px;
+    flex: 1;
+  }
+  input[type="text"]:focus, select:focus {
+    border-color: var(--accent);
+  }
+  .table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+  thead th {
+    background: #13161d;
+    color: var(--muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.74rem;
+    letter-spacing: 0.05em;
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+  }
+  thead th:hover {
+    color: var(--text);
+  }
+  tbody td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+  tbody tr:hover {
+    background: var(--surface-hover);
+  }
+  .color-pill {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .num-col {
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .card-name {
+    font-weight: 600;
+    color: #f8fafc;
+  }
+  .note-tag {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 6px;
+    font-size: 0.72rem;
+    font-weight: 500;
+    background: #262b36;
+    color: #94a3b8;
+    border-radius: 4px;
+  }
+  .center-col { text-align: center; }
+  .rarity-tag {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    background: #252a34;
+  }
+  .rarity-R { color: #fbbf24; border: 1px solid #78350f; }
+  .rarity-U { color: #cbd5e1; border: 1px solid #475569; }
+  .rarity-C { color: #94a3b8; border: 1px solid #334155; }
+  .rarity-L { color: #a7f3d0; border: 1px solid #065f46; }
+  .grade-pill {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .badge-psa10 { background: rgba(239, 68, 68, 0.16); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.35); }
+  .badge-psa9 { background: rgba(249, 115, 22, 0.16); color: #fdba74; border: 1px solid rgba(249, 115, 22, 0.35); }
+  .badge-bgs95 { background: rgba(234, 179, 8, 0.16); color: #fde047; border: 1px solid rgba(234, 179, 8, 0.35); }
+  .badge-blacklabel { background: rgba(168, 85, 247, 0.2); color: #e9d5ff; border: 1px solid rgba(168, 85, 247, 0.45); }
+  .badge-neutral { background: transparent; color: var(--muted); padding: 0; }
+  .price-col {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    white-space: nowrap;
+    color: #34d399;
+  }
+  .cert-col code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.8rem;
+    background: #12151c;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #93c5fd;
+  }
+  .muted { color: var(--muted); font-weight: 400; }
+  @media (max-width: 768px) {
+    body { padding: 14px 10px; }
+    th, td { padding: 8px 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div>
+      <h1>Cardmarket Vintage MTG Graded Snapshot</h1>
+      <div class="subtitle">Snapshot Date: <strong>Nov 14, 2026</strong> &bull; Parsed from Google Sheets</div>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-label">Total Tracked Rows</div>
+      <div class="stat-value" id="statRows">40</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Priced Listings Total</div>
+      <div class="stat-value" id="statTotal">€180,926.33</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">PSA 10 Entries</div>
+      <div class="stat-value">16</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">BGS 9.5 / 10 Entries</div>
+      <div class="stat-value">10</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <input type="text" id="searchInput" placeholder="Search card name, cert #, seller, country, notes...">
+    <select id="colorFilter">
+      <option value="">All Colors / Categories</option>
+      <option value="Black">Black</option>
+      <option value="Blue">Blue</option>
+      <option value="Green">Green</option>
+      <option value="Red">Red</option>
+      <option value="White">White</option>
+      <option value="Artifacts">Artifacts</option>
+      <option value="Lands">Lands</option>
+    </select>
+    <select id="gradeFilter">
+      <option value="">All Grades</option>
+      <option value="PSA 10">PSA 10</option>
+      <option value="PSA 9">PSA 9</option>
+      <option value="BGS 9.5">BGS 9.5 (All Tiers)</option>
+      <option value="BGS 10">BGS 10</option>
+    </select>
+  </div>
+
+  <div class="table-wrap">
+    <table id="cardsTable">
+      <thead>
+        <tr>
+          <th onclick="sortTable(0)">Category &#x25B4;&#x25BE;</th>
+          <th onclick="sortTable(1)">CM # &#x25B4;&#x25BE;</th>
+          <th onclick="sortTable(2)">Card Name &amp; Notes &#x25B4;&#x25BE;</th>
+          <th onclick="sortTable(3)" style="text-align:center;">Rarity &#x25B4;&#x25BE;</th>
+          <th onclick="sortTable(4)">Grade &#x25B4;&#x25BE;</th>
+          <th onclick="sortTable(5)" style="text-align:right;">Euro Price &#x25B4;&#x25BE;</th>
+          <th onclick="sortTable(6)">Cert # &#x25B4;&#x25BE;</th>
+          <th onclick="sortTable(7)">Seller &#x25B4;&#x25BE;</th>
+          <th onclick="sortTable(8)">Country &#x25B4;&#x25BE;</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr data-color="Black" data-grade="PSA 9" data-price="3000.0">
+            <td><span class="color-pill" style="background:#2b2630;color:#e2d9f3;border:1px solid #6b5b7b;">Black</span></td>
+            <td class="num-col">1</td>
+            <td class="card-name">Animate Dead </td>
+            <td class="center-col"><span class="rarity-tag rarity-U">U</span></td>
+            <td><span class="grade-pill badge-psa9">PSA 9</span></td>
+            <td class="price-col" data-sort="3000.0">€3,000.00</td>
+            <td class="cert-col"><span class='muted'>—</span></td>
+            <td><span class='muted'>—</span></td>
+            <td><span class='muted'>—</span></td>
+        </tr>
+    
+        <tr data-color="Black" data-grade="-" data-price="0.0">
+            <td><span class="color-pill" style="background:#2b2630;color:#e2d9f3;border:1px solid #6b5b7b;">Black</span></td>
+            <td class="num-col">2</td>
+            <td class="card-name">Bad Moon </td>
+            <td class="center-col"><span class="rarity-tag rarity-R">R</span></td>
+            <td><span class="grade-pill badge-neutral"><span class='muted'>—</span></span></td>
+            <td class="price-col" data-sort="0.0"><span class='muted'>—</span></td>
+            <td class="cert-col"><span class='muted'>—</span></td>
+            <td><span class='muted'>—</span></td>
+            <td><span class='muted'>—</span></td>
+        </tr>
+    
+        <tr data-color="Black" data-grade="PSA 10" data-price="2500.0">
+            <td><span class="color-pill" style="background:#2b2630;color:#e2d9f3;border:1px solid #6b5b7b;">Black</span></td>
+            <td class="num-col">3</td>
+            <td class="card-name">Black Knight </td>
+            <td class="center-col"><span class="rarity-tag rarity-U">U</span></td>
+            <td><span class="grade-pill badge-psa10">PSA 10</span></td>
+            <td class="price-col" data-sort="2500.0">€2,500.00</td>
+            <td class="cert-col"><code>20423808</code></td>
+            <td>DonVintagemagic</td>
+            <td>Germany</td>
+        </tr>
+    
+        <tr data-color="Black" data-grade="-" data-price="0.0">
+            <td><span class="color-pill" style="background:#2b2630;color:#e2d9f3;border:1px solid #6b5b7b;">Black</span></td>
+            <td class="num-col">4</td>
+            <td class="card-name">Bog Wraith <span class='note-tag'>skip</span></td>
+            <td class="center-col"><span class="rarity-tag rarity-U">U</span></td>
+            <td><span class="grade-pill badge-neutral"><span class='muted'>—</span></span></td>
+            <td class="price-col" data-sort="0.0"><span class='muted'>—</span></td>
+            <td class="cert-col"><span class='muted'>—</span></td>
+            <td><span class='muted'>—</span></td>
+            <td><span class='muted'>—</span></td>
+        </tr>
+    
+        <tr data-color="Black" data-grade="PSA 10" data-price="695.95">
+            <td><span class="color-pill" style="background:#2b2630;color:#e2d9f3;border:1px solid #6b5b7b;">Black</span></td>
+            <td class="num-col">5</td>
+            <td class="card-name">Drain Life </td>
+            <td class="center-col"><span class="rarity-tag rarity-C">C</span></td>
+            <td><span class="grade-pill badge-psa10">PSA 10</span></td>
+            <td class="price-col" data-sort="695.95">€695.95</td>
+            <td class="cert-col"><code>17672521</code></td>
+            <td>InLoveWith</td>
+            <td>Germany</td>
+        </tr>
+    
+        <tr data-color="Black" data-grade="PSA 10" data-price="1200.0">
+            <td><span class="color-pill" style="background:#2b2630;color:#e2d9f3;border:1px solid #6b5b7b;">Black</span></td>
+            <td class="num-col">6</td>
+            <td class="card-name">Drudge Skeletons </td>
+            <td class="center-col"><span class="rarity-tag rarity-C">C</span></td>
+            <td><span class="grade-pill badge-psa10">PSA 10</span></td>
+            <td class="price-col" data-sort="1200.0">€1,200.00</td>
+            <td class="cert-col"><code>6616611</code></td>
+            <td>Amoizda</td>
+            <td>Germany</td>
+        </tr>
+    
+        <tr data-color="Black" data-grade="PSA 10" data-price="999.95">
+            <td><span class="color-pill" style="background:#2b2630;color:#e2d9f3;border:1px solid #6b5b7b;">Black</span></td>
+            <td class="num-col">7</td>
+            <td class="card-name">Unholy Strength </td>
+            <td class="center-col"><span class="rarity-tag rarity-C">C</span></td>
+            <td><span class="grade-pill badge-psa10">PSA 10</span></td>
+            <td class="price-col" data-sort="999.95">€999.95</td>
+            <td class="cert-col"><code>18662555</code></td>
+            <td>InLoveWith</td>
+            <td><span class='muted'>—</span></td>
+        </tr>
+    
+        <tr data-color="Blue" data-grade="PSA 10" data-price="795.95">
+            <td><span class="color-pill" style="background:#152a3d;color:#bae0ff;border:1px solid #2b6cb0;">Blue</span></td>
+            <td class="num-col">1</td>
+            <td class="card-name">Jump <span class='note-tag'>7 plus</span></td>
+            <td class="center-col"><span class="rarity-tag rarity-C">C</span></td>
+            <td><span class="grade-pill badge-psa10">PSA 10</span></td>
+            <td class="price-col" data-sort="795.95">€795.95</td>
+            <td class="cert-col"><code>18662559</code></td>
+            <td>InLoveWith</td>
+            <td>Germany</td>
+        </tr>
+    
+        <tr data-color="Blue" data-grade="PSA 10" data-price="995.95">
+            <td><span class="color-pill" style="background:#152a3d;color:#bae0ff;border:1px solid #2b6cb0;">Blue</span></td>
+            <td class="num-col">2</td>
+            <td class="card-name">Lifetap </td>
+            <td class="center-col"><span class="rarity-tag rarity-U">U</span></td>
+            <td><span class="grade-pill badge-psa10">PSA 10</span></td>
+            <td class="price-col" data-sort="995.95">€995.95</td>
+            <td class="cert-col"><code>21552222</code></td>
+            <td>InLoveWith</td>
+            <td>Germany</td>
+        </tr>
+    
+        <tr data-color="Blue" data-grade="PSA 10" data-price="895.95">
+            <td><span class="color-pill" style="background:#152a3d;color:#bae0ff;border:1px solid #2b6cb0;">Blue</span></td>
+            <td class="num-col">3</td>
+            <td class="card-name">Power Sink </td>
+            <td class="center-col"><span class="rarity-tag rarity-C">C</span></td>
+            <td><span class="grade-pill badge-psa10">PSA 10</span></td>
+            <td class="price-col" data-sort="895.95">€895.95</td>
+            <td class="cert-col"><code>22019405</code></td>
+            <td><span class='muted'>—</span></td>
+            <td><span class='muted'>—</span></td>
+        </tr>
+    
+        <tr data-color="Blue" data-grade="PSA 10" data-price="995.95">
+            <td><span class="color-pill" style="background:#152a3d;color:#bae0ff;border:1px solid #2b6cb0;">Blue</span></td>
+            <td class="num-col">3 (alt)</td>
+            <td class="card-name">Power Sink </td>
+            <td class="center-col"><span class="rarity-tag rarity-C">C</span></td>
+            <td><span class="grade-pill badge-psa10">PSA 10</span></td>
+            <td class="price-col" data-sort="995.95">€995.95</td>
+            <td class="cert-col"><code>17672615</code></td>
+            <td><span class='muted'>—</span></td>
+            <td><span class='muted'>—</span></td>
+        </tr>
+    
+        <tr data-color="Blue" data-grade="-" data-price="999.95">
+            <td><span class="color-pill" style="background:#152a3d;color:#bae0ff;border:1px solid #2b6cb0;">Blue</span></td>
+            <td class="num-col">5</td>
+            <td class="card-name">Spell Blast </td>
+            <td class="center-col"><span class="rarity-tag rarity-C">C</span></td>
+            <td><span class="grade-pill badge-neutral"><span class='muted'>—</span></span></td>
+            <td class="price-col" data-sort="999.95">€999.95</td>
+            <td class="cert-col"><code>21386495</code></td>
+            <td><span class='muted'>—</span></td>
+            <td><span class='muted'>—</span></td>
+        </tr>
+    
+        <tr data-color="Green" data-grade="PSA 10" data-price="0.0">
+            <td><span class="color-pill" style="background:#163022;color:#bbf7d0;border:1px solid #2f855a;">Green</span></td>
+            <td class="num-col">1</td>
+            <td class="card-name">Llanowar Elves <span class='note-tag'>pg 4 | mint | !!! | pg 5</span></td>
+            <td class="center-col"><span class="rarity-tag rarity-C">C</span></td>
+            <td><span class="grade-pill badge-psa10">PSA 10</span></td>
+            <td class="price-col" data-sort="0.0"><span class='muted'>—</span></td>
+            <td class="cert-col"><span class='muted'>—</span></td>
+            <td><span class='muted'>—</span></td>
+            <td><span class='muted'>—</span></td>
+        </tr>
+    
+        <tr data-color="Green" data-grade="-" data-price="799.99">
+            <td><span class="color-pill" style="background:#163022;color:#bbf7d0;border:1px solid #2f855a;">Green</span></td>
+            <td class="num-col">2</td>
+            <td class="card-name">Regeneration </td>
+            <td class="center-col"><span class="rarity-tag rarity-C">C</span></td>
+            <td><span class="grade-pill badge-neutral"><span class='muted'>—</span></span></td>
+            <td class="price-col" data-sort="799.99">€799.99</td>
+            <td class="cert-col"><code>16373810</code></td>
+            <td>Joelauv</td>
+            <td>Finland</td>
+        </tr>
+    
+        <tr data-color="Green" data-grade="-" data-price="995.95">
+            <td><span class="color-pill" style="background:#163022;color:#bbf7d0;border:1px solid #2f855a;">Green</span></td>
+            <td class="num-col">3</td>
+            <td class="card-name">Scryb Sprites </td>
+            <td class="center-col"><span class="rarity-tag rarity-C">C</span></td>
+            <td><span class="grade-pill badge-neutral"><span class='muted'>—</span></span></td>
+            <td class="price-col" data-sort="995.95">€995.95</td>
+            <td class="cert-col"><code>23515974</code></td>
+            <td>InLoveWith</td>
+            <td>Germany</td>
+        </tr>
+    
+        <tr data-color="Green" data-grade="-" data-price="0.0">
+            <td><span class="color-pill" style="background:#163022;color:#bbf7d0;border:1px solid #2f855a;">Green</span></td>
+            <td class="num-col">4</td>
+            <td class="card-name">- </td>
+            <td class="center-col"><span class="rarity-tag rarity--">-</span></td>
+            <td><span class="grade-pill badge-neutral"><span class='muted'>—</span></span></td>
+            <td class="price-col" data-sort="0.0"><span class='muted'>—</span></td>
+            <td class="cert-col"><span class='muted'>—</span></td>
+            <td><span class='muted'>—</span></td>
+            <td><span class='muted'>—</span></td>
+        </tr>
+    
+        <tr data-color="Red" data-grade="PSA 10" data-price="5500.0">
+            <td><span class="color-pill" style="background:#3b1a1a;color:#fecaca;border:1px solid #c53030;">Red</span></td>
+            <td class="num-col">1</td>
+            <td class="card-name">Chaoslace <span class='note-tag'>nopic?</span></td>
+            <td class="center-col"><span class="rarity-tag rarity-R">R</span></td>
+            <td><span class="grade-pill badge-psa10">PSA 10</span></td>
+            <td class="price-col" data-sort="5500.0">€5,500.00</td>
+            <td class="cert-col"><span class='muted'>—</span></td>
+            <td>ThomasLA</td>
+            <td>Germany</td>
+        </tr>
+    
+        <tr data-color="Red" data-grade="-" data-price="5500.0">
+            <td><span class="color-pill" style="background:#3b1a1a;color:#fecaca;border:1px solid #c53030;">Red</span></td>
+            <td class="num-col">2</td>
+            <td class="card-name">Dragon Whelp </td>
+            <td class="center-col"><span class="rarity-tag rarity-U">U</span></td>
+            <td><span class="grade-pill badge-neutral"><span class='muted'>—</span></span></td>
+            <td class="price-col" data-sort="5500.0">€5,500.00</td>
+            <td class="cert-col"><span class='muted'>—</span></td>
+            <td><span class='muted'>—</span></td>
+            <td><span class='muted'>—</span></td>
+        </tr>
+    
+        <tr data-color="Red" data-grade="-" data-price="999.95">
+            <td><span class="color-pill" style="background:#3b1a1a;color:#fecaca;border:1px solid #c53030;">Red</span></td>
+            <td class="num-col">3</td>
+            <td class="card-name">DDT (Dwarven Demolition Team) </td>
+            <td class="center-col"><span class="rarity-tag rarity-U">U</span></td>
+            <td><span class="grade-pill badge-neutral"><span class='muted'>—</span></span></td>
+            <td class="price-col" data-sort="999.95">€999.95</td>
+            <td class="cert-col"><code>12005739</code></td>
+            <td>inLoveWith</td>
+            <td>Germany</td>
+        </tr>
+    
+        <tr data-color="Red" data-grade="-" data-price="799.99">
+            <td><span class="color-pill" style="background:#3b1a1a;color:#fecaca;border:1px solid #c53030;">Red</span></td>
+            <td class="num-col">4</td>
+            <td class="card-name">Dwarven Warriors </td>
+            <td class="center-col"><span class="rarity-tag rarity-C">C</span></td>
+            <td><span class="grade-pill badge-neutral"><span class='muted'>—</span></span></td>
+            <td class="price-col" data-sort="799.99">€799.99</td>
+            <td class="cert-col"><code>15823019</code></td>
+            <td>Joelauv</td>
+            <td>Finland</td>
+        </tr>
+    
+        <tr data-color="Red" data-grade="BGS 9.5+++" data-price="4195.0">
+            <td><span class="color-pill" style="background:#3b1a1a;color:#fecaca;border:1px solid #c53030;">Red</span></td>
+            <td class="num-col">5</td>
+            <td class="card-name">Earthbind <span class='note-tag'>pg 6</span></td>
+            <td class="center-col"><span class="rarity-tag rarity-C">C</span></td>
+            <td><span class="grade-pill badge-bgs95">BGS 9.5+++</span></td>
+            <td class="price-col" data-sort="4195.0">€4,195.00</td>
+            <td class="cert-col"><code>11189468</code></td>
+            <td>Leuz87</td>
+            <td>Italy</td>
+        </tr>
+    
+        <tr data-color="Red" data-grade="BGS 9.5 (10/9.5/9/9.5)" data-price="2999.0">
+            <td><span class="color-pill" style="background:#3b1a1a;color:#fecaca;border:1px solid #c53030;">Red</span></td>
+            <td class="num-col">6</td>
+            <td class="card-name">Lightning Bolt </td>
+            <td class="center-col"><span class="rarity-tag rarity-C">C</span></td>
+            <td><span class="grade-pill badge-bgs95">BGS 9.5 (10/9.5/9/9.5)</span></td>
+            <td class="price-col" data-sort="2999.0">€2,999.00</td>
+            <td class="cert-col"><code>10551678</code></td>
+            <td>HarLekiN2197</td>
+            <td>Germany</td>
+        </tr>
+    
+        <tr data-color="Red" data-grade="BGS 9.5 Quad" data-price="4000.0">
+            <td><span class="color-pill" style="background:#3b1a1a;color:#fecaca;border:1px solid #c53030;">Red</span></td>
+            <td class="num-col">6 (alt)</td>
+            <td class="card-name">Lightning Bolt <span class='note-tag'>nopic</span></td>
+            <td class="center-col"><span class="rarity-tag rarity-C">C</span></td>
+            <td><span class="grade-pill badge-bgs95">BGS 9.5 Quad</span></td>
+            <td class="price-col" data-sort="4000.0">€4,000.00</td>
+            <td class="cert-col"><span class='muted'>—</span></td>
+            <td>DonVintagemagic</td>
+            <td>Germany</td>
+        </tr>
+    
+        <tr data-color="White" data-grade="PSA 10" data-price="599.95">
+            <td><span class="color-pill" style="background:#3a3528;color:#fef3c7;border:1px solid #b7791f;">White</span></td>
+            <td class="num-col">1</td>
+            <td class="card-name">Circle of Protection: White <span class='note-tag'>pg 7</span></td>
+            <td class="center-col"><span class="rarity-tag rarity-C">C</span></td>
+            <td><span class="grade-pill badge-psa10">PSA 10</span></td>
+            <td class="price-col" data-sort="599.95">€599.95</td>
+            <td class="cert-col"><code>18662557</code></td>
+            <td>InLoveWith</td>
+            <td>Germany</td>
+        </tr>
+    
+        <tr data-color="White" data-grade="PSA 10" data-price="995.95">
+            <td><span class="color-pill" style="background:#3a3528;color:#fef3c7;border:1px solid #b7791f;">White</span></td>
+            <td class="num-col">2</td>
+            <td class="card-name">Pearled Unicorn <span class='note-tag'>pg 8</span></td>
+            <td class="center-col"><span class="rarity-tag rarity-C">C</span></td>
+            <td><span class="grade-pill badge-psa10">PSA 10</span></td>
+            <td class="price-col" data-sort="995.95">€995.95</td>
+            <td class="cert-col"><code>16484279</code></td>
+            <td>InloveWith</td>
+            <td>Germany</td>
+        </tr>
+    
+        <tr data-color="White" data-grade="[BGS 9.5] QUAD (9.5/9.5/9.5/9.5)" data-price="53900.0">
+            <td><span class="color-pill" style="background:#3a3528;color:#fef3c7;border:1px solid #b7791f;">White</span></td>
+            <td class="num-col">3</td>
+            <td class="card-name">Swords to Plowshares </td>
+            <td class="center-col"><span class="rarity-tag rarity-U">U</span></td>
+            <td><span class="grade-pill badge-bgs95">[BGS 9.5] QUAD (9.5/9.5/9.5/9.5)</span></td>
+            <td class="price-col" data-sort="53900.0">€53,900.00</td>
+            <td class="cert-col"><code>010129177</code></td>
+            <td>leuz87</td>
+            <td>Italy</td>
+        </tr>
+    
+        <tr data-color="Artifacts" data-grade="-" data-price="0.0">
+            <td><span class="color-pill" style="background:#2a2d34;color:#e2e8f0;border:1px solid #718096;">Artifacts</span></td>
+            <td class="num-col">1</td>
+            <td class="card-name">Black Lotus </td>
+            <td class="center-col"><span class="rarity-tag rarity-R">R</span></td>
+            <td><span class="grade-pill badge-neutral"><span class='muted'>—</span></span></td>
+            <td class="price-col" data-sort="0.0"><span class='muted'>—</span></td>
+            <td class="cert-col"><span class='muted'>—</span></td>
+            <td><span class='muted'>—</span></td>
+            <td><span class='muted'>—</span></td>
+        </tr>
+    
+        <tr data-color="Artifacts" data-grade="[BGS 9.5] BASIC+ (10/9/9.5/9.5)" data-price="26000.0">
+            <td><span class="color-pill" style="background:#2a2d34;color:#e2e8f0;border:1px solid #718096;">Artifacts</span></td>
+            <td class="num-col">2</td>
+            <td class="card-name">Celestial Prism </td>
+            <td class="center-col"><span class="rarity-tag rarity-U">U</span></td>
+            <td><span class="grade-pill badge-bgs95">[BGS 9.5] BASIC+ (10/9/9.5/9.5)</span></td>
+            <td class="price-col" data-sort="26000.0">€26,000.00</td>
+            <td class="cert-col"><code>01114358</code></td>
+            <td>leuz87</td>
+            <td>Italy</td>
+        </tr>
+    
+        <tr data-color="Artifacts" data-grade="[BGS 9.5] BASIC+ (10/9/9.5/9.5)" data-price="15900.0">
+            <td><span class="color-pill" style="background:#2a2d34;color:#e2e8f0;border:1px solid #718096;">Artifacts</span></td>
+            <td class="num-col">3</td>
+            <td class="card-name">Copper Tablet </td>
+            <td class="center-col"><span class="rarity-tag rarity-U">U</span></td>
+            <td><span class="grade-pill badge-bgs95">[BGS 9.5] BASIC+ (10/9/9.5/9.5)</span></td>
+            <td class="price-col" data-sort="15900.0">€15,900.00</td>
+            <td class="cert-col"><code>011070754</code></td>
+            <td>leuz87</td>
+            <td>Italy</td>
+        </tr>
+    
+        <tr data-color="Artifacts" data-grade="BGS 9.5 Q+" data-price="10490.0">
+            <td><span class="color-pill" style="background:#2a2d34;color:#e2e8f0;border:1px solid #718096;">Artifacts</span></td>
+            <td class="num-col">4</td>
+            <td class="card-name">Ivory Cup <span class='note-tag'>pg 9</span></td>
+            <td class="center-col"><span class="rarity-tag rarity-U">U</span></td>
+            <td><span class="grade-pill badge-bgs95">BGS 9.5 Q+</span></td>
+            <td class="price-col" data-sort="10490.0">€10,490.00</td>
+            <td class="cert-col"><code>12029031</code></td>
+            <td>Menno82</td>
+            <td>NL</td>
+        </tr>
+    
+        <tr data-color="Artifacts" data-grade="BGS 9.5 Basic-" data-price="4175.0">
+            <td><span class="color-pill" style="background:#2a2d34;color:#e2e8f0;border:1px solid #718096;">Artifacts</span></td>
+            <td class="num-col">5</td>
+            <td class="card-name">Juggernaut </td>
+            <td class="center-col"><span class="rarity-tag rarity-U">U</span></td>
+            <td><span class="grade-pill badge-bgs95">BGS 9.5 Basic-</span></td>
+            <td class="price-col" data-sort="4175.0">€4,175.00</td>
+            <td class="cert-col"><span class='muted'>—</span></td>
+            <td>Leuz87</td>
+            <td>Italy</td>
+        </tr>
+    
+        <tr data-color="Artifacts" data-grade="BGS 9.5 Quad" data-price="16000.0">
+            <td><span class="color-pill" style="background:#2a2d34;color:#e2e8f0;border:1px solid #718096;">Artifacts</span></td>
+            <td class="num-col">6</td>
+            <td class="card-name">Sol Ring <span class='note-tag'>nopic</span></td>
+            <td class="center-col"><span class="rarity-tag rarity-U">U</span></td>
+            <td><span class="grade-pill badge-bgs95">BGS 9.5 Quad</span></td>
+            <td class="price-col" data-sort="16000.0">€16,000.00</td>
+            <td class="cert-col"><span class='muted'>—</span></td>
+            <td>DonVintagemagic</td>
+            <td>Germany</td>
+        </tr>
+    
+        <tr data-color="Lands" data-grade="PSA 10" data-price="999.95">
+            <td><span class="color-pill" style="background:#2d241c;color:#fed7aa;border:1px solid #9c4221;">Lands</span></td>
+            <td class="num-col">1</td>
+            <td class="card-name">Forest (v1 - Rock) </td>
+            <td class="center-col"><span class="rarity-tag rarity-L">L</span></td>
+            <td><span class="grade-pill badge-psa10">PSA 10</span></td>
+            <td class="price-col" data-sort="999.95">€999.95</td>
+            <td class="cert-col"><code>11963662</code></td>
+            <td>inlovewith</td>
+            <td>Germany</td>
+        </tr>
+    
+        <tr data-color="Lands" data-grade="PSA 10" data-price="0.0">
+            <td><span class="color-pill" style="background:#2d241c;color:#fed7aa;border:1px solid #9c4221;">Lands</span></td>
+            <td class="num-col">2</td>
+            <td class="card-name">Island (v1 - Pink) </td>
+            <td class="center-col"><span class="rarity-tag rarity-L">L</span></td>
+            <td><span class="grade-pill badge-psa10">PSA 10</span></td>
+            <td class="price-col" data-sort="0.0"><span class='muted'>—</span></td>
+            <td class="cert-col"><code>16484307</code></td>
+            <td><span class='muted'>—</span></td>
+            <td><span class='muted'>—</span></td>
+        </tr>
+    
+        <tr data-color="Lands" data-grade="BGS 10" data-price="12000.0">
+            <td><span class="color-pill" style="background:#2d241c;color:#fed7aa;border:1px solid #9c4221;">Lands</span></td>
+            <td class="num-col">3</td>
+            <td class="card-name">Island (alt) </td>
+            <td class="center-col"><span class="rarity-tag rarity-L">L</span></td>
+            <td><span class="grade-pill badge-blacklabel">BGS 10</span></td>
+            <td class="price-col" data-sort="12000.0">€12,000.00</td>
+            <td class="cert-col"><span class='muted'>—</span></td>
+            <td>magicboxx</td>
+            <td>France</td>
+        </tr>
+    
+        <tr data-color="Lands" data-grade="PSA 10" data-price="995.95">
+            <td><span class="color-pill" style="background:#2d241c;color:#fed7aa;border:1px solid #9c4221;">Lands</span></td>
+            <td class="num-col">4</td>
+            <td class="card-name">Mountain (v1 - Brown) </td>
+            <td class="center-col"><span class="rarity-tag rarity-L">L</span></td>
+            <td><span class="grade-pill badge-psa10">PSA 10</span></td>
+            <td class="price-col" data-sort="995.95">€995.95</td>
+            <td class="cert-col"><code>16484311</code></td>
+            <td>inlovewith</td>
+            <td>Germany</td>
+        </tr>
+    
+        <tr data-color="Lands" data-grade="PSA 10" data-price="0.0">
+            <td><span class="color-pill" style="background:#2d241c;color:#fed7aa;border:1px solid #9c4221;">Lands</span></td>
+            <td class="num-col">5</td>
+            <td class="card-name">Plains (v2 - Tree) </td>
+            <td class="center-col"><span class="rarity-tag rarity-L">L</span></td>
+            <td><span class="grade-pill badge-psa10">PSA 10</span></td>
+            <td class="price-col" data-sort="0.0"><span class='muted'>—</span></td>
+            <td class="cert-col"><code>11963663</code></td>
+            <td><span class='muted'>—</span></td>
+            <td><span class='muted'>—</span></td>
+        </tr>
+    
+        <tr data-color="Lands" data-grade="-" data-price="0.0">
+            <td><span class="color-pill" style="background:#2d241c;color:#fed7aa;border:1px solid #9c4221;">Lands</span></td>
+            <td class="num-col">6</td>
+            <td class="card-name">Swamp (v2 - High Branch) </td>
+            <td class="center-col"><span class="rarity-tag rarity-L">L</span></td>
+            <td><span class="grade-pill badge-neutral"><span class='muted'>—</span></span></td>
+            <td class="price-col" data-sort="0.0"><span class='muted'>—</span></td>
+            <td class="cert-col"><code>16172551</code></td>
+            <td><span class='muted'>—</span></td>
+            <td><span class='muted'>—</span></td>
+        </tr>
+    
+        <tr data-color="Lands" data-grade="-" data-price="0.0">
+            <td><span class="color-pill" style="background:#2d241c;color:#fed7aa;border:1px solid #9c4221;">Lands</span></td>
+            <td class="num-col">7</td>
+            <td class="card-name">Swamp (v1 - Low Branch) </td>
+            <td class="center-col"><span class="rarity-tag rarity-L">L</span></td>
+            <td><span class="grade-pill badge-neutral"><span class='muted'>—</span></span></td>
+            <td class="price-col" data-sort="0.0"><span class='muted'>—</span></td>
+            <td class="cert-col"><code>4012923</code></td>
+            <td><span class='muted'>—</span></td>
+            <td><span class='muted'>—</span></td>
+        </tr>
+    
+        <tr data-color="Lands" data-grade="-" data-price="0.0">
+            <td><span class="color-pill" style="background:#2d241c;color:#fed7aa;border:1px solid #9c4221;">Lands</span></td>
+            <td class="num-col">8</td>
+            <td class="card-name">- </td>
+            <td class="center-col"><span class="rarity-tag rarity--">-</span></td>
+            <td><span class="grade-pill badge-neutral"><span class='muted'>—</span></span></td>
+            <td class="price-col" data-sort="0.0"><span class='muted'>—</span></td>
+            <td class="cert-col"><code>21603177</code></td>
+            <td><span class='muted'>—</span></td>
+            <td><span class='muted'>—</span></td>
+        </tr>
+    
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  const searchInput = document.getElementById('searchInput');
+  const colorFilter = document.getElementById('colorFilter');
+  const gradeFilter = document.getElementById('gradeFilter');
+  const tbody = document.querySelector('#cardsTable tbody');
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+
+  function filterRows() {
+    const q = searchInput.value.toLowerCase().trim();
+    const color = colorFilter.value;
+    const grade = gradeFilter.value;
+    let visibleCount = 0;
+    let visibleSum = 0;
+
+    rows.forEach(row => {
+      const text = row.innerText.toLowerCase();
+      const rowColor = row.dataset.color;
+      const rowGrade = row.dataset.grade.toUpperCase();
+      const rowPrice = parseFloat(row.dataset.price) || 0;
+
+      const matchQuery = !q || text.includes(q);
+      const matchColor = !color || rowColor === color;
+      const matchGrade = !grade || rowGrade.includes(grade.toUpperCase());
+
+      if (matchQuery && matchColor && matchGrade) {
+        row.style.display = '';
+        visibleCount++;
+        visibleSum += rowPrice;
+      } else {
+        row.style.display = 'none';
+      }
+    });
+
+    document.getElementById('statRows').textContent = visibleCount;
+    document.getElementById('statTotal').textContent = '€' + visibleSum.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  }
+
+  searchInput.addEventListener('input', filterRows);
+  colorFilter.addEventListener('change', filterRows);
+  gradeFilter.addEventListener('change', filterRows);
+
+  let sortDir = {};
+  function sortTable(colIndex) {
+    sortDir[colIndex] = !sortDir[colIndex];
+    const asc = sortDir[colIndex];
+    const sorted = rows.slice().sort((a, b) => {
+      if (colIndex === 5) {
+        const pa = parseFloat(a.dataset.price) || 0;
+        const pb = parseFloat(b.dataset.price) || 0;
+        return asc ? pa - pb : pb - pa;
+      }
+      const ta = a.children[colIndex].innerText.trim().toLowerCase();
+      const tb = b.children[colIndex].innerText.trim().toLowerCase();
+      return asc ? ta.localeCompare(tb) : tb.localeCompare(ta);
+    });
+    sorted.forEach(r => tbody.appendChild(r));
+  }
+</script>
+</body>
+</html>

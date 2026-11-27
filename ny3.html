@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NewYork.dev: Hybrid and in-office engineering jobs in New York City</title>
+<meta name="description" content="Engineering roles at New York companies that work in person, with salary ranges, office location and in-office schedule on every listing.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = { theme: { extend: {
+  fontFamily: { sans: ['"IBM Plex Sans"', 'system-ui', 'sans-serif'] },
+  colors: { ink: '#1B2430', muted: '#5B6573', line: '#DDE1E7', wash: '#F4F5F7', brand: '#1E4FD8' }
+}}};
+</script>
+<style>
+  :focus-visible { outline: 2px solid #1E4FD8; outline-offset: 2px; }
+  dialog::backdrop { background: rgba(27, 36, 48, .5); }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto !important; } }
+</style>
+</head>
+<body class="font-sans text-ink bg-white antialiased">
+
+<header class="border-b border-line">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+    <a href="#" class="text-lg font-bold tracking-tight">NewYork<span class="text-brand">.dev</span></a>
+    <nav class="flex items-center gap-5 text-sm">
+      <a href="#jobs" class="hidden sm:inline hover:text-brand">Jobs</a>
+      <a href="#companies" class="hidden sm:inline hover:text-brand">Companies</a>
+      <a href="#employers" class="hidden sm:inline hover:text-brand">For employers</a>
+      <button data-inquiry="Single featured role" class="px-3.5 py-2 rounded-md bg-brand text-white font-medium hover:bg-blue-700">Post a role</button>
+    </nav>
+  </div>
+</header>
+
+<section class="border-b border-line">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-14 sm:py-20">
+    <h1 class="text-3xl sm:text-5xl font-bold tracking-tight max-w-3xl leading-tight">
+      Engineering jobs at New York companies that work in person
+    </h1>
+    <p class="mt-4 text-lg text-muted max-w-2xl">
+      Every listing shows the salary range, the office location and how many days a week the team is on site.
+    </p>
+
+    <form id="filters" class="mt-8 grid grid-cols-1 md:grid-cols-6 gap-3" onsubmit="return false">
+      <label class="md:col-span-3">
+        <span class="sr-only">Search by title, company or technology</span>
+        <input id="q" type="search" placeholder="Search by title, company or technology"
+          class="w-full px-3.5 py-2.5 rounded-md border border-line bg-white placeholder-slate-400">
+      </label>
+      <label class="md:col-span-2">
+        <span class="sr-only">Neighborhood</span>
+        <select id="hood" class="w-full px-3.5 py-2.5 rounded-md border border-line bg-white"></select>
+      </label>
+      <label>
+        <span class="sr-only">In-office schedule</span>
+        <select id="cadence" class="w-full px-3.5 py-2.5 rounded-md border border-line bg-white">
+          <option value="">Any schedule</option>
+          <option>3 days</option>
+          <option>4 days</option>
+          <option>5 days</option>
+        </select>
+      </label>
+    </form>
+  </div>
+</section>
+
+<section id="companies" class="bg-wash border-b border-line">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-14">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+      <div>
+        <h2 class="text-2xl font-bold tracking-tight">Founding partners</h2>
+        <p class="mt-1 text-muted max-w-xl">Companies that fund this board. Open a profile to see the office, commute and what the team says about working there.</p>
+      </div>
+      <p class="text-sm text-muted">3 of 8 founding partner places are open.</p>
+    </div>
+    <div id="partners" class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+  </div>
+</section>
+
+<section id="jobs" class="border-b border-line">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-14">
+    <div class="flex items-baseline justify-between gap-4 border-b border-line pb-4">
+      <h2 class="text-2xl font-bold tracking-tight">Open roles</h2>
+      <p id="count" class="text-sm text-muted" aria-live="polite"></p>
+    </div>
+    <ul id="jobList" class="divide-y divide-line"></ul>
+    <div id="empty" class="hidden py-14 text-center">
+      <p class="font-semibold">No roles match your search</p>
+      <p class="mt-1 text-muted">Clear a filter or try a different keyword.</p>
+      <button id="reset" class="mt-4 px-4 py-2 rounded-md border border-line font-medium hover:bg-wash">Clear filters</button>
+    </div>
+  </div>
+</section>
+
+<section id="employers" class="bg-wash">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-14 grid grid-cols-1 lg:grid-cols-2 gap-10">
+    <div>
+      <h2 class="text-2xl font-bold tracking-tight">Hiring engineers in New York?</h2>
+      <p class="mt-3 text-muted max-w-lg">
+        Candidates here are looking for in-person or hybrid work in the city, and they can see your schedule and office before they apply.
+        Founding partners get a company profile, pinned listings and a guarantee on applicant quality.
+      </p>
+      <p class="mt-3 text-muted max-w-lg">Founding partner places are limited to eight companies.</p>
+    </div>
+    <div class="bg-white border border-line rounded-lg p-6">
+      <h3 class="font-semibold">Founding partner</h3>
+      <p class="mt-2"><span class="text-3xl font-bold">$1,500</span> <span class="text-muted">per quarter, or $5,000 per year</span></p>
+      <ul class="mt-4 space-y-2 text-sm list-disc pl-5">
+        <li>Company profile with office, commute and team details</li>
+        <li>Unlimited pinned engineering listings</li>
+        <li>60-day guarantee: the listing runs free until you receive qualified applicants in New York</li>
+      </ul>
+      <div class="mt-6 flex flex-col sm:flex-row gap-3">
+        <button data-inquiry="Founding partner, $1,500 per quarter" class="px-4 py-2.5 rounded-md bg-brand text-white font-medium hover:bg-blue-700">Become a founding partner</button>
+        <button data-inquiry="Single featured role" class="px-4 py-2.5 rounded-md border border-line font-medium hover:bg-wash">Post one role for $499</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="border-t border-line">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 text-sm text-muted flex flex-col sm:flex-row justify-between gap-3">
+    <p>NewYork.dev. Engineering jobs for people who work in New York.</p>
+    <p><button data-inquiry="Founding partner, $1,500 per quarter" class="hover:text-brand">Contact us</button></p>
+  </div>
+</footer>
+
+<dialog id="detail" class="m-auto w-full max-w-xl rounded-lg p-0 text-ink">
+  <div class="p-6 sm:p-8 relative">
+    <button data-close class="absolute top-4 right-4 w-9 h-9 rounded-md hover:bg-wash" aria-label="Close">&times;</button>
+    <div id="detailBody"></div>
+  </div>
+</dialog>
+
+<dialog id="inquiry" class="m-auto w-full max-w-lg rounded-lg p-0 text-ink">
+  <div class="p-6 sm:p-8 relative">
+    <button data-close class="absolute top-4 right-4 w-9 h-9 rounded-md hover:bg-wash" aria-label="Close">&times;</button>
+    <div id="inquiryDone" class="hidden">
+      <h3 class="text-xl font-bold">Request received</h3>
+      <p class="mt-2 text-muted">We will reply within one business day.</p>
+      <button data-close class="mt-6 px-4 py-2.5 rounded-md border border-line font-medium hover:bg-wash">Close</button>
+    </div>
+    <form id="inquiryForm" class="space-y-4">
+      <div class="pr-8">
+        <h3 class="text-xl font-bold">Post a role or become a partner</h3>
+        <p class="mt-1 text-sm text-muted">Tell us about your team and we will set up your listing.</p>
+      </div>
+      <label class="block text-sm font-medium">Package
+        <select id="pkg" class="mt-1 w-full px-3 py-2.5 rounded-md border border-line font-normal">
+          <option>Founding partner, $1,500 per quarter</option>
+          <option>Founding partner, $5,000 per year</option>
+          <option>Single featured role</option>
+        </select>
+      </label>
+      <div class="grid sm:grid-cols-2 gap-3">
+        <label class="block text-sm font-medium">Name
+          <input required class="mt-1 w-full px-3 py-2.5 rounded-md border border-line font-normal"></label>
+        <label class="block text-sm font-medium">Work email
+          <input required type="email" class="mt-1 w-full px-3 py-2.5 rounded-md border border-line font-normal"></label>
+        <label class="block text-sm font-medium">Company
+          <input required class="mt-1 w-full px-3 py-2.5 rounded-md border border-line font-normal"></label>
+        <label class="block text-sm font-medium">Office neighborhood
+          <input required class="mt-1 w-full px-3 py-2.5 rounded-md border border-line font-normal"></label>
+      </div>
+      <label class="block text-sm font-medium">In-office schedule and open roles
+        <textarea rows="3" class="mt-1 w-full px-3 py-2.5 rounded-md border border-line font-normal"
+          placeholder="For example: Tuesday to Thursday in Flatiron. Hiring two senior backend engineers."></textarea></label>
+      <button class="w-full py-3 rounded-md bg-brand text-white font-semibold hover:bg-blue-700">Send request</button>
+    </form>
+  </div>
+</dialog>
+
+<script>
+const partners = [
+  { id: 'rampart', name: 'Rampart Clearing', hood: 'Flatiron', addr: '915 Broadway, Floor 14', days: '4 days',
+    note: 'Monday to Thursday on site, Fridays flexible', lines: 'N R W 6 F',
+    tag: 'Real-time treasury and settlement infrastructure for institutional fintech.',
+    stack: ['Rust', 'Go', 'PostgreSQL', 'TypeScript'], open: 2,
+    perks: ['Daily lunch and an espresso bar overlooking Madison Square Park', 'Commuter stipend and a $3,500 hardware budget', 'No-meeting Wednesdays'],
+    quote: 'Most of our hard problems get solved faster at a whiteboard than in a thread.' },
+  { id: 'meridian', name: 'Meridian Spatial AI', hood: 'SoHo', addr: '458 Broome St', days: '3 days',
+    note: 'Tuesday to Thursday on site', lines: 'A C E 6 R',
+    tag: '3D foundation models and simulation engines for robotics and architecture.',
+    stack: ['Python', 'PyTorch', 'C++', 'React'], open: 2,
+    perks: ['On-premises GPU cluster and robotics test bench', 'Catered lunch', '$5,000 annual conference and publication budget'],
+    quote: 'Our researchers and graphics engineers work in the same room as the hardware.' },
+  { id: 'harbor', name: 'HarborGrid Energy', hood: 'DUMBO', addr: '20 Jay St, Suite 810', days: '3 days',
+    note: 'Tuesday to Thursday on site, 10am to 4:30pm core hours', lines: 'F A C Ferry',
+    tag: 'Battery dispatch and grid-balancing software for Northeast microgrids.',
+    stack: ['Elixir', 'Go', 'TimescaleDB', 'TypeScript'], open: 1,
+    perks: ['Bike storage, showers and a ferry and subway subsidy', 'Family-friendly core hours', '4% 401(k) match'],
+    quote: 'Three days together keeps our distributed systems work aligned without a long commute every day.' },
+  { id: 'vanguardia', name: 'Vanguardia Compute', hood: 'Hudson Yards', addr: '55 Hudson Yards, Floor 28', days: '5 days',
+    note: 'Five days a week on site', lines: '7 A C E LIRR',
+    tag: 'Developer observability and eBPF kernel telemetry.',
+    stack: ['C', 'eBPF', 'Rust', 'ClickHouse', 'Go'], open: 2,
+    perks: ['Daily meals and on-site gym access', 'Direct connection to the 7 train, Penn Station and LIRR', 'Above-market cash and early-stage equity'],
+    quote: 'We are in the office five days a week because we move quickly, and we pay accordingly.' },
+  { id: 'kinetix', name: 'Kinetix BioCompute', hood: 'NoMad', addr: '1140 Broadway, Floor 9', days: '3 days',
+    note: 'Monday, Tuesday and Thursday on site', lines: 'R W 1 PATH',
+    tag: 'Cloud lab automation and clinical genomics data pipelines.',
+    stack: ['TypeScript', 'Python', 'GraphQL', 'AWS'], open: 1,
+    perks: ['Close to PATH, R/W and 1 trains', 'Weekly team dinners and a $200 monthly wellness stipend', '16 weeks of paid parental leave'],
+    quote: 'Biologists and software engineers in one room turn lab workflows into usable tools.' }
+];
+
+const jobs = [
+  { id: 1, p: 'rampart', title: 'Staff Distributed Systems Engineer, Settlement Core', pay: '$235k to $275k + equity',
+    subway: 'N/R/W/6 at 23rd St, 2 min walk', stack: ['Rust', 'Go', 'PostgreSQL'],
+    sum: 'Design low-latency clearing ledgers and deterministic state machines for real-time institutional settlement.',
+    req: ['6+ years building fault-tolerant distributed systems in Rust, Go or C++', 'Working knowledge of consensus protocols and PostgreSQL internals'] },
+  { id: 2, p: 'meridian', title: 'Senior Research Engineer, 3D World Models', pay: '$220k to $265k + equity',
+    subway: 'Spring St (6) and Canal St (A/C/E/R/W), 3 min walk', stack: ['Python', 'PyTorch', 'C++'],
+    sum: 'Train and optimize real-time spatial neural rendering models on the company\u2019s GPU cluster.',
+    req: ['Production experience with PyTorch, CUDA and 3D vision methods', 'Track record shipping low-latency inference pipelines'] },
+  { id: 3, p: 'harbor', title: 'Senior Backend Engineer, Grid Telemetry and Dispatch', pay: '$195k to $230k + equity',
+    subway: 'F at York St, A/C at High St, 4 min walk', stack: ['Elixir', 'Go', 'TimescaleDB'],
+    sum: 'Build telemetry ingestion pipelines that control utility-scale battery storage across the Northeast.',
+    req: ['4+ years building concurrent backend services in Elixir, Go or Rust', 'Experience with time-series databases, MQTT or event-driven systems'] },
+  { id: 4, p: 'vanguardia', title: 'Kernel and eBPF Systems Engineer', pay: '$240k to $290k + equity',
+    subway: '7 at 34th St-Hudson Yards, 1 min walk', stack: ['C', 'eBPF', 'Rust'],
+    sum: 'Write low-overhead Linux kernel probes that capture network and CPU telemetry for large microservice fleets.',
+    req: ['Hands-on experience with Linux kernel internals, eBPF or XDP', 'Strong low-level C or Rust, with attention to instrumentation overhead'] },
+  { id: 5, p: 'rampart', title: 'Senior Full-Stack Engineer, Treasury Workstation', pay: '$190k to $225k + equity',
+    subway: 'N/R/W/6 at 23rd St, 2 min walk', stack: ['TypeScript', 'React', 'GraphQL'],
+    sum: 'Own the treasury workstation UI, including keyboard-first data grids, liquidity charts and approval workflows.',
+    req: ['4+ years with TypeScript, React and complex client-side state', 'Care for typography, interaction detail and responsiveness'] },
+  { id: 6, p: 'kinetix', title: 'Full-Stack Software Engineer, Lab Platform', pay: '$185k to $215k + equity',
+    subway: 'R/W at 28th St, PATH at 23rd St, 3 min walk', stack: ['TypeScript', 'Python', 'React'],
+    sum: 'Build protocol builders and sample-tracking software used daily by clinical genomics labs.',
+    req: ['3+ years across TypeScript/React and Python services', 'Comfortable working directly with scientists to turn assays into workflows'] },
+  { id: 7, p: 'meridian', title: 'Senior Frontend and WebGL Engineer', pay: '$200k to $235k + equity',
+    subway: 'Spring St (6) and Canal St (A/C/E/R/W), 3 min walk', stack: ['TypeScript', 'React', 'WebGL'],
+    sum: 'Build browser-based 3D viewport tools for inspecting neural scene reconstructions at interactive frame rates.',
+    req: ['Deep experience with TypeScript, React and Three.js, WebGL or WebGPU', 'Interest in spatial interfaces and creative tooling'] },
+  { id: 8, p: 'vanguardia', title: 'Staff Infrastructure Engineer, ClickHouse', pay: '$230k to $270k + equity',
+    subway: '7 at 34th St-Hudson Yards, 1 min walk', stack: ['Go', 'Rust', 'ClickHouse'],
+    sum: 'Scale multi-petabyte ClickHouse ingestion clusters with strict multi-tenant isolation.',
+    req: ['Proven record scaling ClickHouse, Kafka or similar high-volume storage', 'Strong Go or Rust systems programming'] }
+];
+
+const $ = id => document.getElementById(id);
+const byId = id => partners.find(p => p.id === id);
+
+$('hood').innerHTML = '<option value="">All neighborhoods</option>' +
+  [...new Set(partners.map(p => p.hood))].map(h => `<option>${h}</option>`).join('');
+
+$('partners').innerHTML = partners.map(p => `
+  <button data-partner="${p.id}" class="text-left bg-white border border-line rounded-lg p-5 hover:border-brand flex flex-col">
+    <span class="font-semibold text-lg">${p.name}</span>
+    <span class="text-sm text-muted">${p.hood}, ${p.days} a week</span>
+    <span class="mt-3 text-sm">${p.tag}</span>
+    <span class="mt-4 text-sm text-muted">${p.stack.join(', ')}</span>
+    <span class="mt-4 pt-3 border-t border-line text-sm font-medium text-brand">${p.open} open ${p.open === 1 ? 'role' : 'roles'}</span>
+  </button>`).join('');
+
+function render() {
+  const q = $('q').value.trim().toLowerCase(), hood = $('hood').value, cad = $('cadence').value;
+  const list = jobs.filter(j => {
+    const p = byId(j.p);
+    const hay = [j.title, p.name, p.hood, ...j.stack].join(' ').toLowerCase();
+    return (!q || hay.includes(q)) && (!hood || p.hood === hood) && (!cad || p.days === cad);
+  });
+  $('count').textContent = `${list.length} ${list.length === 1 ? 'role' : 'roles'}`;
+  $('empty').classList.toggle('hidden', list.length > 0);
+  $('jobList').innerHTML = list.map(j => {
+    const p = byId(j.p);
+    return `<li>
+      <button data-job="${j.id}" class="w-full text-left py-5 flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-6 hover:bg-wash px-2 -mx-2 rounded-md">
+        <span>
+          <span class="block font-semibold text-lg">${j.title}</span>
+          <span class="block text-sm text-muted mt-0.5">${p.name}, ${p.hood}, ${p.days} a week</span>
+          <span class="block text-sm text-muted">${j.stack.join(', ')}</span>
+        </span>
+        <span class="font-medium md:text-right shrink-0">${j.pay}</span>
+      </button></li>`;
+  }).join('');
+}
+
+function openPartner(id) {
+  const p = byId(id);
+  $('detailBody').innerHTML = `
+    <h3 class="text-2xl font-bold pr-10">${p.name}</h3>
+    <p class="mt-1 text-muted">${p.tag}</p>
+    <dl class="mt-5 grid sm:grid-cols-2 gap-4 text-sm">
+      <div><dt class="font-semibold">Office</dt><dd class="text-muted">${p.addr}, ${p.hood}</dd></div>
+      <div><dt class="font-semibold">Schedule</dt><dd class="text-muted">${p.days} a week. ${p.note}.</dd></div>
+      <div class="sm:col-span-2"><dt class="font-semibold">Nearby lines</dt><dd class="text-muted">${p.lines}</dd></div>
+    </dl>
+    <blockquote class="mt-5 border-l-2 border-line pl-4 text-muted">${p.quote}</blockquote>
+    <h4 class="mt-5 font-semibold">Working here</h4>
+    <ul class="mt-2 list-disc pl-5 space-y-1 text-sm">${p.perks.map(x => `<li>${x}</li>`).join('')}</ul>
+    <div class="mt-6 pt-5 border-t border-line">
+      <button data-company="${p.name}" class="px-4 py-2.5 rounded-md bg-brand text-white font-medium hover:bg-blue-700">View ${p.open} open ${p.open === 1 ? 'role' : 'roles'}</button>
+    </div>`;
+  $('detail').showModal();
+}
+
+function openJob(id) {
+  const j = jobs.find(x => x.id === +id), p = byId(j.p);
+  $('detailBody').innerHTML = `
+    <p class="text-sm text-muted pr-10">${p.name}</p>
+    <h3 class="text-2xl font-bold pr-10">${j.title}</h3>
+    <p class="mt-2 text-lg font-medium">${j.pay}</p>
+    <dl class="mt-5 grid sm:grid-cols-2 gap-4 text-sm">
+      <div><dt class="font-semibold">Location</dt><dd class="text-muted">${p.hood}. ${j.subway}.</dd></div>
+      <div><dt class="font-semibold">Schedule</dt><dd class="text-muted">${p.days} a week. ${p.note}.</dd></div>
+    </dl>
+    <h4 class="mt-5 font-semibold">About the role</h4>
+    <p class="mt-1 text-sm text-muted">${j.sum}</p>
+    <h4 class="mt-5 font-semibold">Requirements</h4>
+    <ul class="mt-2 list-disc pl-5 space-y-1 text-sm">${j.req.map(x => `<li>${x}</li>`).join('')}</ul>
+    <div class="mt-6 pt-5 border-t border-line flex flex-col sm:flex-row gap-3">
+      <a href="#" class="px-5 py-2.5 rounded-md bg-brand text-white font-medium text-center hover:bg-blue-700">Apply</a>
+      <button data-partner="${p.id}" class="px-4 py-2.5 rounded-md border border-line font-medium hover:bg-wash">About ${p.name}</button>
+    </div>`;
+  $('detail').showModal();
+}
+
+function openInquiry(pkg) {
+  $('inquiryDone').classList.add('hidden');
+  $('inquiryForm').classList.remove('hidden');
+  const opt = [...$('pkg').options].find(o => o.text === pkg);
+  if (opt) $('pkg').value = opt.text;
+  $('inquiry').showModal();
+}
+
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-job],[data-partner],[data-inquiry],[data-close],[data-company]');
+  if (!t) return;
+  if (t.dataset.job) openJob(t.dataset.job);
+  else if (t.dataset.partner) openPartner(t.dataset.partner);
+  else if (t.dataset.inquiry) openInquiry(t.dataset.inquiry);
+  else if (t.dataset.company) {
+    $('detail').close();
+    $('q').value = t.dataset.company; $('hood').value = ''; $('cadence').value = '';
+    render(); $('jobs').scrollIntoView({ behavior: 'smooth' });
+  } else t.closest('dialog').close();
+});
+
+['detail', 'inquiry'].forEach(id => $(id).addEventListener('click', e => { if (e.target === e.currentTarget) e.currentTarget.close(); }));
+['q', 'hood', 'cadence'].forEach(id => $(id).addEventListener('input', render));
+$('reset').addEventListener('click', () => { $('q').value = ''; $('hood').value = ''; $('cadence').value = ''; render(); });
+$('inquiryForm').addEventListener('submit', e => {
+  e.preventDefault(); e.target.reset();
+  e.target.classList.add('hidden'); $('inquiryDone').classList.remove('hidden');
+});
+
+render();
+</script>
+</body>
+</html>

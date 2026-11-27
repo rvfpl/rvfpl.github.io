@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NewYork.dev: Hybrid and in-office engineering roles in NYC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F1EFEB;--panel:#F9F8F5;--ink:#1D1F1E;--slate:#5A6068;--line:#D3CFC6;--accent:#1F5C3F;--on-accent:#fff;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161817;--panel:#1D201F;--ink:#ECEAE5;--slate:#A3A9AD;--line:#363A39;--accent:#6DBB93;--on-accent:#111}}
+:root[data-theme="dark"]{--bg:#161817;--panel:#1D201F;--ink:#ECEAE5;--slate:#A3A9AD;--line:#363A39;--accent:#6DBB93;--on-accent:#111}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 "IBM Plex Sans",system-ui,sans-serif}
+h1,h2,h3{font-family:Newsreader,Georgia,serif;font-weight:600;line-height:1.15;margin:0;letter-spacing:-.01em}
+h1{font-size:clamp(2.1rem,5vw,3.4rem);max-width:20ch}
+h2{font-size:clamp(1.6rem,3vw,2.1rem)}
+p{margin:0}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.muted{color:var(--slate)}
+.sm{font-size:.875rem}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button,input,select,textarea{font:inherit;color:inherit}
+.btn{display:inline-block;padding:10px 16px;border:1px solid var(--ink);border-radius:3px;background:transparent;cursor:pointer;text-decoration:none;font-weight:500}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn:hover{background:var(--panel)}.btn.primary:hover{filter:brightness(1.08)}
+input,select,textarea{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:3px;background:var(--panel)}
+label{display:block;font-size:.875rem;font-weight:500}
+label>input,label>select,label>textarea{margin-top:4px;font-weight:400}
+header{border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;gap:16px;padding-top:14px;padding-bottom:14px;flex-wrap:wrap}
+.brand{font:600 1.35rem Newsreader,serif;text-decoration:none}
+.brand b{color:var(--accent)}
+.tag{flex:1;min-width:200px}
+section{padding:56px 0;border-bottom:1px solid var(--line)}
+.hero p.lead{margin-top:18px;max-width:60ch;font-size:1.1rem}
+.filters{margin-top:28px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:12px;align-items:end}
+.hoods{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:6px 12px;border:1px solid var(--line);border-radius:3px;background:transparent;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-grid .full{grid-column:1/-1}
+.card{border:1px solid var(--line);background:var(--panel);border-radius:3px;padding:18px 20px}
+.job{display:grid;grid-template-columns:1fr auto;gap:8px 24px;width:100%;text-align:left;cursor:pointer}
+.job:hover{border-color:var(--ink)}
+.job h3{font-size:1.25rem}
+.meta{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:6px}
+.pay{font-weight:600;text-align:right;white-space:nowrap}
+.stack{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.stack span{border:1px solid var(--line);border-radius:2px;padding:1px 8px;font-size:.8rem}
+.line{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 4px;border:1px solid var(--ink);border-radius:2px;font-size:.75rem;font-weight:600;margin-right:3px}
+#jobList{display:grid;gap:12px;margin-top:20px}
+.slots{display:flex;gap:6px;margin:12px 0}
+.slots i{width:28px;height:28px;border:1px solid var(--ink);border-radius:2px}
+.slots i.taken{background:var(--ink)}
+ul.plain{margin:12px 0 0;padding-left:18px}ul.plain li{margin:6px 0}
+.drawer{position:fixed;inset:0;display:none;justify-content:flex-end;background:rgba(0,0,0,.45);z-index:20}
+.drawer.open{display:flex}
+.panel{width:min(520px,100%);height:100%;overflow-y:auto;background:var(--bg);border-left:1px solid var(--ink);padding:24px 24px calc(24px + env(safe-area-inset-bottom,0px));padding-top:calc(24px + env(safe-area-inset-top,0px))}
+.panel h3{font-size:1.6rem;margin-top:6px}
+.panel hr{border:0;border-top:1px solid var(--line);margin:20px 0}
+.x{float:right;border:1px solid var(--line);background:transparent;border-radius:3px;padding:4px 10px;cursor:pointer}
+.ok{display:none;margin-top:12px;padding:10px 12px;border:1px solid var(--accent);border-radius:3px}
+footer{padding:28px 0}
+@media (max-width:760px){.filters,.two,.form-grid{grid-template-columns:1fr}.job{grid-template-columns:1fr}.pay{text-align:left}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="brand" href="#">NewYork<b>.dev</b></a>
+    <span class="tag muted sm">Hybrid and in-office engineering roles in NYC</span>
+    <a class="btn" href="#roles">Browse NYC Roles</a>
+    <a class="btn primary" href="#founding">Claim a Founding Slot</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <h1>Return-to-office hiring needs candidates who are actually in New York.</h1>
+    <p class="lead muted">Remote-first boards send you applicants from every state who never read your office policy. Everyone here has chosen to work from an NYC office, and every listing states the neighborhood, the office days and the pay up front. No agencies, no auto-apply.</p>
+    <div class="filters">
+      <label>Search<input id="q" type="search" placeholder="Title, company or stack, such as Rust"></label>
+      <label>Office days<select id="days"><option value="">Any</option><option>3</option><option>4</option><option>5</option></select></label>
+      <label>Minimum salary<select id="minpay"><option value="0">Any</option><option value="150">$150k</option><option value="175">$175k</option><option value="200">$200k</option><option value="225">$225k</option><option value="250">$250k</option></select></label>
+      <button class="btn" id="reset" type="button">Clear filters</button>
+    </div>
+    <div class="hoods" id="hoods" role="group" aria-label="Neighborhood"></div>
+  </div>
+</section>
+
+<section id="preview">
+  <div class="wrap two">
+    <div>
+      <h2>See how your role would look</h2>
+      <p class="muted" style="margin-top:12px;max-width:44ch">Enter your details and the card on the right updates as you type. This is the exact format candidates see in the feed.</p>
+      <div class="form-grid" style="margin-top:20px">
+        <label class="full">Company<input id="pc" value="Northline Systems"></label>
+        <label class="full">Role title<input id="pt" value="Senior Backend Engineer"></label>
+        <label>Neighborhood<select id="ph"></select></label>
+        <label>Office days per week<select id="pd"><option>3</option><option>4</option><option>5</option></select></label>
+        <label>Salary low ($k)<input id="pl" type="number" min="50" max="600" value="190"></label>
+        <label>Salary high ($k)<input id="ph2" type="number" min="50" max="600" value="230"></label>
+      </div>
+    </div>
+    <div>
+      <p class="muted sm" style="margin-bottom:8px">Live preview</p>
+      <div id="previewCard"></div>
+      <p style="margin-top:16px"><a class="btn primary" id="toFounding" href="#founding">Request a free formatted preview</a></p>
+    </div>
+  </div>
+</section>
+
+<section id="roles">
+  <div class="wrap">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap">
+      <h2>Open roles in New York</h2>
+      <p class="muted sm" id="count" aria-live="polite"></p>
+    </div>
+    <p class="muted sm" style="margin-top:6px">Posted directly by the hiring company. Pinned founding partner roles appear first.</p>
+    <div id="jobList"></div>
+    <div id="empty" class="card" style="display:none;margin-top:20px">
+      <p><b>No roles match these filters.</b></p>
+      <p class="muted sm" style="margin-top:4px">Lower the minimum salary, choose another neighborhood or clear the filters.</p>
+    </div>
+  </div>
+</section>
+
+<section id="founding">
+  <div class="wrap two">
+    <div>
+      <h2>Founding Partner program</h2>
+      <p class="muted" style="margin-top:12px;max-width:50ch">We cap the program at eight New York companies per quarter so each partner’s roles stay visible and every applicant stays relevant.</p>
+      <div class="slots" aria-label="5 of 8 slots taken">
+        <i class="taken"></i><i class="taken"></i><i class="taken"></i><i class="taken"></i><i class="taken"></i><i></i><i></i><i></i>
+      </div>
+      <p class="sm"><b>3 of 8 slots remain this quarter.</b> $1,500 per quarter.</p>
+      <ul class="plain">
+        <li><b>Pinned placement.</b> Your roles stay at the top of the feed.</li>
+        <li><b>Direct ATS routing.</b> Applications go straight to Greenhouse, Ashby, Lever or your own system.</li>
+        <li><b>Local candidate reach.</b> Engineers who live in the metro area and want an office schedule.</li>
+        <li><b>Office profile.</b> Neighborhood, subway access and your actual office days, stated plainly.</li>
+      </ul>
+    </div>
+    <form class="card" id="foundForm">
+      <h3 style="font-size:1.35rem">Request a slot or a free preview</h3>
+      <div class="form-grid" style="margin-top:16px">
+        <label class="full">Request<select id="ftype"><option>Reserve a founding slot</option><option>Free formatted preview of my roles</option></select></label>
+        <label>Name<input required></label>
+        <label>Work email<input type="email" required></label>
+        <label>Company<input id="fco" required></label>
+        <label>Office neighborhood<input required placeholder="Flatiron"></label>
+        <label class="full">Careers page link<input type="url" placeholder="https://company.com/careers"></label>
+        <div class="full"><button class="btn primary" type="submit">Send request</button></div>
+      </div>
+      <p class="ok" id="foundOk">Thanks. We will reply within one business day.</p>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap muted sm">NewYork.dev. Hybrid and in-office engineering roles in New York City, posted directly by employers.</div>
+</footer>
+
+<div class="drawer" id="drawer" aria-hidden="true">
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="dTitle">
+    <button class="x" id="dClose" type="button">Close</button>
+    <div id="dBody"></div>
+  </div>
+</div>
+
+<script>
+const HOODS=['FiDi','Flatiron','SoHo','Dumbo','Midtown'];
+const JOBS=[
+{id:1,co:'Rampart Clearing',t:'Staff Distributed Systems Engineer',h:'Flatiron',s:['N','R','W','4','5','6'],d:4,lo:235,hi:275,st:['Rust','Go','PostgreSQL'],ago:1,pin:1,sum:'Design the settlement ledger behind real-time institutional payments. You will own correctness and latency for the core clearing path.',ats:'Greenhouse'},
+{id:2,co:'Meridian Spatial',t:'Senior Research Engineer, 3D Models',h:'SoHo',s:['6','N','R','W','C','E'],d:3,lo:220,hi:265,st:['Python','PyTorch','C++'],ago:2,pin:1,sum:'Train and optimize real-time neural rendering models on the team’s own GPU cluster, working beside the graphics group.',ats:'Ashby'},
+{id:3,co:'HarborGrid Energy',t:'Senior Backend Engineer, Dispatch',h:'Dumbo',s:['F','A','C'],d:3,lo:195,hi:230,st:['Elixir','Go','TimescaleDB'],ago:3,pin:1,sum:'Build telemetry ingestion and dispatch services that control utility-scale battery storage across the Northeast.',ats:'Lever'},
+{id:4,co:'Vanguardia Compute',t:'Kernel and eBPF Engineer',h:'Midtown',s:['7','A','C','E'],d:5,lo:240,hi:290,st:['C','eBPF','Rust'],ago:3,pin:1,sum:'Write low-overhead Linux kernel probes that capture network and CPU telemetry for large service fleets. Five days a week on site.',ats:'Greenhouse'},
+{id:5,co:'Castle Row Capital',t:'Senior Software Engineer, Execution',h:'FiDi',s:['2','3','4','5','R','W'],d:5,lo:250,hi:300,st:['C++','Python','Linux'],ago:4,sum:'Maintain the order routing stack for a systematic trading desk. Latency work, careful releases and a small senior team.',ats:'Lever'},
+{id:6,co:'Kinetix BioCompute',t:'Full-Stack Engineer, Lab Platform',h:'Flatiron',s:['R','W','1','PATH'],d:3,lo:185,hi:215,st:['TypeScript','Python','GraphQL'],ago:5,sum:'Build protocol builders and sample tracking used daily by clinical genomics labs, in close contact with scientists.',ats:'Ashby'},
+{id:7,co:'Paperbridge',t:'Senior Frontend Engineer, Design Systems',h:'Dumbo',s:['F','A','C','2','3'],d:4,lo:180,hi:220,st:['TypeScript','React','CSS'],ago:6,sum:'Own the component library and accessibility standards for a document workflow product used by legal teams.',ats:'Greenhouse'},
+{id:8,co:'Ledgerline',t:'Staff Platform Engineer',h:'FiDi',s:['4','5','J','Z'],d:4,lo:225,hi:270,st:['Go','Kubernetes','Terraform'],ago:7,sum:'Lead the internal platform team: deploy tooling, observability and reliability practices for a payments company.',ats:'Lever'},
+{id:9,co:'Tenfold Health',t:'Senior ML Engineer, Clinical Models',h:'Midtown',s:['B','D','F','M','7'],d:3,lo:210,hi:255,st:['Python','PyTorch','Spark'],ago:9,sum:'Train and evaluate models that predict care gaps from claims and EHR data, with a clinician review loop.',ats:'Ashby'}
+];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let hood='';
+
+const lines=a=>a.map(l=>`<span class="line">${esc(l)}</span>`).join('');
+const fresh=n=>n===1?'Posted yesterday':`Posted ${n} days ago`;
+function card(j,preview){
+  const tag=el=>preview?`<div class="card job" style="cursor:default">`:`<button class="card job" data-id="${j.id}" type="button">`;
+  return `${tag()}
+    <div>
+      <h3>${esc(j.t)}</h3>
+      <div class="meta sm"><b>${esc(j.co)}</b><span>${esc(j.h)}</span><span>${j.d} days in office</span></div>
+      <div class="meta sm muted"><span>${lines(j.s)}</span><span>${preview?'Posted today':fresh(j.ago)}</span>${j.pin?'<span>Pinned, founding partner</span>':''}</div>
+      <div class="stack">${j.st.map(x=>`<span>${esc(x)}</span>`).join('')}</div>
+    </div>
+    <div class="pay">$${j.lo}k to $${j.hi}k</div>
+  ${preview?'</div>':'</button>'}`;
+}
+
+function render(){
+  const q=$('q').value.trim().toLowerCase(),d=$('days').value,m=+$('minpay').value;
+  const list=JOBS.filter(j=>(!q||[j.t,j.co,j.h,...j.st].join(' ').toLowerCase().includes(q))
+    &&(!hood||j.h===hood)&&(!d||j.d===+d)&&j.hi>=m)
+    .sort((a,b)=>(b.pin||0)-(a.pin||0)||a.ago-b.ago);
+  $('jobList').innerHTML=list.map(j=>card(j)).join('');
+  $('empty').style.display=list.length?'none':'block';
+  $('count').textContent=`${list.length} ${list.length===1?'role':'roles'} shown`;
+}
+function renderHoods(){
+  $('hoods').innerHTML=['All',...HOODS].map(h=>`<button type="button" class="chip" data-h="${h}" aria-pressed="${(h==='All'&&!hood)||h===hood}">${h}</button>`).join('');
+}
+function renderPreview(){
+  const lo=Math.max(0,+$('pl').value||0),hi=Math.max(lo,+$('ph2').value||0);
+  $('previewCard').innerHTML=card({t:$('pt').value||'Role title',co:$('pc').value||'Your company',h:$('ph').value,
+    s:{FiDi:['4','5','R'],Flatiron:['N','R','W','6'],SoHo:['6','N','R','W'],Dumbo:['F','A','C'],Midtown:['B','D','F','M']}[$('ph').value],
+    d:+$('pd').value,lo,hi,st:['Your stack'],ago:0,pin:0},true);
+}
+function openDrawer(id){
+  const j=JOBS.find(x=>x.id===+id);
+  $('dBody').innerHTML=`
+    <p class="muted sm">${esc(j.co)}, ${esc(j.h)}</p>
+    <h3 id="dTitle">${esc(j.t)}</h3>
+    <p style="margin-top:10px;font-weight:600">$${j.lo}k to $${j.hi}k base</p>
+    <div class="meta sm muted"><span>${j.d} days a week in office</span><span>${lines(j.s)}</span><span>${fresh(j.ago)}</span></div>
+    <hr><p>${esc(j.sum)}</p>
+    <div class="stack">${j.st.map(x=>`<span>${esc(x)}</span>`).join('')}</div>
+    <hr>
+    <h3 style="font-size:1.2rem">Apply directly</h3>
+    <p class="muted sm" style="margin-top:6px">Your application goes to ${esc(j.co)}’s ${j.ats} account. No agency in between.</p>
+    <form id="applyForm" class="form-grid" style="margin-top:14px">
+      <label>Name<input required></label><label>Email<input type="email" required></label>
+      <label class="full">Resume or profile link<input type="url" required placeholder="https://"></label>
+      <label class="full">Where do you live?<input required placeholder="Neighborhood or borough"></label>
+      <div class="full"><button class="btn primary" type="submit">Send application</button></div>
+    </form>
+    <p class="ok" id="applyOk">Application sent to ${esc(j.co)}.</p>`;
+  $('applyForm').onsubmit=e=>{e.preventDefault();e.target.style.display='none';$('applyOk').style.display='block'};
+  $('drawer').classList.add('open');$('drawer').setAttribute('aria-hidden','false');
+  document.querySelector('.panel').scrollTop=0;
+}
+const closeDrawer=()=>{$('drawer').classList.remove('open');$('drawer').setAttribute('aria-hidden','true')};
+
+$('ph').innerHTML=HOODS.map(h=>`<option>${h}</option>`).join('');
+$('ph').value='Flatiron';
+['q','days','minpay'].forEach(i=>$(i).addEventListener('input',render));
+$('hoods').addEventListener('click',e=>{const b=e.target.closest('[data-h]');if(!b)return;hood=b.dataset.h==='All'?'':b.dataset.h;renderHoods();render()});
+$('reset').onclick=()=>{$('q').value='';$('days').value='';$('minpay').value='0';hood='';renderHoods();render()};
+$('jobList').addEventListener('click',e=>{const b=e.target.closest('[data-id]');if(b)openDrawer(b.dataset.id)});
+$('dClose').onclick=closeDrawer;
+$('drawer').addEventListener('click',e=>{if(e.target.id==='drawer')closeDrawer()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer()});
+['pc','pt','ph','pd','pl','ph2'].forEach(i=>$(i).addEventListener('input',renderPreview));
+$('toFounding').onclick=()=>{$('fco').value=$('pc').value;$('ftype').selectedIndex=1};
+$('foundForm').onsubmit=e=>{e.preventDefault();$('foundOk').style.display='block';e.target.reset()};
+renderHoods();render();renderPreview();
+</script>
+</body>
+</html>

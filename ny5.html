@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NewYork.dev: NYC Hybrid and In-Office Engineering Roles</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Inter & JetBrains Mono Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    // Configure restrained warm stone, forest green, and amber design tokens
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+          },
+          colors: {
+            stonebg: '#F7F6F2',
+            surface: '#FFFFFF',
+            panel: '#F1EFE9',
+            ink: '#141517',
+            muted: '#525866',
+            hairline: '#DCD9D0',
+            hairlineStrong: '#C5C0B4',
+            forest: {
+              DEFAULT: '#1B4D3E',
+              hover: '#143B30',
+              soft: '#EBF2EF',
+            },
+            ambermark: {
+              DEFAULT: '#9A5B13',
+              soft: '#FBF3E8',
+              border: '#E5C69A',
+            },
+          },
+          borderRadius: {
+            none: '0px',
+            sm: '2px',
+            DEFAULT: '4px',
+            md: '4px',
+            lg: '4px',
+            xl: '4px',
+            '2xl': '4px',
+            '3xl': '4px',
+            full: '9999px',
+          },
+          boxShadow: {
+            none: 'none',
+            sm: 'none',
+            DEFAULT: 'none',
+            md: 'none',
+            lg: 'none',
+            xl: 'none',
+            '2xl': 'none',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    /* Keep background and borders flat with zero blur or heavy shadow effects */
+    body {
+      background-color: #F7F6F2;
+      color: #141517;
+    }
+
+    /* Subtle architectural rule grid without glow or blur */
+    .nyc-rule-grid {
+      background-image:
+        linear-gradient(to right, rgba(20, 21, 23, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(20, 21, 23, 0.04) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+  </style>
+</head>
+<body class="bg-stonebg text-ink font-sans antialiased selection:bg-forest selection:text-white">
+
+  <!-- Live Status Banner (Replaces browser alert popups) -->
+  <div
+    id="statusBanner"
+    role="status"
+    aria-live="polite"
+    class="fixed bottom-4 right-4 z-[80] hidden max-w-md items-start gap-3 bg-surface border border-forest text-ink px-4 py-3 rounded"
+  >
+    <span class="mt-0.5 inline-block w-2.5 h-2.5 rounded-full bg-forest shrink-0" aria-hidden="true"></span>
+    <p id="statusBannerText" class="text-xs sm:text-sm font-medium leading-snug text-ink"></p>
+    <button
+      type="button"
+      onclick="hideStatusBanner()"
+      aria-label="Dismiss notification"
+      class="ml-auto text-xs font-mono text-muted hover:text-ink cursor-pointer"
+    >
+      X
+    </button>
+  </div>
+
+  <!-- =====================================================================
+       1. TOP HEADER WITH ACCESSIBLE MOBILE HAMBURGER MENU
+  ====================================================================== -->
+  <header class="sticky top-0 z-40 bg-stonebg border-b border-hairline">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
+      <!-- Brand Wordmark & Tagline -->
+      <div class="flex items-center gap-3 min-w-0">
+        <a href="#" class="font-mono font-bold text-base sm:text-lg tracking-tight text-ink shrink-0">
+          NewYork<span class="text-forest">.dev</span>
+        </a>
+        <span class="hidden md:inline-block text-hairlineStrong" aria-hidden="true">|</span>
+        <span class="hidden md:inline-block text-xs text-muted truncate">
+          NYC hybrid and in-office engineering roles
+        </span>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav aria-label="Primary navigation" class="hidden lg:flex items-center gap-6 text-sm font-medium text-muted">
+        <a href="#preview-section" class="hover:text-ink transition-colors">Live Preview</a>
+        <a href="#jobs-section" class="hover:text-ink transition-colors">NYC Roles</a>
+        <a href="#partners-section" class="hover:text-ink transition-colors">Founding Partners</a>
+      </nav>
+
+      <!-- Desktop & Tablet Action Buttons + Mobile Hamburger Button -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <a
+          href="#jobs-section"
+          class="hidden sm:inline-flex items-center justify-center px-3.5 py-2 rounded text-xs sm:text-sm font-semibold text-ink bg-surface border border-hairlineStrong hover:border-ink transition-colors"
+        >
+          Browse Roles
+        </a>
+        <a
+          href="#partners-section"
+          class="inline-flex items-center justify-center px-3.5 py-2 rounded text-xs sm:text-sm font-semibold text-white bg-forest hover:bg-forest-hover border border-forest transition-colors"
+        >
+          Claim a Founding Slot
+        </a>
+
+        <!-- Hamburger Menu Button for Mobile & Tablet -->
+        <button
+          id="mobileMenuBtn"
+          type="button"
+          aria-label="Toggle navigation menu"
+          aria-expanded="false"
+          aria-controls="mobileDrawer"
+          onclick="toggleMobileMenu()"
+          class="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded bg-surface border border-hairlineStrong text-ink hover:border-ink focus:outline-none focus:ring-2 focus:ring-forest cursor-pointer"
+        >
+          <!-- Hamburger Icon -->
+          <svg id="hamburgerIcon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+          <!-- Close Icon -->
+          <svg id="closeIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile & Tablet Slide-Down Drawer Navigation -->
+    <div
+      id="mobileDrawer"
+      role="region"
+      aria-label="Mobile navigation drawer"
+      class="hidden lg:hidden bg-surface border-t border-hairline"
+    >
+      <div class="max-w-6xl mx-auto px-4 py-4 space-y-3">
+        <p class="text-xs font-mono uppercase tracking-wider text-muted">
+          NYC hybrid and in-office engineering roles
+        </p>
+        <div class="flex flex-col border-t border-b border-hairline divide-y divide-hairline text-sm font-medium">
+          <a href="#preview-section" onclick="closeMobileMenu()" class="py-2.5 text-ink hover:text-forest">
+            Prospect Live Preview
+          </a>
+          <a href="#jobs-section" onclick="closeMobileMenu()" class="py-2.5 text-ink hover:text-forest">
+            Curated NYC Roles
+          </a>
+          <a href="#partners-section" onclick="closeMobileMenu()" class="py-2.5 text-ink hover:text-forest">
+            Founding Partner Slots (3 of 10 Left)
+          </a>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+          <a
+            href="#jobs-section"
+            onclick="closeMobileMenu()"
+            class="inline-flex items-center justify-center px-4 py-2.5 rounded text-sm font-semibold text-ink bg-stonebg border border-hairlineStrong hover:border-ink"
+          >
+            Browse Roles
+          </a>
+          <a
+            href="#partners-section"
+            onclick="closeMobileMenu()"
+            class="inline-flex items-center justify-center px-4 py-2.5 rounded text-sm font-semibold text-white bg-forest hover:bg-forest-hover border border-forest"
+          >
+            Claim a Founding Slot
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- =====================================================================
+       2. HERO SECTION & SEGMENT TABS
+  ====================================================================== -->
+  <section class="nyc-rule-grid border-b border-hairline">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-8">
+      <!-- Top Status Row -->
+      <div class="flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+        <span class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-surface border border-hairline text-ink">
+          <span class="w-2 h-2 rounded-full bg-forest" aria-hidden="true"></span>
+          <span>NYC METRO ONLY: HYBRID AND IN-OFFICE</span>
+        </span>
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-ambermark-soft border border-ambermark-border text-ambermark font-semibold">
+          3 OF 10 FOUNDING SLOTS OPEN FOR Q1
+        </span>
+      </div>
+
+      <!-- Main Hero Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <div class="lg:col-span-8 space-y-4">
+          <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-ink leading-[1.12]">
+            Hire NYC engineers who actually show up to the office.
+          </h1>
+          <p id="heroSubhead" class="text-base sm:text-lg text-muted leading-relaxed max-w-2xl">
+            Every role on NewYork.dev is direct from the hiring company, lists exact weekly office days and nearest subway lines, and filters out out-of-state remote spray-and-pray.
+          </p>
+        </div>
+
+        <!-- Compact Local Metrics Box -->
+        <div class="lg:col-span-4 bg-surface border border-hairline rounded p-4 grid grid-cols-2 gap-4">
+          <div class="border-r border-hairline pr-3">
+            <div class="font-mono text-xl sm:text-2xl font-bold text-ink">$215k+</div>
+            <div class="text-xs text-muted mt-0.5">Typical NYC senior base</div>
+          </div>
+          <div class="pl-1">
+            <div class="font-mono text-xl sm:text-2xl font-bold text-ambermark">3 to 5d</div>
+            <div class="text-xs text-muted mt-0.5">Verified office cadence</div>
+          </div>
+          <div class="border-t border-r border-hairline pt-3 pr-3">
+            <div class="font-mono text-xl sm:text-2xl font-bold text-forest">0</div>
+            <div class="text-xs text-muted mt-0.5">Third-party agencies</div>
+          </div>
+          <div class="border-t border-hairline pt-3 pl-1">
+            <div class="font-mono text-xl sm:text-2xl font-bold text-ink">100%</div>
+            <div class="text-xs text-muted mt-0.5">Direct company roles</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Segment Tabs ("All NYC", "Seed & Series A", "Fintech & Trading", "AI & Infra") -->
+      <div class="bg-surface border border-hairline rounded p-4 sm:p-5 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <span class="text-xs font-mono font-semibold uppercase tracking-wider text-muted">
+            Select Buyer Segment
+          </span>
+          <span id="activeSegmentLabel" class="text-xs font-mono text-forest font-semibold">
+            Showing: All NYC
+          </span>
+        </div>
+
+        <div id="segmentTabs" role="tablist" aria-label="Engineering team segments" class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <button
+            type="button"
+            role="tab"
+            aria-selected="true"
+            data-segment="ALL"
+            onclick="selectSegment('ALL')"
+            class="segment-tab px-3 py-2.5 rounded text-xs sm:text-sm font-semibold text-left border transition-colors cursor-pointer bg-forest text-white border-forest"
+          >
+            All NYC
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected="false"
+            data-segment="Seed & Series A"
+            onclick="selectSegment('Seed & Series A')"
+            class="segment-tab px-3 py-2.5 rounded text-xs sm:text-sm font-semibold text-left border transition-colors cursor-pointer bg-stonebg text-ink border-hairline hover:border-ink"
+          >
+            Seed &amp; Series A
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected="false"
+            data-segment="Fintech & Trading"
+            onclick="selectSegment('Fintech & Trading')"
+            class="segment-tab px-3 py-2.5 rounded text-xs sm:text-sm font-semibold text-left border transition-colors cursor-pointer bg-stonebg text-ink border-hairline hover:border-ink"
+          >
+            Fintech &amp; Trading
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected="false"
+            data-segment="AI & Infra"
+            onclick="selectSegment('AI & Infra')"
+            class="segment-tab px-3 py-2.5 rounded text-xs sm:text-sm font-semibold text-left border transition-colors cursor-pointer bg-stonebg text-ink border-hairline hover:border-ink"
+          >
+            AI &amp; Infra
+          </button>
+        </div>
+
+        <!-- Cold-Outreach Pitch Note Tailored to Active Segment -->
+        <div class="bg-panel border border-hairline rounded p-3.5 flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div class="space-y-1">
+            <div class="text-[11px] font-mono font-bold uppercase tracking-wider text-ambermark">
+              Cold Outreach Angle For This Segment
+            </div>
+            <p id="segmentPitchNote" class="text-xs sm:text-sm text-ink leading-relaxed">
+              Position NewYork.dev as a focused local channel for NYC engineering leaders tired of screening candidates who expect full remote work or live outside commuting range.
+            </p>
+          </div>
+          <a
+            href="#preview-section"
+            class="shrink-0 inline-flex items-center justify-center px-3 py-2 rounded text-xs font-semibold bg-surface border border-hairlineStrong text-ink hover:border-forest transition-colors"
+          >
+            Test Role Preview
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       3. LIVE FILTER BAR FOR NYC ENGINEERING ROLES
+  ====================================================================== -->
+  <section aria-label="Filter NYC engineering roles" class="bg-stonebg border-b border-hairline">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class="bg-surface border border-hairline rounded p-4 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <h2 class="text-xs font-mono font-bold uppercase tracking-wider text-ink">
+            Filter NYC Hybrid and In-Office Roles
+          </h2>
+          <button
+            type="button"
+            onclick="resetAllFilters()"
+            class="text-xs font-semibold text-forest hover:underline cursor-pointer"
+          >
+            Reset Filters
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3">
+          <!-- Keyword Search -->
+          <div class="lg:col-span-4">
+            <label for="filterSearch" class="block text-xs font-medium text-muted mb-1">
+              Role, company, or stack
+            </label>
+            <input
+              id="filterSearch"
+              type="text"
+              placeholder="e.g. Rust, Go, Staff, React, Python"
+              oninput="applyFilters()"
+              class="w-full px-3 py-2 rounded bg-stonebg border border-hairlineStrong text-sm text-ink placeholder:text-muted focus:outline-none focus:border-forest"
+            />
+          </div>
+
+          <!-- Neighborhood Filter -->
+          <div class="lg:col-span-3">
+            <label for="filterNeighborhood" class="block text-xs font-medium text-muted mb-1">
+              Neighborhood
+            </label>
+            <select
+              id="filterNeighborhood"
+              onchange="applyFilters()"
+              class="w-full px-3 py-2 rounded bg-stonebg border border-hairlineStrong text-sm text-ink focus:outline-none focus:border-forest cursor-pointer"
+            >
+              <option value="ALL">All Neighborhoods</option>
+              <option value="FiDi">FiDi</option>
+              <option value="Flatiron">Flatiron</option>
+              <option value="SoHo">SoHo</option>
+              <option value="Dumbo">Dumbo</option>
+              <option value="Midtown">Midtown</option>
+            </select>
+          </div>
+
+          <!-- Office Days Per Week Filter -->
+          <div class="lg:col-span-3">
+            <label for="filterDays" class="block text-xs font-medium text-muted mb-1">
+              Office days per week
+            </label>
+            <select
+              id="filterDays"
+              onchange="applyFilters()"
+              class="w-full px-3 py-2 rounded bg-stonebg border border-hairlineStrong text-sm text-ink focus:outline-none focus:border-forest cursor-pointer"
+            >
+              <option value="ALL">Any</option>
+              <option value="3">3 days</option>
+              <option value="4">4 days</option>
+              <option value="5">5 days</option>
+            </select>
+          </div>
+
+          <!-- Minimum Base Salary Filter -->
+          <div class="lg:col-span-2">
+            <label for="filterSalary" class="block text-xs font-medium text-muted mb-1">
+              Min base salary
+            </label>
+            <select
+              id="filterSalary"
+              onchange="applyFilters()"
+              class="w-full px-3 py-2 rounded bg-stonebg border border-hairlineStrong text-sm text-ink focus:outline-none focus:border-forest cursor-pointer"
+            >
+              <option value="0">Any Base</option>
+              <option value="160000">$160k+</option>
+              <option value="200000">$200k+</option>
+              <option value="240000">$240k+</option>
+              <option value="280000">$280k+</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       4. PROSPECT LIVE PREVIEW BOX
+  ====================================================================== -->
+  <section id="preview-section" class="py-10 sm:py-14 border-b border-hairline">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-2">
+        <div class="space-y-1">
+          <span class="text-xs font-mono font-bold uppercase tracking-wider text-forest">
+            Cold Outreach Preview Tool
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-ink">
+            See how your NYC engineering role looks on NewYork.dev
+          </h2>
+        </div>
+        <p class="text-xs sm:text-sm text-muted max-w-md">
+          Enter your details to generate a clean listing card, copy a plain-text summary, or send the preview to your work email.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <!-- Left Inputs (6 cols) -->
+        <div class="lg:col-span-6 bg-surface border border-hairline rounded p-5 space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="previewCompany" class="block text-xs font-semibold text-ink mb-1">
+                Company name
+              </label>
+              <input
+                id="previewCompany"
+                type="text"
+                value="Canal Street Systems"
+                oninput="updateLivePreview()"
+                placeholder="e.g. Canal Street Systems"
+                class="w-full px-3 py-2 rounded bg-stonebg border border-hairlineStrong text-sm text-ink placeholder:text-muted focus:outline-none focus:border-forest"
+              />
+            </div>
+
+            <div>
+              <label for="previewRole" class="block text-xs font-semibold text-ink mb-1">
+                Role title
+              </label>
+              <input
+                id="previewRole"
+                type="text"
+                value="Senior Backend Engineer (Go)"
+                oninput="updateLivePreview()"
+                placeholder="e.g. Senior Backend Engineer (Go)"
+                class="w-full px-3 py-2 rounded bg-stonebg border border-hairlineStrong text-sm text-ink placeholder:text-muted focus:outline-none focus:border-forest"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label for="previewNeighborhood" class="block text-xs font-semibold text-ink mb-1">
+                Neighborhood
+              </label>
+              <select
+                id="previewNeighborhood"
+                onchange="updateLivePreview()"
+                class="w-full px-3 py-2 rounded bg-stonebg border border-hairlineStrong text-sm text-ink focus:outline-none focus:border-forest cursor-pointer"
+              >
+                <option value="FiDi">FiDi</option>
+                <option value="Flatiron">Flatiron</option>
+                <option value="SoHo" selected>SoHo</option>
+                <option value="Dumbo">Dumbo</option>
+                <option value="Midtown">Midtown</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="previewDays" class="block text-xs font-semibold text-ink mb-1">
+                Office days
+              </label>
+              <select
+                id="previewDays"
+                onchange="updateLivePreview()"
+                class="w-full px-3 py-2 rounded bg-stonebg border border-hairlineStrong text-sm text-ink focus:outline-none focus:border-forest cursor-pointer"
+              >
+                <option value="3 days/wk">3 days/wk</option>
+                <option value="4 days/wk" selected>4 days/wk</option>
+                <option value="5 days/wk">5 days/wk</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="previewSalary" class="block text-xs font-semibold text-ink mb-1">
+                Salary range
+              </label>
+              <input
+                id="previewSalary"
+                type="text"
+                value="$200k to $235k"
+                oninput="updateLivePreview()"
+                placeholder="e.g. $200k to $235k"
+                class="w-full px-3 py-2 rounded bg-stonebg border border-hairlineStrong text-sm text-ink placeholder:text-muted focus:outline-none focus:border-forest"
+              />
+            </div>
+          </div>
+
+          <div class="pt-2 border-t border-hairline flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onclick="copyPreviewSummary()"
+              class="inline-flex items-center justify-center px-4 py-2 rounded text-xs sm:text-sm font-semibold bg-stonebg hover:bg-panel text-ink border border-hairlineStrong transition-colors cursor-pointer"
+            >
+              Copy Summary
+            </button>
+            <span id="copyFeedback" class="text-xs font-mono text-forest"></span>
+          </div>
+        </div>
+
+        <!-- Right Live Preview Card & Email Submission Form (6 cols) -->
+        <div class="lg:col-span-6 space-y-4">
+          <!-- Rendered Listing Card -->
+          <div class="bg-surface border border-hairlineStrong rounded p-5 space-y-4">
+            <div class="flex items-center justify-between gap-2 border-b border-hairline pb-3">
+              <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-forest">
+                Live Listing Preview
+              </span>
+              <span id="previewCardDays" class="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-ambermark-soft border border-ambermark-border text-ambermark">
+                4 days/wk
+              </span>
+            </div>
+
+            <div class="space-y-1">
+              <div id="previewCardCompany" class="text-xs font-mono font-semibold uppercase tracking-wide text-muted">
+                Canal Street Systems
+              </div>
+              <h3 id="previewCardRole" class="text-lg sm:text-xl font-bold text-ink">
+                Senior Backend Engineer (Go)
+              </h3>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs sm:text-sm text-muted">
+              <span>Neighborhood: <strong id="previewCardNeighborhood" class="text-ink font-semibold">SoHo</strong></span>
+              <span>Base Comp: <strong id="previewCardSalary" class="text-forest font-mono font-semibold">$200k to $235k</strong></span>
+            </div>
+
+            <div class="pt-3 border-t border-hairline flex items-center justify-between text-xs text-muted">
+              <span>Direct from company. NYC local filter.</span>
+              <span class="font-mono font-semibold text-ink">NewYork.dev</span>
+            </div>
+          </div>
+
+          <!-- Submit Preview With Work Email Form -->
+          <form id="previewSubmitForm" onsubmit="handlePreviewSubmit(event)" class="bg-surface border border-hairline rounded p-4 space-y-3">
+            <label for="previewWorkEmail" class="block text-xs font-semibold text-ink">
+              Send this preview to your work email
+            </label>
+            <div class="flex flex-col sm:flex-row gap-2.5">
+              <input
+                id="previewWorkEmail"
+                type="email"
+                required
+                placeholder="you@company.com"
+                class="flex-1 px-3 py-2 rounded bg-stonebg border border-hairlineStrong text-sm text-ink placeholder:text-muted focus:outline-none focus:border-forest"
+              />
+              <button
+                type="submit"
+                class="px-4 py-2 rounded text-xs sm:text-sm font-semibold bg-forest hover:bg-forest-hover text-white border border-forest transition-colors cursor-pointer shrink-0"
+              >
+                Save Preview
+              </button>
+            </div>
+            <p id="previewFormStatus" class="text-xs text-forest font-medium min-h-[1rem]"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       5. CURATED NYC ENGINEERING JOB FEED
+  ====================================================================== -->
+  <section id="jobs-section" class="py-10 sm:py-14 border-b border-hairline">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-hairline pb-4">
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-ink">
+            Curated NYC Engineering Roles
+          </h2>
+          <p class="text-xs sm:text-sm text-muted mt-1">
+            Direct from hiring teams in New York City. No third-party recruiting agencies.
+          </p>
+        </div>
+        <span id="jobResultsCount" class="font-mono text-xs font-semibold px-2.5 py-1 rounded bg-surface border border-hairline text-ink self-start sm:self-auto">
+          0 roles shown
+        </span>
+      </div>
+
+      <!-- Dynamic Job Feed Container -->
+      <div id="jobsFeed" class="space-y-3"></div>
+
+      <!-- Empty Filter State -->
+      <div id="emptyFeedBox" class="hidden bg-surface border border-hairline rounded p-8 text-center space-y-3">
+        <p class="text-sm font-semibold text-ink">No NYC roles match your current filters.</p>
+        <p class="text-xs text-muted max-w-md mx-auto">
+          Try clearing your search term, broadening the neighborhood or office days filter, or switching back to All NYC.
+        </p>
+        <button
+          type="button"
+          onclick="resetAllFilters()"
+          class="px-4 py-2 rounded text-xs font-semibold bg-forest text-white hover:bg-forest-hover cursor-pointer"
+        >
+          Reset All Filters
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       6. FOUNDING PARTNER SECTION
+  ====================================================================== -->
+  <section id="partners-section" class="py-10 sm:py-14 bg-stonebg">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-surface border border-hairlineStrong rounded p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Left Column: Founding Partner Terms & Deliverables (7 cols) -->
+        <div class="lg:col-span-7 space-y-5">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-xs font-mono font-bold uppercase tracking-wider text-forest">
+              Founding Partner Cohort
+            </span>
+            <span class="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-ambermark-soft border border-ambermark-border text-ambermark">
+              3 of 10 slots left this quarter
+            </span>
+          </div>
+
+          <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-ink">
+            Capped quarterly slots for NYC engineering teams
+          </h2>
+
+          <p class="text-sm sm:text-base text-muted leading-relaxed">
+            NewYork.dev caps each quarterly cohort at 10 Founding Partners so every hiring team gets visible placement and real local candidate attention without banner clutter or agency noise.
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+            <div class="bg-stonebg border border-hairline rounded p-3.5 space-y-1">
+              <div class="text-xs font-mono font-bold text-ink">01. Pinned Placement</div>
+              <p class="text-xs text-muted leading-relaxed">
+                Featured placement at the top of relevant NYC neighborhood and segment views.
+              </p>
+            </div>
+            <div class="bg-stonebg border border-hairline rounded p-3.5 space-y-1">
+              <div class="text-xs font-mono font-bold text-ink">02. Direct Routing</div>
+              <p class="text-xs text-muted leading-relaxed">
+                Applications route straight to your ATS or hiring lead email with office cadence noted.
+              </p>
+            </div>
+            <div class="bg-stonebg border border-hairline rounded p-3.5 space-y-1">
+              <div class="text-xs font-mono font-bold text-ink">03. NYC Local Reach</div>
+              <p class="text-xs text-muted leading-relaxed">
+                Reach software engineers actively looking for 3 to 5 day hybrid or onsite roles in NYC.
+              </p>
+            </div>
+          </div>
+
+          <div class="bg-panel border border-hairline rounded p-4 flex flex-wrap items-baseline justify-between gap-4">
+            <div>
+              <span class="font-mono text-2xl font-bold text-ink">$1,500</span>
+              <span class="text-xs sm:text-sm text-muted"> / quarter (rate locked for Founding Partners)</span>
+            </div>
+            <span class="text-xs font-mono text-ambermark font-semibold">
+              7 of 10 slots claimed, 3 remaining
+            </span>
+          </div>
+        </div>
+
+        <!-- Right Column: Slot Request / Free Role Preview Form (5 cols) -->
+        <div class="lg:col-span-5 bg-stonebg border border-hairline rounded p-5 space-y-4">
+          <div class="space-y-1">
+            <h3 class="text-base font-bold text-ink">
+              Request a slot or free role preview
+            </h3>
+            <p class="text-xs text-muted">
+              Send your team details and we will either hold a Founding Partner slot or format your open NYC role first.
+            </p>
+          </div>
+
+          <form id="partnerRequestForm" onsubmit="handlePartnerSubmit(event)" class="space-y-3">
+            <div>
+              <label for="partnerRequestType" class="block text-xs font-semibold text-ink mb-1">
+                Request type
+              </label>
+              <select
+                id="partnerRequestType"
+                class="w-full px-3 py-2 rounded bg-surface border border-hairlineStrong text-sm text-ink focus:outline-none focus:border-forest cursor-pointer"
+              >
+                <option value="Hold a Founding Partner Slot ($1,500/qtr)">Hold a Founding Partner Slot ($1,500/qtr)</option>
+                <option value="Get a Free Formatted Role Preview First">Get a Free Formatted Role Preview First</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label for="partnerName" class="block text-xs font-semibold text-ink mb-1">
+                  Your name
+                </label>
+                <input
+                  id="partnerName"
+                  type="text"
+                  required
+                  placeholder="Jordan Lee"
+                  class="w-full px-3 py-2 rounded bg-surface border border-hairlineStrong text-sm text-ink placeholder:text-muted focus:outline-none focus:border-forest"
+                />
+              </div>
+              <div>
+                <label for="partnerEmail" class="block text-xs font-semibold text-ink mb-1">
+                  Work email
+                </label>
+                <input
+                  id="partnerEmail"
+                  type="email"
+                  required
+                  placeholder="jordan@nycstartup.com"
+                  class="w-full px-3 py-2 rounded bg-surface border border-hairlineStrong text-sm text-ink placeholder:text-muted focus:outline-none focus:border-forest"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label for="partnerCompany" class="block text-xs font-semibold text-ink mb-1">
+                Company and NYC neighborhood
+              </label>
+              <input
+                id="partnerCompany"
+                type="text"
+                required
+                placeholder="e.g. Broome Ledger in SoHo"
+                class="w-full px-3 py-2 rounded bg-surface border border-hairlineStrong text-sm text-ink placeholder:text-muted focus:outline-none focus:border-forest"
+              />
+            </div>
+
+            <div>
+              <label for="partnerNotes" class="block text-xs font-semibold text-ink mb-1">
+                Open NYC roles or ATS / careers link
+              </label>
+              <textarea
+                id="partnerNotes"
+                rows="2"
+                placeholder="e.g. Hiring Staff Go Engineer, 4 days/wk in SoHo, https://example.com/careers"
+                class="w-full px-3 py-2 rounded bg-surface border border-hairlineStrong text-sm text-ink placeholder:text-muted focus:outline-none focus:border-forest"
+              ></textarea>
+            </div>
+
+            <button
+              type="submit"
+              class="w-full py-2.5 px-4 rounded text-xs sm:text-sm font-semibold bg-forest hover:bg-forest-hover text-white border border-forest transition-colors cursor-pointer"
+            >
+              Submit Founding Partner Request
+            </button>
+          </form>
+
+          <p id="partnerFormFeedback" class="text-xs font-medium text-forest min-h-[1rem]"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       FOOTER
+  ====================================================================== -->
+  <footer class="bg-stonebg border-t border-hairline py-6">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted">
+      <div class="flex items-center gap-2">
+        <span class="font-mono font-bold text-ink">NewYork.dev</span>
+        <span>:</span>
+        <span>NYC hybrid and in-office software engineering roles.</span>
+      </div>
+      <div class="flex items-center gap-5">
+        <a href="#preview-section" class="hover:text-ink">Live Preview</a>
+        <a href="#jobs-section" class="hover:text-ink">Roles</a>
+        <a href="#partners-section" class="hover:text-ink">Founding Partners</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =====================================================================
+       DIRECT APPLY MODAL WITH FORM SUBMISSION FEEDBACK
+  ====================================================================== -->
+  <div
+    id="applyModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="applyModalTitle"
+    onclick="handleModalBackdropClick(event)"
+    class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-ink/50"
+  >
+    <div class="bg-surface border border-hairlineStrong rounded w-full max-w-lg p-6 space-y-5 relative">
+      <div class="flex items-start justify-between gap-4 border-b border-hairline pb-3">
+        <div class="space-y-1">
+          <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-forest">
+            Direct Application Routing
+          </span>
+          <h3 id="applyModalTitle" class="text-lg font-bold text-ink">
+            Apply to Role
+          </h3>
+          <p id="applyModalMeta" class="text-xs text-muted"></p>
+        </div>
+        <button
+          type="button"
+          onclick="closeApplyModal()"
+          aria-label="Close application modal"
+          class="px-2.5 py-1 rounded text-xs font-mono bg-stonebg border border-hairlineStrong text-ink hover:border-ink cursor-pointer"
+        >
+          Close
+        </button>
+      </div>
+
+      <form id="directApplyForm" onsubmit="handleApplySubmit(event)" class="space-y-3.5">
+        <div>
+          <label for="applicantName" class="block text-xs font-semibold text-ink mb-1">
+            Full name
+          </label>
+          <input
+            id="applicantName"
+            type="text"
+            required
+            placeholder="Samira Patel"
+            class="w-full px-3 py-2 rounded bg-stonebg border border-hairlineStrong text-sm text-ink placeholder:text-muted focus:outline-none focus:border-forest"
+          />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label for="applicantEmail" class="block text-xs font-semibold text-ink mb-1">
+              Email address
+            </label>
+            <input
+              id="applicantEmail"
+              type="email"
+              required
+              placeholder="samira@example.com"
+              class="w-full px-3 py-2 rounded bg-stonebg border border-hairlineStrong text-sm text-ink placeholder:text-muted focus:outline-none focus:border-forest"
+            />
+          </div>
+
+          <div>
+            <label for="applicantCommute" class="block text-xs font-semibold text-ink mb-1">
+              NYC commute status
+            </label>
+            <select
+              id="applicantCommute"
+              class="w-full px-3 py-2 rounded bg-stonebg border border-hairlineStrong text-sm text-ink focus:outline-none focus:border-forest cursor-pointer"
+            >
+              <option value="Live in NYC metro, ready for hybrid/onsite">Live in NYC metro, ready</option>
+              <option value="Relocating to NYC within 30 days">Relocating within 30 days</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label for="applicantLink" class="block text-xs font-semibold text-ink mb-1">
+            GitHub, portfolio, or LinkedIn URL
+          </label>
+          <input
+            id="applicantLink"
+            type="url"
+            required
+            placeholder="https://github.com/username"
+            class="w-full px-3 py-2 rounded bg-stonebg border border-hairlineStrong text-sm text-ink placeholder:text-muted focus:outline-none focus:border-forest"
+          />
+        </div>
+
+        <div>
+          <label for="applicantNote" class="block text-xs font-semibold text-ink mb-1">
+            Brief note on relevant NYC engineering work
+          </label>
+          <textarea
+            id="applicantNote"
+            rows="2"
+            placeholder="Two or three sentences on systems, product, or stack experience."
+            class="w-full px-3 py-2 rounded bg-stonebg border border-hairlineStrong text-sm text-ink placeholder:text-muted focus:outline-none focus:border-forest"
+          ></textarea>
+        </div>
+
+        <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-2.5">
+          <button
+            type="button"
+            onclick="closeApplyModal()"
+            class="px-4 py-2 rounded text-xs sm:text-sm font-semibold bg-stonebg border border-hairlineStrong text-ink hover:border-ink cursor-pointer"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="px-5 py-2 rounded text-xs sm:text-sm font-semibold bg-forest hover:bg-forest-hover text-white border border-forest cursor-pointer"
+          >
+            Send Direct Application
+          </button>
+        </div>
+      </form>
+
+      <p id="applyFormFeedback" class="text-xs font-semibold text-forest min-h-[1rem]"></p>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       APPLICATION DATA & INTERACTIVE CONTROLLERS
+  ====================================================================== -->
+  <script>
+    // Segment configuration for hero subhead, filter default, and outreach angle
+    const segmentConfig = {
+      ALL: {
+        label: 'Showing: All NYC',
+        subhead: 'Every role on NewYork.dev is direct from the hiring company, lists exact weekly office days and nearest subway lines, and filters out out-of-state remote spray-and-pray.',
+        pitch: 'Position NewYork.dev as a focused local channel for NYC engineering leaders tired of screening candidates who expect full remote work or live outside commuting range.',
+      },
+      'Seed & Series A': {
+        label: 'Showing: Seed & Series A',
+        subhead: 'Early-stage NYC startups hiring builders who want high-trust in-person iteration in SoHo, Flatiron, or Dumbo without agency markups.',
+        pitch: 'For seed and Series A founders: reach NYC full-stack and product engineers who value fast feedback loops in the room and skip generic job-board blasts.',
+      },
+      'Fintech & Trading': {
+        label: 'Showing: Fintech & Trading',
+        subhead: 'Clearing, payments, risk, and low-latency engineering roles in FiDi and Midtown with explicit 3 to 5 day office schedules and clear base pay.',
+        pitch: 'For fintech and trading leads: filter for engineers comfortable with strict reliability standards and reliable NYC transit commutes into FiDi or Midtown.',
+      },
+      'AI & Infra': {
+        label: 'Showing: AI & Infra',
+        subhead: 'Applied AI, distributed storage, developer tooling, and cloud infrastructure teams in NYC looking for hands-on systems builders.',
+        pitch: 'For AI and infra hiring managers: connect directly with local backend, ML systems, and platform engineers without wading through remote-only resumes.',
+      },
+    };
+
+    // Realistic NYC hybrid and in-office engineering listings (direct from companies)
+    const nycJobs = [
+      {
+        id: 'nyc-1',
+        title: 'Founding Full-Stack Engineer (TypeScript and Go)',
+        company: 'Mercer Street Labs',
+        segment: 'Seed & Series A',
+        neighborhood: 'SoHo',
+        subway: 'N, Q, R, W at Prince St or 6 at Spring St',
+        daysPerWeek: 4,
+        salaryMin: 185000,
+        salaryDisplay: '$185k to $215k',
+        stack: ['TypeScript', 'Go', 'PostgreSQL'],
+        freshness: '2d ago',
+        pinned: true,
+        summary: 'Build workflow automation tools for NYC logistics operators with direct founder ownership.',
+      },
+      {
+        id: 'nyc-2',
+        title: 'Staff Distributed Ledger Engineer',
+        company: 'Broad Street Clearing',
+        segment: 'Fintech & Trading',
+        neighborhood: 'FiDi',
+        subway: '2, 3, 4, 5 at Wall St or R, W at Rector St',
+        daysPerWeek: 4,
+        salaryMin: 245000,
+        salaryDisplay: '$245k to $285k',
+        stack: ['Rust', 'PostgreSQL', 'Linux'],
+        freshness: '1d ago',
+        pinned: true,
+        summary: 'Own deterministic settlement state machines and reconciliation pipelines for institutional accounts.',
+      },
+      {
+        id: 'nyc-3',
+        title: 'Senior ML Inference and Systems Engineer',
+        company: 'Madison Square Compute',
+        segment: 'AI & Infra',
+        neighborhood: 'Flatiron',
+        subway: 'R, W at 23rd St or F, M at 23rd St',
+        daysPerWeek: 3,
+        salaryMin: 230000,
+        salaryDisplay: '$230k to $265k',
+        stack: ['Python', 'Rust', 'CUDA', 'Kubernetes'],
+        freshness: '3d ago',
+        pinned: true,
+        summary: 'Optimize low-latency model serving and batch scheduling across GPU clusters.',
+      },
+      {
+        id: 'nyc-4',
+        title: 'Senior Backend Engineer (Payments Reliability)',
+        company: 'Waterfront Treasury',
+        segment: 'Fintech & Trading',
+        neighborhood: 'Dumbo',
+        subway: 'F at York St or A, C at High St',
+        daysPerWeek: 3,
+        salaryMin: 205000,
+        salaryDisplay: '$205k to $235k',
+        stack: ['Go', 'Kafka', 'PostgreSQL'],
+        freshness: '4d ago',
+        pinned: false,
+        summary: 'Build idempotent ledger APIs and real-time risk checks for mid-market finance teams.',
+      },
+      {
+        id: 'nyc-5',
+        title: 'Product Engineer (Workflows and UI)',
+        company: 'Fifth Ave Workflows',
+        segment: 'Seed & Series A',
+        neighborhood: 'Midtown',
+        subway: 'B, D, F, M or 7 at Bryant Park',
+        daysPerWeek: 3,
+        salaryMin: 170000,
+        salaryDisplay: '$170k to $195k',
+        stack: ['TypeScript', 'React', 'Node.js'],
+        freshness: '5d ago',
+        pinned: false,
+        summary: 'Ship fast browser tools for compliance and operations teams across New York.',
+      },
+      {
+        id: 'nyc-6',
+        title: 'Principal Storage and Telemetry Engineer',
+        company: 'Harbor Kernel Systems',
+        segment: 'AI & Infra',
+        neighborhood: 'FiDi',
+        subway: '4, 5, 6 at Brooklyn Bridge or J, Z at Fulton St',
+        daysPerWeek: 5,
+        salaryMin: 280000,
+        salaryDisplay: '$280k to $320k',
+        stack: ['C++', 'Rust', 'ClickHouse'],
+        freshness: '2d ago',
+        pinned: false,
+        summary: 'Design high-throughput time-series and trace ingestion engines for production clusters.',
+      },
+    ];
+
+    // Active application state
+    let activeSegment = 'ALL';
+    let currentApplyingJob = null;
+    let bannerTimer = null;
+
+    // Show non-blocking status feedback in bottom-right banner
+    function showStatusBanner(message) {
+      const banner = document.getElementById('statusBanner');
+      const textEl = document.getElementById('statusBannerText');
+      textEl.textContent = message;
+      banner.classList.remove('hidden');
+      banner.classList.add('flex');
+
+      clearTimeout(bannerTimer);
+      bannerTimer = setTimeout(() => {
+        hideStatusBanner();
+      }, 4200);
+    }
+
+    function hideStatusBanner() {
+      const banner = document.getElementById('statusBanner');
+      banner.classList.add('hidden');
+      banner.classList.remove('flex');
+    }
+
+    // Mobile hamburger drawer controller with aria-expanded sync
+    function toggleMobileMenu() {
+      const drawer = document.getElementById('mobileDrawer');
+      const btn = document.getElementById('mobileMenuBtn');
+      const hamburgerIcon = document.getElementById('hamburgerIcon');
+      const closeIcon = document.getElementById('closeIcon');
+
+      const isOpening = drawer.classList.contains('hidden');
+      drawer.classList.toggle('hidden', !isOpening);
+      btn.setAttribute('aria-expanded', String(isOpening));
+      hamburgerIcon.classList.toggle('hidden', isOpening);
+      closeIcon.classList.toggle('hidden', !isOpening);
+    }
+
+    function closeMobileMenu() {
+      const drawer = document.getElementById('mobileDrawer');
+      const btn = document.getElementById('mobileMenuBtn');
+      const hamburgerIcon = document.getElementById('hamburgerIcon');
+      const closeIcon = document.getElementById('closeIcon');
+
+      drawer.classList.add('hidden');
+      btn.setAttribute('aria-expanded', 'false');
+      hamburgerIcon.classList.remove('hidden');
+      closeIcon.classList.add('hidden');
+    }
+
+    // Segment tab handler updates hero copy, segment filter, and pitch note
+    function selectSegment(segmentName) {
+      activeSegment = segmentName;
+      const cfg = segmentConfig[segmentName] || segmentConfig.ALL;
+
+      document.getElementById('heroSubhead').textContent = cfg.subhead;
+      document.getElementById('activeSegmentLabel').textContent = cfg.label;
+      document.getElementById('segmentPitchNote').textContent = cfg.pitch;
+
+      document.querySelectorAll('.segment-tab').forEach((tab) => {
+        const isSelected = tab.dataset.segment === segmentName;
+        tab.setAttribute('aria-selected', String(isSelected));
+        if (isSelected) {
+          tab.className = 'segment-tab px-3 py-2.5 rounded text-xs sm:text-sm font-semibold text-left border transition-colors cursor-pointer bg-forest text-white border-forest';
+        } else {
+          tab.className = 'segment-tab px-3 py-2.5 rounded text-xs sm:text-sm font-semibold text-left border transition-colors cursor-pointer bg-stonebg text-ink border-hairline hover:border-ink';
+        }
+      });
+
+      applyFilters();
+    }
+
+    // Filter NYC job listings by segment, search, neighborhood, office days, and salary
+    function applyFilters() {
+      const query = document.getElementById('filterSearch').value.trim().toLowerCase();
+      const neighborhood = document.getElementById('filterNeighborhood').value;
+      const days = document.getElementById('filterDays').value;
+      const minSalary = Number(document.getElementById('filterSalary').value || 0);
+
+      const matches = nycJobs.filter((job) => {
+        const matchesSegment = activeSegment === 'ALL' || job.segment === activeSegment;
+        const matchesNeighborhood = neighborhood === 'ALL' || job.neighborhood === neighborhood;
+        const matchesDays = days === 'ALL' || job.daysPerWeek === Number(days);
+        const matchesSalary = job.salaryMin >= minSalary;
+
+        const searchableText = [
+          job.title,
+          job.company,
+          job.segment,
+          job.neighborhood,
+          job.subway,
+          job.summary,
+          job.stack.join(' '),
+        ]
+          .join(' ')
+          .toLowerCase();
+
+        const matchesQuery = !query || searchableText.includes(query);
+
+        return matchesSegment && matchesNeighborhood && matchesDays && matchesSalary && matchesQuery;
+      });
+
+      renderJobsFeed(matches);
+    }
+
+    function resetAllFilters() {
+      activeSegment = 'ALL';
+      document.getElementById('filterSearch').value = '';
+      document.getElementById('filterNeighborhood').value = 'ALL';
+      document.getElementById('filterDays').value = 'ALL';
+      document.getElementById('filterSalary').value = '0';
+
+      const cfg = segmentConfig.ALL;
+      document.getElementById('heroSubhead').textContent = cfg.subhead;
+      document.getElementById('activeSegmentLabel').textContent = cfg.label;
+      document.getElementById('segmentPitchNote').textContent = cfg.pitch;
+
+      document.querySelectorAll('.segment-tab').forEach((tab) => {
+        const isSelected = tab.dataset.segment === 'ALL';
+        tab.setAttribute('aria-selected', String(isSelected));
+        tab.className = isSelected
+          ? 'segment-tab px-3 py-2.5 rounded text-xs sm:text-sm font-semibold text-left border transition-colors cursor-pointer bg-forest text-white border-forest'
+          : 'segment-tab px-3 py-2.5 rounded text-xs sm:text-sm font-semibold text-left border transition-colors cursor-pointer bg-stonebg text-ink border-hairline hover:border-ink';
+      });
+
+      applyFilters();
+      showStatusBanner('Filters reset to All NYC.');
+    }
+
+    // Render filtered NYC job feed
+    function renderJobsFeed(jobs) {
+      const feed = document.getElementById('jobsFeed');
+      const emptyBox = document.getElementById('emptyFeedBox');
+      const countBadge = document.getElementById('jobResultsCount');
+
+      countBadge.textContent = `${jobs.length} ${jobs.length === 1 ? 'role' : 'roles'} shown`;
+
+      if (jobs.length === 0) {
+        feed.innerHTML = '';
+        emptyBox.classList.remove('hidden');
+        return;
+      }
+
+      emptyBox.classList.add('hidden');
+
+      feed.innerHTML = jobs
+        .map(
+          (job) => `
+          <article class="bg-surface border ${job.pinned ? 'border-hairlineStrong' : 'border-hairline'} rounded p-4 sm:p-5 space-y-3">
+            <div class="flex flex-col md:flex-row md:items-start justify-between gap-3">
+              <div class="space-y-1">
+                <div class="flex flex-wrap items-center gap-2 text-xs">
+                  <span class="font-semibold text-ink">${escapeHtml(job.company)}</span>
+                  <span class="font-mono px-2 py-0.5 rounded bg-panel border border-hairline text-muted">
+                    ${escapeHtml(job.segment)}
+                  </span>
+                  ${
+                    job.pinned
+                      ? `<span class="font-mono font-semibold px-2 py-0.5 rounded bg-ambermark-soft border border-ambermark-border text-ambermark">Pinned</span>`
+                      : ''
+                  }
+                </div>
+
+                <h3 class="text-base sm:text-lg font-bold text-ink">
+                  ${escapeHtml(job.title)}
+                </h3>
+
+                <p class="text-xs sm:text-sm text-muted">
+                  ${escapeHtml(job.summary)}
+                </p>
+              </div>
+
+              <div class="flex md:flex-col items-baseline md:items-end justify-between gap-2 shrink-0">
+                <span class="font-mono text-sm font-bold text-forest">
+                  ${escapeHtml(job.salaryDisplay)}
+                </span>
+                <span class="text-xs font-mono text-muted">
+                  ${escapeHtml(job.freshness)}
+                </span>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-muted pt-1 border-t border-hairline">
+              <span>Neighborhood: <strong class="text-ink font-semibold">${escapeHtml(job.neighborhood)}</strong></span>
+              <span>Cadence: <strong class="text-ambermark font-semibold">${job.daysPerWeek} days/wk</strong></span>
+              <span>Subway: <strong class="text-ink font-medium">${escapeHtml(job.subway)}</strong></span>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
+              <div class="flex flex-wrap items-center gap-1.5">
+                ${job.stack
+                  .map(
+                    (tech) => `
+                    <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-stonebg border border-hairline text-ink">
+                      ${escapeHtml(tech)}
+                    </span>
+                  `
+                  )
+                  .join('')}
+              </div>
+
+              <button
+                type="button"
+                onclick="openApplyModal('${job.id}')"
+                class="px-3.5 py-1.5 rounded text-xs font-semibold bg-forest hover:bg-forest-hover text-white border border-forest transition-colors cursor-pointer"
+              >
+                Apply Directly
+              </button>
+            </div>
+          </article>
+        `
+        )
+        .join('');
+    }
+
+    // Prospect live preview state and copy / submit handlers
+    function getPreviewValues() {
+      const company = document.getElementById('previewCompany').value.trim() || 'Your Company';
+      const role = document.getElementById('previewRole').value.trim() || 'Software Engineer';
+      const neighborhood = document.getElementById('previewNeighborhood').value || 'SoHo';
+      const days = document.getElementById('previewDays').value || '4 days/wk';
+      const salary = document.getElementById('previewSalary').value.trim() || '$200k to $230k';
+      return { company, role, neighborhood, days, salary };
+    }
+
+    function updateLivePreview() {
+      const { company, role, neighborhood, days, salary } = getPreviewValues();
+      document.getElementById('previewCardCompany').textContent = company;
+      document.getElementById('previewCardRole').textContent = role;
+      document.getElementById('previewCardNeighborhood').textContent = neighborhood;
+      document.getElementById('previewCardDays').textContent = days;
+      document.getElementById('previewCardSalary').textContent = salary;
+      document.getElementById('copyFeedback').textContent = '';
+    }
+
+    function copyPreviewSummary() {
+      const { company, role, neighborhood, days, salary } = getPreviewValues();
+      const summary = `${role} at ${company} (${neighborhood}, NYC) | ${days} | ${salary} | NewYork.dev`;
+
+      const feedbackEl = document.getElementById('copyFeedback');
+      try {
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+          navigator.clipboard.writeText(summary).then(
+            () => {
+              feedbackEl.textContent = 'Copied summary to clipboard.';
+              showStatusBanner('Preview summary copied to clipboard.');
+            },
+            () => {
+              fallbackCopyText(summary);
+            }
+          );
+        } else {
+          fallbackCopyText(summary);
+        }
+      } catch (err) {
+        fallbackCopyText(summary);
+      }
+    }
+
+    function fallbackCopyText(text) {
+      const feedbackEl = document.getElementById('copyFeedback');
+      const helper = document.createElement('textarea');
+      helper.value = text;
+      helper.setAttribute('readonly', '');
+      helper.style.position = 'absolute';
+      helper.style.left = '-9999px';
+      document.body.appendChild(helper);
+      helper.select();
+      try {
+        document.execCommand('copy');
+        feedbackEl.textContent = 'Copied summary to clipboard.';
+        showStatusBanner('Preview summary copied to clipboard.');
+      } catch (e) {
+        feedbackEl.textContent = 'Copy manually: ' + text;
+      }
+      document.body.removeChild(helper);
+    }
+
+    function handlePreviewSubmit(event) {
+      event.preventDefault();
+      const email = document.getElementById('previewWorkEmail').value.trim();
+      const { company, role, neighborhood, days } = getPreviewValues();
+      const statusEl = document.getElementById('previewFormStatus');
+
+      statusEl.textContent = `Saved preview for ${role} at ${company} (${neighborhood}, ${days}) and queued for ${email}.`;
+      showStatusBanner(`Preview saved for ${email}.`);
+      document.getElementById('previewWorkEmail').value = '';
+    }
+
+    // Founding partner request form submission handler
+    function handlePartnerSubmit(event) {
+      event.preventDefault();
+      const type = document.getElementById('partnerRequestType').value;
+      const name = document.getElementById('partnerName').value.trim();
+      const email = document.getElementById('partnerEmail').value.trim();
+      const company = document.getElementById('partnerCompany').value.trim();
+      const feedbackEl = document.getElementById('partnerFormFeedback');
+
+      feedbackEl.textContent = `Received (${type}) from ${name} (${company}). Follow-up sent to ${email}.`;
+      showStatusBanner(`Partner request logged for ${company}.`);
+      event.target.reset();
+    }
+
+    // Direct apply modal handlers
+    function openApplyModal(jobId) {
+      const job = nycJobs.find((item) => item.id === jobId);
+      if (!job) return;
+
+      currentApplyingJob = job;
+      document.getElementById('applyModalTitle').textContent = `Apply: ${job.title}`;
+      document.getElementById('applyModalMeta').textContent =
+        `${job.company} | ${job.neighborhood}, NYC | ${job.daysPerWeek} days/wk | ${job.salaryDisplay}`;
+      document.getElementById('applyFormFeedback').textContent = '';
+      document.getElementById('directApplyForm').reset();
+
+      const modal = document.getElementById('applyModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.getElementById('applicantName').focus();
+    }
+
+    function closeApplyModal() {
+      const modal = document.getElementById('applyModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      currentApplyingJob = null;
+    }
+
+    function handleModalBackdropClick(event) {
+      if (event.target.id === 'applyModal') {
+        closeApplyModal();
+      }
+    }
+
+    function handleApplySubmit(event) {
+      event.preventDefault();
+      const name = document.getElementById('applicantName').value.trim();
+      const email = document.getElementById('applicantEmail').value.trim();
+      const commute = document.getElementById('applicantCommute').value;
+      const feedbackEl = document.getElementById('applyFormFeedback');
+
+      const roleLabel = currentApplyingJob
+        ? `${currentApplyingJob.title} at ${currentApplyingJob.company}`
+        : 'NYC role';
+
+      feedbackEl.textContent = `Application submitted for ${roleLabel}. Confirmation noted for ${name} (${email}) with commute status: ${commute}.`;
+      showStatusBanner(`Direct application sent for ${roleLabel}.`);
+      event.target.reset();
+    }
+
+    // Escape key closes open modal or mobile drawer
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeApplyModal();
+        closeMobileMenu();
+      }
+    });
+
+    // Basic HTML entity escaping for dynamic strings
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // Initial render
+    updateLivePreview();
+    applyFilters();
+  </script>
+</body>
+</html>

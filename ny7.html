@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NewYork.dev: Hybrid and in-office engineering roles in NYC</title>
+<style>
+:root{--bg:#fff;--soft:#f6f7f8;--ink:#1d2327;--sub:#5d6870;--line:#e3e6e8;--accent:#00798a;--on-accent:#fff;--thumb:#e8eef0;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14181a;--soft:#1b2023;--ink:#eceff1;--sub:#9aa5ac;--line:#2d3438;--accent:#3cb4c6;--on-accent:#06181b;--thumb:#252d31}}
+:root[data-theme="dark"]{--bg:#14181a;--soft:#1b2023;--ink:#eceff1;--sub:#9aa5ac;--line:#2d3438;--accent:#3cb4c6;--on-accent:#06181b;--thumb:#252d31}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+h1,h2,h3,p{margin:0}
+h1{font-size:clamp(1.8rem,4vw,2.5rem);line-height:1.15;font-weight:700;max-width:24ch}
+h2{font-size:1.5rem;font-weight:700}
+h3{font-size:1.05rem;font-weight:700;line-height:1.3}
+a{color:var(--accent)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+.sub{color:var(--sub)}.sm{font-size:.875rem}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button,input,select,textarea{font:inherit;color:inherit}
+.btn{display:inline-block;padding:9px 16px;border:1px solid var(--ink);border-radius:6px;background:transparent;cursor:pointer;text-decoration:none;font-weight:600;color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn:hover{background:var(--soft)}.btn.primary:hover{filter:brightness(1.1)}
+input,select,textarea{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:6px;background:var(--bg)}
+label{display:block;font-size:.85rem;font-weight:600}
+label>input,label>select,label>textarea{margin-top:4px;font-weight:400}
+header{border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;gap:20px;min-height:60px}
+.brand{font-weight:800;font-size:1.25rem;text-decoration:none;color:var(--ink);margin-right:auto}
+.brand b{color:var(--accent)}
+.navlink{color:var(--ink);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;min-height:44px}.navlink:hover{color:var(--accent)}
+.hero{padding:40px 0 20px}
+.hero p{margin-top:12px;max-width:62ch;color:var(--sub)}
+.bar{display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:10px;margin-top:24px;align-items:center}
+.bar input,.bar select{border-radius:999px;padding:10px 16px}
+.link{background:none;border:0;color:var(--accent);cursor:pointer;font-weight:600;padding:8px}
+.main{display:grid;grid-template-columns:1fr 300px;gap:40px;padding:12px 0 56px;align-items:start}
+.head{display:flex;justify-content:space-between;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line)}
+.row{display:grid;grid-template-columns:1fr 132px;gap:16px;width:100%;text-align:left;padding:18px 0;border:0;border-bottom:1px solid var(--line);background:none;cursor:pointer}
+.row:hover h3{text-decoration:underline}
+.fresh{font-size:.8rem;font-weight:600;color:var(--accent);margin-bottom:3px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tags span{background:var(--soft);border-radius:999px;padding:2px 10px;font-size:.78rem}
+.line{display:inline-flex;justify-content:center;align-items:center;min-width:19px;height:19px;padding:0 4px;border:1px solid var(--sub);border-radius:50%;font-size:.7rem;font-weight:700;margin-right:3px}
+.thumb{position:relative;display:flex;align-items:center;justify-content:center;width:132px;height:84px;border-radius:6px;background:var(--thumb);color:var(--sub);font-weight:700;font-size:1.3rem}
+.thumb.vid{background:#1d2327;color:#fff;flex-direction:column;font-size:.75rem;font-weight:600;gap:4px}
+.thumb svg{width:26px;height:26px;fill:#fff}
+.pay{font-weight:700;font-size:.9rem;margin-top:8px;text-align:right}
+.aside{position:sticky;top:16px;border:1px solid var(--line);border-radius:8px;padding:20px}
+.slots{display:flex;gap:5px;margin:12px 0}
+.slots i{width:22px;height:22px;border:1px solid var(--sub);border-radius:4px}.slots i.t{background:var(--sub)}
+section.block{padding:48px 0;border-top:1px solid var(--line)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:12px}.fg .full{grid-column:1/-1}
+.box{border:1px solid var(--line);border-radius:8px;padding:20px}
+ul.p{margin:12px 0 0;padding-left:18px}ul.p li{margin:6px 0}
+.err{color:var(--err);font-size:.8rem;min-height:1em;margin-top:3px;font-weight:400}
+.drawer{position:fixed;inset:0;display:none;justify-content:flex-end;background:rgba(0,0,0,.4);z-index:20}
+.drawer.open{display:flex}
+.panel{width:min(540px,100%);height:100%;overflow-y:auto;background:var(--bg);padding:calc(20px + env(safe-area-inset-top,0px)) 24px calc(24px + env(safe-area-inset-bottom,0px))}
+.panel hr{border:0;border-top:1px solid var(--line);margin:18px 0}
+.x{float:right;border:1px solid var(--line);background:none;border-radius:6px;padding:4px 10px;cursor:pointer}
+.player{aspect-ratio:16/9;background:#1d2327;border-radius:8px;overflow:hidden;margin:14px 0 8px}
+.player iframe{width:100%;height:100%;border:0;display:block}
+.ok{display:none;margin-top:12px;padding:10px 12px;border:1px solid var(--accent);border-radius:6px}
+footer{border-top:1px solid var(--line);padding:24px 0}
+:root{--err:#b3261e}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--err:#ff8a80}}
+:root[data-theme="dark"]{--err:#ff8a80}
+[hidden]{display:none!important}
+[tabindex="-1"]:focus{outline:none}
+::placeholder{color:var(--sub);opacity:1}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:-9999px;top:8px;background:var(--bg);color:var(--ink);border:2px solid var(--accent);padding:10px 14px;border-radius:6px;z-index:30}
+.skip:focus{left:8px}
+nav{display:flex;gap:24px}
+.menu{display:none;align-items:center;gap:8px;min-height:44px;padding:0 12px;border:1px solid var(--line);border-radius:6px;background:none;cursor:pointer;font-weight:600}
+.bars{display:block;width:18px;height:2px;background:currentColor;box-shadow:0 -6px currentColor,0 6px currentColor}
+.btn,.x,.link,input,select{min-height:44px}
+@media (max-width:820px){
+.menu{display:flex}
+header .wrap{flex-wrap:wrap}
+nav{display:none;flex-basis:100%;flex-direction:column;gap:0;border-top:1px solid var(--line);padding-bottom:8px}
+nav.open{display:flex}
+.bar{grid-template-columns:1fr 1fr}.bar input[type=search],.bar .link{grid-column:1/-1}
+.two,.fg,.main{grid-template-columns:1fr}
+.aside{position:static}
+.row{grid-template-columns:1fr 100px}.thumb{width:100px;height:68px}
+}
+@media (max-width:420px){.row{grid-template-columns:1fr}.row>span:last-child{display:flex;align-items:center;justify-content:space-between;gap:12px}.pay{margin-top:0}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header><div class="wrap">
+  <a class="brand" href="#">NewYork<b>.dev</b></a>
+  <button class="menu" id="menuBtn" type="button" aria-expanded="false" aria-controls="nav"><span class="bars" aria-hidden="true"></span><span>Menu</span></button>
+  <nav id="nav" aria-label="Main"><a class="navlink" href="#roles">Browse NYC roles</a><a class="navlink" href="#partners">For employers</a></nav>
+</div></header>
+
+<main id="main">
+<div id="v-board">
+<div class="wrap hero">
+  <h1 id="h-board" tabindex="-1">Hybrid and in-office engineering roles in NYC</h1>
+  <p>Everyone here has chosen to work from a New York office. Each listing states the neighborhood, office days and pay up front, and comes straight from the company. No agencies, no out-of-state auto-apply.</p>
+  <div class="bar">
+    <input id="q" type="search" placeholder="Search title, company or stack" aria-label="Search">
+    <select id="hood" aria-label="Neighborhood"><option value="">Any neighborhood</option></select>
+    <select id="days" aria-label="Office days"><option value="">Any office days</option><option value="3">3 days</option><option value="4">4 days</option><option value="5">5 days</option></select>
+    <select id="minpay" aria-label="Minimum salary"><option value="0">Any salary</option><option value="150">$150k+</option><option value="175">$175k+</option><option value="200">$200k+</option><option value="225">$225k+</option><option value="250">$250k+</option></select>
+    <button class="link" id="reset" type="button">Clear</button>
+  </div>
+</div>
+
+<div class="wrap main" id="roles">
+  <div>
+    <div class="head"><h2>Open roles</h2><span class="sub sm" id="count" aria-live="polite"></span></div>
+    <div id="list"></div>
+    <div id="empty" style="display:none;padding:32px 0"><b>No roles match these filters.</b><p class="sub sm" style="margin-top:4px">Lower the salary, pick another neighborhood or clear the filters.</p></div>
+  </div>
+  <aside class="aside">
+    <h3>Hiring in New York?</h3>
+    <p class="sub sm" style="margin-top:6px">Companies list roles directly, with an optional intro video.</p>
+    <p class="sm" style="margin-top:10px"><a href="#partners">See how it works for employers</a></p>
+  </aside>
+</div>
+</div>
+
+<div id="v-partners" hidden>
+<div class="wrap hero" style="padding-bottom:0">
+  <p class="sm"><a href="#roles">Back to open roles</a></p>
+  <h1 id="h-partners" tabindex="-1" style="margin-top:12px">Hire engineers who want to work in a New York office</h1>
+  <p>See how your role would look, or ask about founding partner placement.</p>
+</div>
+<section class="block" id="preview" style="border-top:0;padding-top:32px"><div class="wrap two">
+  <div>
+    <h2>Preview your listing</h2>
+    <p class="sub" style="margin:10px 0 18px;max-width:46ch">Fill this in and the listing on the right updates as you type. Add a YouTube or Loom link and candidates get an intro video on the role.</p>
+    <div class="fg">
+      <label class="full">Company<input id="pc" value="Northline Systems"></label>
+      <label class="full">Role title<input id="pt" value="Senior Backend Engineer"></label>
+      <label>Neighborhood<select id="ph"></select></label>
+      <label>Office days<select id="pd"><option>3</option><option>4</option><option>5</option></select></label>
+      <label>Salary low ($k)<input id="pl" type="number" min="50" max="600" value="190"></label>
+      <label>Salary high ($k)<input id="ph2" type="number" min="50" max="600" value="230"></label>
+      <label class="full">Intro video link, optional<input id="pv" type="url" aria-describedby="pverr" placeholder="https://www.loom.com/share/... or a YouTube link"><div class="err" id="pverr" aria-live="polite"></div></label>
+      <label class="full">Who presents it<select id="pb"><option value="team">A member of our hiring team</option><option value="host">NewYork.dev reads the job post</option></select></label>
+    </div>
+  </div>
+  <div>
+    <p class="sub sm">Live preview</p>
+    <div id="pcard" role="region" aria-label="Live listing preview" style="border-bottom:1px solid var(--line);border-top:1px solid var(--line);margin-top:6px"></div>
+    <p style="margin-top:16px"><a class="btn primary" id="toF" href="#founding">Request a free formatted preview</a></p>
+  </div>
+</div></section>
+
+<section class="block" id="founding"><div class="wrap two">
+  <div>
+    <h2>Founding Partner program</h2>
+    <p class="sub" style="margin-top:10px;max-width:48ch">Eight New York companies per quarter, so every partner’s roles stay visible and every applicant stays relevant.</p>
+    <ul class="p">
+      <li><b>Pinned placement.</b> Your roles stay at the top of the feed.</li>
+      <li><b>Direct ATS routing.</b> Applications go straight to Greenhouse, Ashby, Lever or your own system.</li>
+      <li><b>Local candidate reach.</b> Engineers in the metro area who want an office schedule.</li>
+      <li><b>Intro videos.</b> Attach a YouTube or Loom intro from your team, or we read the post for you.</li>
+    </ul>
+  </div>
+  <form class="box" id="fform">
+    <h3>Request a slot or a free preview</h3>
+    <div class="fg" style="margin-top:14px">
+      <label class="full">Request<select id="ft"><option>Reserve a founding slot</option><option>Free formatted preview of my roles</option></select></label>
+      <label>Name<input required></label><label>Work email<input type="email" required></label>
+      <label>Company<input id="fco" required></label><label>Office neighborhood<input required placeholder="Flatiron"></label>
+      <label class="full">Careers page link<input type="url" placeholder="https://company.com/careers"></label>
+      <div class="full"><button class="btn primary" type="submit">Send request</button></div>
+    </div>
+    <p class="ok" id="fok">Thanks. We will reply within one business day.</p>
+  </form>
+</div></section>
+</div>
+</main>
+
+<footer><div class="wrap sub sm">NewYork.dev. Hybrid and in-office engineering roles in New York City, posted directly by employers.</div></footer>
+
+<div class="drawer" id="drawer" aria-hidden="true"><div class="panel" role="dialog" aria-modal="true" aria-label="Role details" tabindex="-1">
+  <button class="x" id="dx" type="button">Close</button><div id="dbody"></div>
+</div></div>
+
+<script>
+const YT='https://www.youtube.com/watch?v=aqz-KE-bpKQ';
+const HOODS=['FiDi','Flatiron','SoHo','Dumbo','Midtown'];
+const JOBS=[
+{id:1,co:'Rampart Clearing',t:'Staff Distributed Systems Engineer',h:'Flatiron',s:['N','R','W','6'],d:4,lo:235,hi:275,st:['Rust','Go','PostgreSQL'],ago:1,pin:1,ats:'Greenhouse',sum:'Design the settlement ledger behind real-time institutional payments. You will own correctness and latency for the core clearing path.',v:{u:YT,by:'Priya Raman, Engineering Manager, introduces the role'}},
+{id:2,co:'Meridian Spatial',t:'Senior Research Engineer, 3D Models',h:'SoHo',s:['6','N','R','W'],d:3,lo:220,hi:265,st:['Python','PyTorch','C++'],ago:2,pin:1,ats:'Ashby',sum:'Train and optimize real-time neural rendering models on the team’s own GPU cluster, working beside the graphics group.',v:{u:YT,by:'Read aloud by the NewYork.dev team'}},
+{id:3,co:'HarborGrid Energy',t:'Senior Backend Engineer, Dispatch',h:'Dumbo',s:['F','A','C'],d:3,lo:195,hi:230,st:['Elixir','Go','TimescaleDB'],ago:3,pin:1,ats:'Lever',sum:'Build telemetry ingestion and dispatch services that control utility-scale battery storage across the Northeast.'},
+{id:4,co:'Vanguardia Compute',t:'Kernel and eBPF Engineer',h:'Midtown',s:['7','A','C','E'],d:5,lo:240,hi:290,st:['C','eBPF','Rust'],ago:3,pin:1,ats:'Greenhouse',sum:'Write low-overhead Linux kernel probes that capture network and CPU telemetry for large service fleets. Five days a week on site.',v:{u:YT,by:'Marcus Lee, Head of Platform, introduces the role'}},
+{id:5,co:'Castle Row Capital',t:'Senior Software Engineer, Execution',h:'FiDi',s:['4','5','R','W'],d:5,lo:250,hi:300,st:['C++','Python','Linux'],ago:4,ats:'Lever',sum:'Maintain the order routing stack for a systematic trading desk. Latency work, careful releases and a small senior team.'},
+{id:6,co:'Kinetix BioCompute',t:'Full-Stack Engineer, Lab Platform',h:'Flatiron',s:['R','W','1'],d:3,lo:185,hi:215,st:['TypeScript','Python','GraphQL'],ago:5,ats:'Ashby',sum:'Build protocol builders and sample tracking used daily by clinical genomics labs, in close contact with scientists.'},
+{id:7,co:'Paperbridge',t:'Senior Frontend Engineer, Design Systems',h:'Dumbo',s:['F','A','C','2'],d:4,lo:180,hi:220,st:['TypeScript','React','CSS'],ago:6,ats:'Greenhouse',sum:'Own the component library and accessibility standards for a document workflow product used by legal teams.',v:{u:YT,by:'Read aloud by the NewYork.dev team'}},
+{id:8,co:'Ledgerline',t:'Staff Platform Engineer',h:'FiDi',s:['4','5','J','Z'],d:4,lo:225,hi:270,st:['Go','Kubernetes','Terraform'],ago:7,ats:'Lever',sum:'Lead the internal platform team: deploy tooling, observability and reliability practices for a payments company.'},
+{id:9,co:'Tenfold Health',t:'Senior ML Engineer, Clinical Models',h:'Midtown',s:['B','D','F','M'],d:3,lo:210,hi:255,st:['Python','PyTorch','Spark'],ago:9,ats:'Ashby',sum:'Train and evaluate models that predict care gaps from claims and EHR data, with a clinician review loop.'}
+];
+const SUBWAY={FiDi:['4','5','R'],Flatiron:['N','R','W','6'],SoHo:['6','N','R','W'],Dumbo:['F','A','C'],Midtown:['B','D','F','M']};
+const $=id=>document.getElementById(id);
+let lastFocus=null;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function parseVideo(u){
+  u=(u||'').trim(); if(!u) return null; let m;
+  if(m=u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:[^#]*&)?v=|embed\/|shorts\/))([\w-]{11})/))
+    return {src:'https://www.youtube-nocookie.com/embed/'+m[1],href:'https://www.youtube.com/watch?v='+m[1],site:'YouTube'};
+  if(m=u.match(/loom\.com\/(?:share|embed)\/([a-f0-9]{32})/i))
+    return {src:'https://www.loom.com/embed/'+m[1],href:'https://www.loom.com/share/'+m[1],site:'Loom'};
+  return null;
+}
+const lines=a=>`<span role="img" aria-label="Subway lines ${esc(a.join(', '))}">`+a.map(l=>`<span class="line" aria-hidden="true">${esc(l)}</span>`).join('')+'</span>';
+const fresh=n=>n===0?'Posted today':n===1?'Posted yesterday':`Posted ${n} days ago`;
+const initials=c=>c.split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase();
+
+function row(j,preview){
+  const vid=j.v&&parseVideo(j.v.u);
+  const thumb=vid?`<span class="thumb vid"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Intro video</span>`:`<span class="thumb">${esc(initials(j.co))}</span>`;
+  const open=preview?'<div class="row" style="cursor:default">':`<button class="row" type="button" data-id="${j.id}">`;
+  return `${open}
+    <span><div class="fresh">${fresh(j.ago)}${j.pin?', founding partner':''}</div>
+      <h3>${esc(j.t)}</h3>
+      <div class="sm" style="margin-top:3px">${esc(j.co)}, ${esc(j.h)}</div>
+      <div class="sm sub" style="margin-top:3px">${j.d} days in office &nbsp; ${lines(j.s)}</div>
+      <div class="tags">${j.st.map(x=>`<span>${esc(x)}</span>`).join('')}</div></span>
+    <span>${thumb}<div class="pay">$${j.lo}k to $${j.hi}k</div></span>
+  ${preview?'</div>':'</button>'}`;
+}
+
+function render(){
+  const q=$('q').value.trim().toLowerCase(),h=$('hood').value,d=$('days').value,m=+$('minpay').value;
+  const out=JOBS.filter(j=>(!q||[j.t,j.co,j.h,...j.st].join(' ').toLowerCase().includes(q))&&(!h||j.h===h)&&(!d||j.d===+d)&&j.hi>=m)
+    .sort((a,b)=>(b.pin||0)-(a.pin||0)||a.ago-b.ago);
+  $('list').innerHTML=out.map(j=>row(j)).join('');
+  $('empty').style.display=out.length?'none':'block';
+  $('count').textContent=`${out.length} ${out.length===1?'role':'roles'}`;
+}
+function renderPreview(){
+  const lo=Math.max(0,+$('pl').value||0),hi=Math.max(lo,+$('ph2').value||0),raw=$('pv').value.trim();
+  const ok=!raw||parseVideo(raw);
+  $('pverr').textContent=ok?'':'Use a YouTube or Loom link.';
+  $('pcard').innerHTML=row({t:$('pt').value||'Role title',co:$('pc').value||'Your company',h:$('ph').value,s:SUBWAY[$('ph').value],
+    d:+$('pd').value,lo,hi,st:['Your stack'],ago:0,v:ok&&raw?{u:raw}:null},true);
+}
+function openDrawer(id){
+  const j=JOBS.find(x=>x.id===+id),v=j.v&&parseVideo(j.v.u);
+  $('dbody').innerHTML=`
+    <p class="sub sm" style="padding-top:6px">${esc(j.co)}, ${esc(j.h)}</p>
+    <h2 style="margin-top:4px">${esc(j.t)}</h2>
+    <p style="margin-top:8px;font-weight:700">$${j.lo}k to $${j.hi}k base</p>
+    <p class="sub sm" style="margin-top:4px">${j.d} days a week in office &nbsp; ${lines(j.s)}</p>
+    ${v?`<div class="player"><iframe src="${v.src}" title="Role intro video" loading="lazy" allow="fullscreen; picture-in-picture; clipboard-write" allowfullscreen></iframe></div>
+      <p class="sm sub">${esc(j.v.by||'')} <a href="${v.href}" target="_blank" rel="noopener">Open on ${v.site}</a></p>`:''}
+    <hr><p>${esc(j.sum)}</p>
+    <div class="tags">${j.st.map(x=>`<span>${esc(x)}</span>`).join('')}</div>
+    <hr><h3>Apply directly</h3>
+    <p class="sub sm" style="margin:4px 0 14px">Your application goes to ${esc(j.co)}’s ${j.ats} account. No agency in between.</p>
+    <form id="af" class="fg"><label>Name<input required></label><label>Email<input type="email" required></label>
+      <label class="full">Resume or profile link<input type="url" required placeholder="https://"></label>
+      <label class="full">Where do you live?<input required placeholder="Neighborhood or borough"></label>
+      <div class="full"><button class="btn primary" type="submit">Send application</button></div></form>
+    <p class="ok" id="aok">Application sent to ${esc(j.co)}.</p>`;
+  $('af').onsubmit=e=>{e.preventDefault();e.target.style.display='none';$('aok').style.display='block'};
+  lastFocus=document.activeElement;$('drawer').classList.add('open');$('drawer').setAttribute('aria-hidden','false');const P=document.querySelector('.panel');P.scrollTop=0;P.focus();
+}
+function closeDrawer(){$('drawer').classList.remove('open');$('drawer').setAttribute('aria-hidden','true');$('dbody').innerHTML='';if(lastFocus)lastFocus.focus()}
+
+$('hood').innerHTML+=HOODS.map(h=>`<option>${h}</option>`).join('');
+$('ph').innerHTML=HOODS.map(h=>`<option>${h}</option>`).join('');$('ph').value='Flatiron';
+['q','hood','days','minpay'].forEach(i=>$(i).addEventListener('input',render));
+$('reset').onclick=()=>{$('q').value='';$('hood').value='';$('days').value='';$('minpay').value='0';render()};
+$('list').addEventListener('click',e=>{const b=e.target.closest('[data-id]');if(b)openDrawer(b.dataset.id)});
+$('dx').onclick=closeDrawer;
+$('drawer').addEventListener('click',e=>{if(e.target.id==='drawer')closeDrawer()});
+document.addEventListener('keydown',e=>{
+  const open=$('drawer').classList.contains('open');
+  if(e.key==='Escape'){if(open)closeDrawer();else closeMenu()}
+  if(e.key==='Tab'&&open){
+    const f=[...$('drawer').querySelectorAll('button,a[href],input,select,textarea')].filter(x=>!x.disabled&&x.offsetParent!==null);
+    if(!f.length)return;const a=f[0],z=f[f.length-1],cur=document.activeElement;
+    if(e.shiftKey&&(cur===a||cur===document.querySelector('.panel'))){e.preventDefault();z.focus()}
+    else if(!e.shiftKey&&cur===z){e.preventDefault();a.focus()}
+  }
+});
+['pc','pt','ph','pd','pl','ph2','pv','pb'].forEach(i=>$(i).addEventListener('input',renderPreview));
+$('toF').onclick=()=>{$('fco').value=$('pc').value;$('ft').selectedIndex=1};
+$('fform').onsubmit=e=>{e.preventDefault();$('fok').style.display='block';e.target.reset()};
+function closeMenu(){$('nav').classList.remove('open');$('menuBtn').setAttribute('aria-expanded','false')}
+$('menuBtn').onclick=()=>{const o=$('nav').classList.toggle('open');$('menuBtn').setAttribute('aria-expanded',String(o))};
+$('nav').addEventListener('click',e=>{if(e.target.closest('a'))closeMenu()});
+let onPartners=false;
+function route(){
+  const h=location.hash.slice(1);
+  if(h==='main')return;
+  const p=['partners','preview','founding'].includes(h);
+  $('v-board').hidden=p;$('v-partners').hidden=!p;
+  document.title=p?'For employers | NewYork.dev':'NewYork.dev: Hybrid and in-office engineering roles in NYC';
+  closeMenu();
+  const t=h&&h!=='partners'?$(h):null;
+  if(t)t.scrollIntoView();else if(p!==onPartners||!h)window.scrollTo(0,0);
+  if(p!==onPartners)$(p?'h-partners':'h-board').focus({preventScroll:true});
+  onPartners=p;
+}
+window.addEventListener('hashchange',route);
+render();renderPreview();route();
+</script>
+</body>
+</html>

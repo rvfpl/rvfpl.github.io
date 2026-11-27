@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NewYork.dev — Founding Partner Pricing & Go-To-Market Strategy</title>
+  <!-- Load Tailwind CSS for responsive, utility-first styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Load Inter & JetBrains Mono fonts for clean executive & developer aesthetics -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-indigo-600 selection:text-white">
+
+  <!-- Top Utility Bar (Hidden when printing) -->
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 print:hidden">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5">
+        <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-slate-900 text-white font-mono font-bold text-sm">
+          NY
+        </span>
+        <span class="font-mono font-bold text-slate-900 tracking-tight text-sm sm:text-base">
+          NewYork<span class="text-indigo-600">.dev</span>
+        </span>
+        <span class="hidden sm:inline-block text-xs font-medium px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100">
+          Strategy & Rate Card
+        </span>
+      </div>
+
+      <!-- Action Buttons: Copy HTML & Download HTML -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <button
+          id="copyHtmlBtn"
+          onclick="copyRawHtml()"
+          class="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 hover:text-slate-900 active:scale-[0.99] transition shadow-sm cursor-pointer"
+          title="Copy complete raw HTML to clipboard"
+        >
+          <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <span id="copyBtnText">Copy HTML</span>
+        </button>
+
+        <button
+          id="downloadHtmlBtn"
+          onclick="downloadRawHtml()"
+          class="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 active:scale-[0.99] transition shadow-sm cursor-pointer"
+          title="Download standalone .html file"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Download HTML</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Toast Notification Box (Replaces alert()) -->
+  <div
+    id="toastNotification"
+    class="fixed bottom-5 right-5 z-50 hidden items-center gap-2.5 bg-slate-900 text-white text-sm font-medium px-4 py-3 rounded-xl shadow-lg border border-slate-700 transition-all"
+    role="status"
+  >
+    <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+      <polyline points="20 6 9 17 4 12"></polyline>
+    </svg>
+    <span id="toastMessage">Action completed</span>
+  </div>
+
+  <!-- Main Executive Document Container -->
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10">
+
+    <!-- Hero / Strategic Thesis Card -->
+    <section class="bg-slate-900 text-white rounded-2xl p-6 sm:p-10 shadow-lg relative overflow-hidden">
+      <div class="absolute -right-16 -top-16 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="relative z-10 space-y-5">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 text-xs font-semibold uppercase tracking-wider">
+          Founding Partner Pricing &amp; Go-To-Market Framework
+        </div>
+        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+          Monetizing <span class="font-mono text-indigo-400">NewYork.dev</span> for Hybrid &amp; In-Office Engineering Roles
+        </h1>
+        <div class="space-y-3 text-slate-300 text-sm sm:text-base leading-relaxed max-w-4xl">
+          <p>
+            Owning <strong class="text-white font-semibold">NewYork.dev</strong> gives you a massive branding and SEO advantage—it’s short, authoritative, immediately tells both engineers and recruiters what the site is about, and avoids the broad competition of general job boards.
+          </p>
+          <p>
+            However, when pricing <strong class="text-white font-semibold">"Founding Partner"</strong> sponsorships, companies aren't just buying a domain name; they are buying <strong class="text-white font-semibold">qualified engineering eyeballs, employer branding, and placement</strong>—especially while the site is still building traffic.
+          </p>
+          <p class="text-indigo-200 font-medium pt-1">
+            Here is a realistic pricing framework based on standard tech job board and niche newsletter models, broken down by stage and deliverable.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 1: Realistic Pricing Tiers -->
+    <section class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-200 pb-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Section 01</span>
+          <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-1">
+            Realistic Pricing Tiers for "Founding Partners"
+          </h2>
+        </div>
+        <span class="text-xs font-medium text-slate-500 bg-slate-100 px-3 py-1.5 rounded-lg self-start sm:self-auto">
+          Benchmark: $20k–$35k typical agency recruiter fee per hire
+        </span>
+      </div>
+
+      <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+        Since you are pitching Founding Partner slots (which implies early-stage exclusivity, locked-in rates, and high visibility before traffic peaks), you want a price point that feels like a low-risk bargain compared to a single recruiter fee ($20,000–$35,000 per hire), while still valuing your premium domain.
+      </p>
+
+      <!-- Two-Column Pricing Comparison Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+
+        <!-- Option A: Recommended Package (7 cols) -->
+        <div class="lg:col-span-7 bg-white rounded-2xl border-2 border-indigo-600 shadow-md p-6 sm:p-8 flex flex-col justify-between relative">
+          <div class="absolute -top-3.5 left-6 bg-indigo-600 text-white text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-sm">
+            Recommended Flagship Tier
+          </div>
+
+          <div class="space-y-5">
+            <div>
+              <h3 class="text-lg sm:text-xl font-bold text-slate-900">
+                Option A: The "Early-Bird Quarterly/Annual" Package
+              </h3>
+              <p class="text-sm text-slate-500 mt-1">
+                Companies prefer a fixed commitment for founding status rather than a one-off post.
+              </p>
+            </div>
+
+            <!-- Price Box -->
+            <div class="bg-indigo-50/70 border border-indigo-100 rounded-xl p-4 sm:p-5">
+              <div class="text-xs font-semibold uppercase tracking-wider text-indigo-700 mb-1">Price</div>
+              <div class="text-2xl sm:text-3xl font-extrabold text-slate-900">
+                $1,500 – $3,000 <span class="text-sm sm:text-base font-medium text-slate-600">for 3 months</span>
+              </div>
+              <div class="text-sm font-medium text-indigo-700 mt-1">
+                or $4,500 – $8,000 / year
+              </div>
+            </div>
+
+            <!-- Scarcity Callout -->
+            <div class="flex items-start gap-3 bg-amber-50 border border-amber-200/80 rounded-xl p-3.5 text-sm text-amber-900">
+              <svg class="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              <div>
+                <strong class="font-semibold">Cap it strictly:</strong> Offer only <strong>5 to 10 Founding Partner spots</strong> total. Scarcity sells "Founding" tiers much faster than open-ended ad space.
+              </div>
+            </div>
+
+            <!-- Deliverables List -->
+            <div class="space-y-2.5">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">What You Include</h4>
+              <ul class="space-y-3 text-sm text-slate-700">
+                <li class="flex items-start gap-2.5">
+                  <svg class="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span>Permanent/semi-permanent <strong>"Founding Partner" badge &amp; logo</strong> on the homepage hero or "Top NYC Tech Employers" directory.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <svg class="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span><strong>Unlimited job postings</strong> (or up to 5–10 active slots) with top-of-page pinned placement.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <svg class="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span><strong>Dedicated company engineering profile page</strong> (highlighting their NYC office, hybrid policy, tech stack, and perks—crucial for convincing devs to do RTO/hybrid).</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <svg class="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span><strong>Featured spotlight</strong> in any launch newsletter, LinkedIn/X announcements, or NYC tech community outreach.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Option B: Single Featured Job / Anchor Comparison (5 cols) -->
+        <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 flex flex-col justify-between">
+          <div class="space-y-5">
+            <div>
+              <span class="inline-block text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-md mb-2">
+                Price Anchor &amp; Entry Tier
+              </span>
+              <h3 class="text-lg sm:text-xl font-bold text-slate-900">
+                Option B: Single Featured Job / Sponsor Slot
+              </h3>
+              <p class="text-sm text-slate-500 mt-1">
+                If they aren't ready for a full partnership.
+              </p>
+            </div>
+
+            <div class="space-y-3">
+              <p class="text-sm text-slate-600">
+                For comparison, established niche dev boards (like <em>BuiltinNYC</em>, <em>HN/Wellfound</em> promoted slots, or specialized React/AI boards) typically charge:
+              </p>
+
+              <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-2.5">
+                  <span class="text-sm font-medium text-slate-700">Standard 30-day listing</span>
+                  <span class="font-mono font-bold text-slate-900">$299 – $499</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-sm font-medium text-slate-700">Featured / Pinned 30-day listing + newsletter blast</span>
+                  <span class="font-mono font-bold text-slate-900 text-right shrink-0 ml-2">$750 – $1,500</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Value Math Callout -->
+            <div class="bg-slate-900 text-slate-100 rounded-xl p-4 sm:p-5 space-y-2">
+              <div class="text-xs font-bold uppercase tracking-wider text-indigo-400">The Value Math</div>
+              <p class="text-sm leading-relaxed text-slate-200">
+                Pricing a 3-month Founding Partnership at <strong>$1,500–$2,500</strong> makes the math obvious for a talent acquisition lead:
+              </p>
+              <blockquote class="border-l-2 border-indigo-400 pl-3 text-sm italic text-white">
+                "For the price of two standard featured listings, we get 90 days of unlimited postings, homepage branding on NewYork.dev, and a locked-in rate."
+              </blockquote>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Section 2: Hybrid / RTO Value Proposition -->
+    <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6">
+      <div class="border-b border-slate-200 pb-4">
+        <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Section 02</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-1">
+          Why Your "Hybrid / RTO" Angle Changes the Value Proposition
+        </h2>
+      </div>
+
+      <!-- The Problem -->
+      <div class="space-y-3">
+        <p class="text-sm sm:text-base font-medium text-slate-800">
+          Right now, NYC tech companies pushing <strong>Hybrid (3 days in-office)</strong> or <strong>full RTO</strong> face a major recruiting headache:
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-rose-50/60 border border-rose-200/80 rounded-xl p-4 flex items-start gap-3">
+            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-rose-600 text-white text-xs font-bold shrink-0 mt-0.5">1</span>
+            <p class="text-sm text-slate-700 leading-relaxed">
+              Broad boards like LinkedIn and Wellfound flood them with <strong>remote-only applicants</strong> who auto-apply without reading the location requirement.
+            </p>
+          </div>
+          <div class="bg-rose-50/60 border border-rose-200/80 rounded-xl p-4 flex items-start gap-3">
+            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-rose-600 text-white text-xs font-bold shrink-0 mt-0.5">2</span>
+            <p class="text-sm text-slate-700 leading-relaxed">
+              Engineers who <em>are</em> willing to commute in NYC want to know <strong>what the office is actually like</strong> (neighborhood, transit access, free lunch, engineering culture) before agreeing to a commute.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- How to Monetize -->
+      <div class="space-y-3 pt-2">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900">How to Monetize This Angle</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-indigo-50/50 border border-indigo-100 rounded-xl p-5 space-y-2">
+            <div class="inline-flex items-center gap-2 text-indigo-700 font-bold text-sm">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+              </svg>
+              <span>Position NewYork.dev as a "High-Intent Local Filter"</span>
+            </div>
+            <p class="text-sm text-slate-700 leading-relaxed">
+              Pitch recruiters on the time saved by not sorting through 800 out-of-state applications. Every candidate on <code class="font-mono text-xs bg-white px-1.5 py-0.5 rounded border border-indigo-200 text-indigo-700">NewYork.dev</code> already knows it's an NYC hybrid/in-office role.
+            </p>
+          </div>
+
+          <div class="bg-indigo-50/50 border border-indigo-100 rounded-xl p-5 space-y-2">
+            <div class="inline-flex items-center gap-2 text-indigo-700 font-bold text-sm">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+              <span>Sell "Office &amp; Culture Spotlights"</span>
+            </div>
+            <p class="text-sm text-slate-700 leading-relaxed">
+              Include a rich media section on each Founding Partner's page (photos of their Flatiron/Hudson Yards/SoHo office, commute proximity, team engineering blog posts). Companies with mandated RTO desperately need better employer branding to justify the commute to senior engineers.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: How to Pitch Before Massive Traffic -->
+    <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6">
+      <div class="border-b border-slate-200 pb-4">
+        <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Section 03</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-1">
+          How to Pitch It Before You Have Massive Traffic
+        </h2>
+        <p class="text-sm text-slate-600 mt-1">
+          If the site is brand new, recruiters will ask: <em>"How much traffic do you get?"</em> You can preempt that objection cleanly:
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Tactic 1 -->
+        <div class="rounded-xl border border-slate-200 bg-slate-50/70 p-5 space-y-2.5">
+          <div class="flex items-center gap-2 text-slate-900 font-bold text-base">
+            <span class="w-7 h-7 rounded-lg bg-slate-900 text-white font-mono text-xs flex items-center justify-center">01</span>
+            <span>Sell the Domain + Distribution Plan, Not Historical Pageviews</span>
+          </div>
+          <p class="text-sm text-slate-700 leading-relaxed">
+            Emphasize that <strong>NewYork.dev</strong> is a category-defining exact-match domain that will naturally capture organic search (<em>new york dev jobs</em>, <em>nyc software engineer jobs</em>) and direct type-in traffic, backed by targeted NYC dev outreach (local meetups, NYC tech Slack/Discord groups, LinkedIn outreach).
+          </p>
+        </div>
+
+        <!-- Tactic 2 -->
+        <div class="rounded-xl border border-emerald-200 bg-emerald-50/60 p-5 space-y-2.5">
+          <div class="flex items-center gap-2 text-emerald-900 font-bold text-base">
+            <span class="w-7 h-7 rounded-lg bg-emerald-600 text-white font-mono text-xs flex items-center justify-center">02</span>
+            <span>Offer a "Risk-Free" Founding Guarantee</span>
+          </div>
+          <blockquote class="bg-white border border-emerald-200 rounded-lg p-3.5 text-sm text-slate-800 italic leading-relaxed">
+            "Lock in $1,500 for Q1/Q2 as one of our 8 Founding Partners. If you don't receive qualified NYC-based applicants within 60 days, we'll extend your partnership free until you do."
+          </blockquote>
+          <p class="text-xs font-medium text-emerald-800">
+            That removes almost all friction for an internal recruiter or Head of Talent.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Summary Checklist Card -->
+    <section class="bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950 text-white rounded-2xl p-6 sm:p-8 shadow-lg space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-700/80 pb-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-indigo-400">Executive Quick Reference</span>
+          <h2 class="text-xl sm:text-2xl font-bold text-white mt-1">
+            Summary Checklist for Your Rate Card
+          </h2>
+        </div>
+        <span class="font-mono text-xs bg-white/10 text-indigo-200 px-3 py-1 rounded-full border border-white/10">
+          NewYork.dev Rate Card
+        </span>
+      </div>
+
+      <div class="space-y-4">
+        <!-- Checklist Item 1 -->
+        <div class="bg-white/5 border border-white/10 rounded-xl p-4 sm:p-5 flex items-start gap-3.5">
+          <div class="w-6 h-6 rounded-md bg-indigo-500/30 border border-indigo-400/50 flex items-center justify-center shrink-0 mt-0.5">
+            <svg class="w-4 h-4 text-indigo-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <div class="text-sm sm:text-base text-slate-200 leading-relaxed">
+            <strong class="text-white font-semibold">Founding Partner (Limited to 8–10 companies):</strong>
+            <span class="text-indigo-300 font-semibold"> $1,500 – $2,500 / quarter</span> (or <span class="text-indigo-300 font-semibold">$5,000 / year</span>), locked in for life as long as they renew.
+          </div>
+        </div>
+
+        <!-- Checklist Item 2 -->
+        <div class="bg-white/5 border border-white/10 rounded-xl p-4 sm:p-5 flex items-start gap-3.5">
+          <div class="w-6 h-6 rounded-md bg-indigo-500/30 border border-indigo-400/50 flex items-center justify-center shrink-0 mt-0.5">
+            <svg class="w-4 h-4 text-indigo-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <div class="text-sm sm:text-base text-slate-200 leading-relaxed">
+            <strong class="text-white font-semibold">Target Buyers:</strong> Series A–C startups and mid-sized NYC tech/fintech/AI companies (50–500 employees) with Manhattan or Brooklyn offices that struggle to compete with Big Tech's brand recognition but have budget for hiring.
+          </div>
+        </div>
+
+        <!-- Checklist Item 3 -->
+        <div class="bg-white/5 border border-white/10 rounded-xl p-4 sm:p-5 flex items-start gap-3.5">
+          <div class="w-6 h-6 rounded-md bg-emerald-500/30 border border-emerald-400/50 flex items-center justify-center shrink-0 mt-0.5">
+            <svg class="w-4 h-4 text-emerald-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <div class="text-sm sm:text-base text-slate-200 leading-relaxed">
+            <strong class="text-white font-semibold">Bonus Leverage:</strong> Since you also own <code class="font-mono text-xs sm:text-sm bg-white/10 px-1.5 py-0.5 rounded text-emerald-300">notnewyork.com</code>, you even have a natural sister-brand down the road if you ever want to spin up a parallel board for remote/non-NYC tech roles—making <strong>NewYork.dev</strong> even sharper as the strictly local, in-person NYC flagship.
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Subtle Footer -->
+  <footer class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-xs text-slate-400 border-t border-slate-200/80">
+    <span class="font-mono font-semibold text-slate-500">NewYork.dev</span> &bull; Founding Partner Pricing &amp; Go-To-Market Playbook
+  </footer>
+
+  <!-- Interactive Copy & Download Script -->
+  <script>
+    function showToast(message) {
+      const toast = document.getElementById('toastNotification');
+      const toastMsg = document.getElementById('toastMessage');
+      toastMsg.textContent = message;
+      toast.classList.remove('hidden');
+      toast.classList.add('flex');
+
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        toast.classList.add('hidden');
+        toast.classList.remove('flex');
+      }, 3000);
+    }
+
+    function getFullHtmlDocument() {
+      return '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+    }
+
+    function copyRawHtml() {
+      const htmlContent = getFullHtmlDocument();
+      const textArea = document.createElement('textarea');
+      textArea.value = htmlContent;
+      textArea.style.position = 'fixed';
+      textArea.style.top = '-9999px';
+      textArea.style.left = '-9999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+
+      try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+          const btnText = document.getElementById('copyBtnText');
+          btnText.textContent = 'Copied!';
+          showToast('Complete HTML copied to clipboard');
+          setTimeout(() => {
+            btnText.textContent = 'Copy HTML';
+          }, 2500);
+        } else {
+          showToast('Unable to copy HTML automatically');
+        }
+      } catch (err) {
+        showToast('Copy failed — try Download HTML instead');
+      }
+
+      document.body.removeChild(textArea);
+    }
+
+    function downloadRawHtml() {
+      const htmlContent = getFullHtmlDocument();
+      const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'newyork-dev-pricing-strategy.html';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      showToast('Downloading newyork-dev-pricing-strategy.html');
+    }
+  </script>
+</body>
+</html>

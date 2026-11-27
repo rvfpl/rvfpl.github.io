@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NewYork.dev — Curated NYC Hybrid &amp; In-Office Engineering Roles</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Inter & JetBrains Mono Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            taxi: {
+              400: '#FACC15',
+              500: '#EAB308',
+            },
+            nyc: {
+              950: '#090D16',
+              900: '#0F172A',
+              800: '#1E293B',
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    /* Subtle architectural grid background for NYC tech feel */
+    .nyc-grid-bg {
+      background-image: 
+        linear-gradient(to right, rgba(148, 163, 184, 0.07) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(148, 163, 184, 0.07) 1px, transparent 1px);
+      background-size: 36px 36px;
+    }
+    /* Custom subtle scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0F172A;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-amber-400 selection:text-slate-950">
+
+  <!-- Toast Notification (Replaces alert()) -->
+  <div id="toast" class="fixed bottom-5 right-5 z-[100] hidden items-center gap-3 bg-slate-900 border border-cyan-500/40 text-white px-4 py-3 rounded-xl shadow-2xl transition-all">
+    <span class="flex h-6 w-6 items-center justify-center rounded-full bg-cyan-500/20 text-cyan-400">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+    </span>
+    <span id="toastText" class="text-sm font-medium">Action successful</span>
+  </div>
+
+  <!-- =====================================================================
+       1. TOP NAVIGATION BAR
+  ====================================================================== -->
+  <header class="sticky top-0 z-40 bg-slate-950/85 backdrop-blur-xl border-b border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-9 h-9 rounded-xl bg-amber-400 text-slate-950 font-mono font-extrabold text-sm flex items-center justify-center shadow-md shadow-amber-400/20 group-hover:scale-105 transition">
+          NY
+        </div>
+        <div class="flex items-baseline gap-1.5">
+          <span class="font-mono font-extrabold text-lg sm:text-xl tracking-tight text-white">
+            NewYork<span class="text-cyan-400">.dev</span>
+          </span>
+          <span class="hidden md:inline-block text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded bg-slate-800 text-amber-400 border border-slate-700">
+            NYC Hybrid
+          </span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden lg:flex items-center gap-8 text-sm font-medium text-slate-300">
+        <a href="#jobs-section" class="hover:text-white transition">Hybrid Roles</a>
+        <a href="#partners-section" class="hover:text-white transition flex items-center gap-1.5">
+          Founding Partners
+          <span class="inline-flex h-2 w-2 rounded-full bg-amber-400"></span>
+        </a>
+        <a href="#partners-section" onclick="openPartnerModal('rampart')" class="hover:text-white transition">NYC Offices</a>
+        <a href="#hiring-section" class="hover:text-white transition">Post a Role</a>
+      </nav>
+
+      <!-- CTA Buttons -->
+      <div class="flex items-center gap-2.5 sm:gap-3">
+        <button
+          onclick="openInquiryModal('Standard Listing')"
+          class="hidden sm:inline-flex items-center px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-200 bg-slate-900 hover:bg-slate-800 border border-slate-700 transition cursor-pointer"
+        >
+          Post a Job
+        </button>
+        <button
+          onclick="openInquiryModal('Founding Partner ($1,500/qtr)')"
+          class="inline-flex items-center gap-2 px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-400 text-slate-950 hover:bg-amber-300 active:scale-[0.99] transition shadow-lg shadow-amber-400/15 cursor-pointer"
+        >
+          <span>Become a Founding Partner</span>
+          <svg class="w-4 h-4 hidden sm:inline" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =====================================================================
+       2. HERO SECTION & INTERACTIVE FILTER BAR
+  ====================================================================== -->
+  <section class="relative overflow-hidden nyc-grid-bg border-b border-slate-800/80">
+    <!-- Ambient Glows -->
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-amber-400/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 sm:pt-20 sm:pb-24 relative z-10">
+      <div class="max-w-4xl mx-auto text-center space-y-6">
+        <!-- High-Intent Badge -->
+        <div class="inline-flex flex-wrap items-center justify-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-slate-700/90 text-xs font-mono text-slate-300 shadow-sm">
+          <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>100% NYC METRO</span>
+          <span class="text-slate-600">&bull;</span>
+          <span class="text-amber-400 font-semibold">ZERO REMOTE-ONLY NOISE</span>
+          <span class="text-slate-600">&bull;</span>
+          <span class="text-cyan-400">VERIFIED OFFICE POLICIES</span>
+        </div>
+
+        <!-- Headline -->
+        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.1]">
+          The High-Intent Filter for <br class="hidden sm:inline" />
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-400 to-cyan-400">
+            NYC Hybrid &amp; In-Office
+          </span>
+          Engineering
+        </h1>
+
+        <!-- Subheadline -->
+        <p class="text-base sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed">
+          Curated software engineering roles at New York’s sharpest tech companies. Every listing includes transparent salary bands, exact subway access, and verified in-office cadence.
+        </p>
+      </div>
+
+      <!-- Interactive Search & Filter Console -->
+      <div class="max-w-5xl mx-auto mt-10 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-3 sm:p-4 shadow-2xl">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
+          <!-- Role / Stack Search -->
+          <div class="md:col-span-5 relative">
+            <label for="searchInput" class="sr-only">Role or Tech Stack</label>
+            <div class="absolute inset-y-0 left-3.5 flex items-center pointer-events-none text-slate-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
+            <input
+              id="searchInput"
+              type="text"
+              placeholder="Role or stack (e.g. Rust, Staff, AI, React)..."
+              oninput="applyFilters()"
+              class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition"
+            />
+          </div>
+
+          <!-- Neighborhood Filter -->
+          <div class="md:col-span-3 relative">
+            <label for="neighborhoodSelect" class="sr-only">Neighborhood</label>
+            <select
+              id="neighborhoodSelect"
+              onchange="applyFilters()"
+              class="w-full px-3.5 py-3 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-200 focus:outline-none focus:border-cyan-400 transition cursor-pointer"
+            >
+              <option value="ALL">All NYC Neighborhoods</option>
+              <option value="Flatiron">Flatiron / Union Sq</option>
+              <option value="SoHo">SoHo / Hudson Sq</option>
+              <option value="Hudson Yards">Hudson Yards / Midtown</option>
+              <option value="DUMBO">DUMBO / Downtown BK</option>
+              <option value="NoMad">NoMad / Madison Sq</option>
+            </select>
+          </div>
+
+          <!-- Hybrid Policy Filter -->
+          <div class="md:col-span-2 relative">
+            <label for="cadenceSelect" class="sr-only">Hybrid Policy</label>
+            <select
+              id="cadenceSelect"
+              onchange="applyFilters()"
+              class="w-full px-3.5 py-3 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-200 focus:outline-none focus:border-cyan-400 transition cursor-pointer"
+            >
+              <option value="ALL">Any Cadence</option>
+              <option value="3 Days/Wk">3 Days / Wk</option>
+              <option value="4 Days/Wk">4 Days / Wk</option>
+              <option value="Full In-Office">Full In-Office (5d)</option>
+            </select>
+          </div>
+
+          <!-- Jump to Results Button -->
+          <div class="md:col-span-2">
+            <a
+              href="#jobs-section"
+              onclick="applyFilters()"
+              class="w-full h-full inline-flex items-center justify-center px-4 py-3 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold text-sm transition shadow-md shadow-cyan-400/15"
+            >
+              Explore Roles
+            </a>
+          </div>
+        </div>
+
+        <!-- Quick Stack Chips -->
+        <div class="flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-slate-800/80 text-xs">
+          <span class="text-slate-500 font-mono mr-1">Popular:</span>
+          <button onclick="quickFilter('TypeScript')" class="px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition cursor-pointer">TypeScript</button>
+          <button onclick="quickFilter('Rust')" class="px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition cursor-pointer">Rust</button>
+          <button onclick="quickFilter('AI / ML')" class="px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition cursor-pointer">AI / ML</button>
+          <button onclick="quickFilter('Go')" class="px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition cursor-pointer">Go</button>
+          <button onclick="quickFilter('Systems')" class="px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition cursor-pointer">Systems</button>
+          <button onclick="resetFilters()" class="ml-auto text-cyan-400 hover:text-cyan-300 font-medium cursor-pointer">Reset Filters</button>
+        </div>
+      </div>
+
+      <!-- Quick Value Stats Bar -->
+      <div class="max-w-5xl mx-auto mt-10 grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-slate-900/60 border border-slate-800/80 rounded-xl p-4 text-center">
+          <div class="font-mono text-2xl sm:text-3xl font-extrabold text-white">100%</div>
+          <div class="text-xs text-slate-400 mt-1">NYC Hybrid or In-Office</div>
+        </div>
+        <div class="bg-slate-900/60 border border-slate-800/80 rounded-xl p-4 text-center">
+          <div class="font-mono text-2xl sm:text-3xl font-extrabold text-amber-400">$215k</div>
+          <div class="text-xs text-slate-400 mt-1">Median Base Salary Listed</div>
+        </div>
+        <div class="bg-slate-900/60 border border-slate-800/80 rounded-xl p-4 text-center">
+          <div class="font-mono text-2xl sm:text-3xl font-extrabold text-cyan-400">5 / 8</div>
+          <div class="text-xs text-slate-400 mt-1">Founding Partners Live</div>
+        </div>
+        <div class="bg-slate-900/60 border border-slate-800/80 rounded-xl p-4 text-center">
+          <div class="font-mono text-2xl sm:text-3xl font-extrabold text-emerald-400">&lt; 5 min</div>
+          <div class="text-xs text-slate-400 mt-1">Subway Walk to Every Office</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       3. FOUNDING PARTNERS SHOWCASE (WITH OFFICE & CULTURE SPOTLIGHT MODAL)
+  ====================================================================== -->
+  <section id="partners-section" class="py-16 sm:py-24 border-b border-slate-800/80 bg-slate-950">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      <!-- Section Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div class="space-y-2">
+          <div class="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-amber-400">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+            </svg>
+            <span>2026 Cohort &bull; 3 of 8 Founding Slots Remaining</span>
+          </div>
+          <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+            NYC Founding Partners
+          </h2>
+          <p class="text-sm sm:text-base text-slate-400 max-w-2xl">
+            Engineering-first New York teams investing in high-trust, in-person collaboration. Click any partner to tour their <strong class="text-slate-200">Office &amp; Culture Spotlight</strong>, subway lines, and perks.
+          </p>
+        </div>
+
+        <button
+          onclick="openInquiryModal('Founding Partner ($1,500/qtr)')"
+          class="self-start md:self-auto inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-amber-400/40 text-amber-300 text-xs sm:text-sm font-semibold transition cursor-pointer"
+        >
+          <span>Claim 1 of 3 Remaining Spots</span>
+          <span class="font-mono text-amber-400">&rarr;</span>
+        </button>
+      </div>
+
+      <!-- Founding Partners Grid (Rendered dynamically via JS) -->
+      <div id="partnersGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       4. INTERACTIVE LIVE JOB BOARD FEED
+  ====================================================================== -->
+  <section id="jobs-section" class="py-16 sm:py-24 bg-slate-900/40 border-b border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      <!-- Header & Active Filter Status -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-6">
+        <div>
+          <div class="flex items-center gap-2.5">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              Curated NYC Hybrid Roles
+            </h2>
+            <span id="jobCountBadge" class="font-mono text-xs font-bold px-2.5 py-1 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+              8 Roles
+            </span>
+          </div>
+          <p class="text-sm text-slate-400 mt-1">
+            Pinned Founding Partner openings appear first. Every role requires on-site presence in NYC.
+          </p>
+        </div>
+
+        <!-- Quick Cadence Pill Tabs -->
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="setCadenceTab('ALL')" data-tab="ALL" class="cadence-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-400 text-slate-950 transition cursor-pointer">
+            All Roles
+          </button>
+          <button onclick="setCadenceTab('3 Days/Wk')" data-tab="3 Days/Wk" class="cadence-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition cursor-pointer">
+            3 Days/Wk
+          </button>
+          <button onclick="setCadenceTab('4 Days/Wk')" data-tab="4 Days/Wk" class="cadence-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition cursor-pointer">
+            4 Days/Wk
+          </button>
+          <button onclick="setCadenceTab('Full In-Office')" data-tab="Full In-Office" class="cadence-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition cursor-pointer">
+            Full In-Office
+          </button>
+        </div>
+      </div>
+
+      <!-- Job Listings Stack -->
+      <div id="jobsList" class="space-y-4">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Empty State (Shown when filters match 0 jobs) -->
+      <div id="emptyJobsState" class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-12 text-center space-y-4">
+        <div class="w-12 h-12 rounded-2xl bg-slate-800 text-slate-400 mx-auto flex items-center justify-center">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </div>
+        <h3 class="text-lg font-bold text-white">No matching NYC roles found</h3>
+        <p class="text-sm text-slate-400 max-w-md mx-auto">
+          Try clearing your keyword search or switching to "All NYC Neighborhoods" to see all active hybrid engineering roles.
+        </p>
+        <button onclick="resetFilters()" class="px-4 py-2 rounded-xl bg-cyan-400 text-slate-950 font-bold text-sm hover:bg-cyan-300 transition cursor-pointer">
+          Reset All Filters
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       5. FOR HIRING TEAMS: BECOME A FOUNDING PARTNER CONVERSION SECTION
+  ====================================================================== -->
+  <section id="hiring-section" class="py-16 sm:py-24 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-amber-400/30 rounded-3xl p-6 sm:p-12 lg:p-14 shadow-2xl relative overflow-hidden">
+        <!-- Accent Corner Glow -->
+        <div class="absolute -top-24 -right-24 w-80 h-80 bg-amber-400/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
+          <!-- Left Column: Pitch & Value Props (7 cols) -->
+          <div class="lg:col-span-7 space-y-6">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/15 border border-amber-400/40 text-amber-300 text-xs font-mono font-bold uppercase tracking-wider">
+              <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+              <span>Limited Cohort &bull; 3 of 8 Spots Remaining</span>
+            </div>
+
+            <h2 class="text-2xl sm:text-4xl font-black text-white tracking-tight leading-tight">
+              Hiring Hybrid Engineers in NYC? <br />
+              <span class="text-amber-400">Stop Sifting Through Out-of-State Spam.</span>
+            </h2>
+
+            <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+              General job boards flood your ATS with remote-only applicants who auto-apply without reading your NYC office policy. <strong class="text-white">NewYork.dev</strong> pre-qualifies engineers who actively want to build in person in New York City.
+            </p>
+
+            <!-- 3 Core Value Props -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+              <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 space-y-2">
+                <div class="w-8 h-8 rounded-lg bg-cyan-500/15 text-cyan-400 flex items-center justify-center">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                  </svg>
+                </div>
+                <h3 class="font-bold text-white text-sm">Zero Remote Noise</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                  100% local NYC candidate intent—no more rejecting 800 out-of-state resumes per role.
+                </p>
+              </div>
+
+              <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 space-y-2">
+                <div class="w-8 h-8 rounded-lg bg-amber-400/15 text-amber-400 flex items-center justify-center">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                  </svg>
+                </div>
+                <h3 class="font-bold text-white text-sm">Office Spotlight</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                  Sell your commute, neighborhood, lunches, and engineering culture to win senior talent.
+                </p>
+              </div>
+
+              <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 space-y-2">
+                <div class="w-8 h-8 rounded-lg bg-emerald-500/15 text-emerald-400 flex items-center justify-center">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                    <path d="M2 17l10 5 10-5"></path>
+                    <path d="M2 12l10 5 10-5"></path>
+                  </svg>
+                </div>
+                <h3 class="font-bold text-white text-sm">Unlimited Pinned Roles</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                  Pin all open NYC engineering roles at the top of the feed with a Founding Partner badge.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Founding Partner Offer Card (5 cols) -->
+          <div class="lg:col-span-5 bg-slate-950 border-2 border-amber-400/70 rounded-2xl p-6 sm:p-8 shadow-xl space-y-6">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono font-bold uppercase tracking-wider text-amber-400">Founding Partner Tier</span>
+              <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                Rate Locked For Life
+              </span>
+            </div>
+
+            <div>
+              <div class="flex items-baseline gap-2">
+                <span class="text-3xl sm:text-4xl font-black text-white">$1,500</span>
+                <span class="text-sm text-slate-400 font-medium">/ quarter (or $5,000/yr)</span>
+              </div>
+              <p class="text-xs text-slate-400 mt-1.5">
+                Less than 1/15th of a single agency recruiter placement fee.
+              </p>
+            </div>
+
+            <ul class="space-y-3 text-sm text-slate-300 border-t border-slate-800 pt-5">
+              <li class="flex items-start gap-2.5">
+                <svg class="w-4 h-4 text-amber-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span>Homepage <strong class="text-white">Founding Partner</strong> logo &amp; Office Spotlight modal</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <svg class="w-4 h-4 text-amber-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span><strong class="text-white">Unlimited pinned</strong> hybrid &amp; in-office engineering listings</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <svg class="w-4 h-4 text-amber-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span><strong class="text-white">60-Day Qualified Applicant Guarantee</strong>—extended free until you get qualified NYC candidates</span>
+              </li>
+            </ul>
+
+            <div class="space-y-2.5 pt-2">
+              <button
+                onclick="openInquiryModal('Founding Partner ($1,500/qtr)')"
+                class="w-full py-3.5 px-5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-sm transition shadow-lg shadow-amber-400/20 cursor-pointer"
+              >
+                Reserve Founding Partner Spot (3 Left)
+              </button>
+              <button
+                onclick="openInquiryModal('Single Featured Role ($499 / 30 days)')"
+                class="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs font-semibold transition cursor-pointer"
+              >
+                Or post a single 30-day featured role ($499)
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       FOOTER
+  ====================================================================== -->
+  <footer class="border-t border-slate-800/80 bg-slate-950 py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <div class="flex items-center gap-2.5">
+        <span class="w-6 h-6 rounded-md bg-amber-400 text-slate-950 font-mono font-extrabold text-xs flex items-center justify-center">NY</span>
+        <span class="font-mono font-bold text-slate-300">NewYork<span class="text-cyan-400">.dev</span></span>
+        <span>&mdash; Built for engineers who build in New York City.</span>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="#jobs-section" class="hover:text-slate-300 transition">Browse Jobs</a>
+        <a href="#partners-section" class="hover:text-slate-300 transition">Founding Partners</a>
+        <button onclick="openInquiryModal('Founding Partner ($1,500/qtr)')" class="hover:text-amber-400 transition cursor-pointer">Partner With Us</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =====================================================================
+       MODAL 1: FOUNDING PARTNER OFFICE & CULTURE SPOTLIGHT
+  ====================================================================== -->
+  <div id="partnerModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm" onclick="closeModalOnBackdrop(event, 'partnerModal')">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 space-y-6 relative">
+      <button onclick="closeModal('partnerModal')" class="absolute top-5 right-5 w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition cursor-pointer" aria-label="Close modal">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div id="partnerModalContent">
+        <!-- Injected dynamically by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       MODAL 2: JOB DETAIL & QUICK APPLY PREVIEW
+  ====================================================================== -->
+  <div id="jobModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm" onclick="closeModalOnBackdrop(event, 'jobModal')">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 space-y-6 relative">
+      <button onclick="closeModal('jobModal')" class="absolute top-5 right-5 w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition cursor-pointer" aria-label="Close modal">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div id="jobModalContent">
+        <!-- Injected dynamically by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       MODAL 3: BECOME A FOUNDING PARTNER / POST A ROLE INQUIRY
+  ====================================================================== -->
+  <div id="inquiryModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm" onclick="closeModalOnBackdrop(event, 'inquiryModal')">
+    <div class="bg-slate-900 border border-amber-400/40 rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 space-y-6 relative">
+      <button onclick="closeModal('inquiryModal')" class="absolute top-5 right-5 w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition cursor-pointer" aria-label="Close modal">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="space-y-2">
+        <span class="inline-block font-mono text-xs font-bold uppercase tracking-wider text-amber-400">
+          NewYork.dev Employer Onboarding
+        </span>
+        <h3 class="text-2xl font-extrabold text-white">Reserve Your NYC Partner Slot</h3>
+        <p class="text-sm text-slate-400">
+          Lock in Founding Partner placement or request an Office &amp; Culture Spotlight setup within 24 hours.
+        </p>
+      </div>
+
+      <form onsubmit="submitPartnerInquiry(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1.5">Selected Package</label>
+          <select id="inquiryPackage" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm text-white focus:outline-none focus:border-amber-400">
+            <option value="Founding Partner ($1,500/qtr)">Founding Partner — $1,500 / quarter (3 of 8 left)</option>
+            <option value="Founding Partner Annual ($5,000/yr)">Founding Partner Annual — $5,000 / year (Save $1,000)</option>
+            <option value="Single Featured Role ($499 / 30 days)">Single Featured Role — $499 / 30 days</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Your Name</label>
+            <input required type="text" placeholder="Alex Rivera" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Work Email</label>
+            <input required type="email" placeholder="alex@company.com" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Company Name</label>
+            <input required type="text" placeholder="e.g. Hudson Grid AI" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">NYC Office Neighborhood</label>
+            <input required type="text" placeholder="e.g. Flatiron, SoHo, DUMBO" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1.5">Hybrid / In-Office Cadence &amp; Open Roles</label>
+          <textarea rows="2" placeholder="e.g. 3 days/week in Flatiron (Tue–Thu). Hiring 2 Senior Backend (Go/Rust) & 1 Staff ML Engineer." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"></textarea>
+        </div>
+
+        <button type="submit" class="w-full py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-sm transition shadow-lg shadow-amber-400/20 cursor-pointer">
+          Request Founding Partner Onboarding &rarr;
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       APPLICATION DATA & INTERACTIVE LOGIC
+  ====================================================================== -->
+  <script>
+    // -----------------------------------------------------------------------
+    // 1. Mock Data: Founding Partners (NYC Tech Employers)
+    // -----------------------------------------------------------------------
+    const foundingPartners = [
+      {
+        id: 'rampart',
+        name: 'Rampart Clearing',
+        badge: 'FOUNDING PARTNER #01',
+        logoBg: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40',
+        initials: 'RC',
+        tagline: 'Real-time treasury & instant settlement rails for institutional fintech.',
+        neighborhood: 'Flatiron',
+        address: '915 Broadway, Floor 14 (21st St)',
+        cadence: '4 Days/Wk',
+        cadenceNote: 'Mon–Thu in-office; Fridays flexible remote',
+        transit: [
+          { line: 'N', color: 'bg-amber-400 text-slate-950' },
+          { line: 'R', color: 'bg-amber-400 text-slate-950' },
+          { line: 'W', color: 'bg-amber-400 text-slate-950' },
+          { line: '6', color: 'bg-emerald-600 text-white' },
+          { line: 'F', color: 'bg-orange-500 text-white' }
+        ],
+        stack: ['Rust', 'Go', 'PostgreSQL', 'TypeScript'],
+        openRolesCount: 3,
+        perks: [
+          'Daily chef-prepared lunch & specialty espresso bar overlooking Madison Sq Park',
+          'Full MetroCard / OMNY commuter stipend + $3,500 home/desk hardware budget',
+          'Weekly Thursday architecture whiteboard demos & zero-meeting Wednesdays',
+          'Floor-to-ceiling natural light with private focus pods & dual 5K Studio Displays'
+        ],
+        cultureQuote: '"We ship low-latency financial infrastructure. Sitting side-by-side at the whiteboard solves in 15 minutes what takes 4 days over Slack threads."'
+      },
+      {
+        id: 'meridian',
+        name: 'Meridian Spatial AI',
+        badge: 'FOUNDING PARTNER #02',
+        logoBg: 'bg-amber-400/20 text-amber-300 border-amber-400/40',
+        initials: 'MS',
+        tagline: '3D foundation models & real-time simulation engines for robotics and architecture.',
+        neighborhood: 'SoHo',
+        address: '458 Broome St, Penthouse Loft',
+        cadence: '3 Days/Wk',
+        cadenceNote: 'Tue / Wed / Thu core collaboration days',
+        transit: [
+          { line: 'A', color: 'bg-blue-600 text-white' },
+          { line: 'C', color: 'bg-blue-600 text-white' },
+          { line: 'E', color: 'bg-blue-600 text-white' },
+          { line: '6', color: 'bg-emerald-600 text-white' },
+          { line: 'R', color: 'bg-amber-400 text-slate-950' }
+        ],
+        stack: ['Python', 'PyTorch', 'C++', 'React'],
+        openRolesCount: 2,
+        perks: [
+          'Cast-iron SoHo loft with dedicated on-prem H100 cluster & robotics test bench',
+          'Catered lunches from local SoHo spots + stocked cold brew & matcha bar',
+          '$5,000 annual conference & research publication budget',
+          '100% covered Platinum medical/dental/vision + CitiBike annual membership'
+        ],
+        cultureQuote: '"Our ML researchers and WebGL graphics engineers pair directly in our SoHo studio—seeing live hardware and 3D renders together keeps iteration fast."'
+      },
+      {
+        id: 'harbor',
+        name: 'HarborGrid Energy',
+        badge: 'FOUNDING PARTNER #03',
+        logoBg: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+        initials: 'HG',
+        tagline: 'Automated battery dispatch & grid-balancing software for Northeast microgrids.',
+        neighborhood: 'DUMBO',
+        address: '20 Jay St, Suite 810 (Brooklyn Waterfront)',
+        cadence: '3 Days/Wk',
+        cadenceNote: 'Tue–Thu in DUMBO; Mon/Fri optional waterfront desk',
+        transit: [
+          { line: 'F', color: 'bg-orange-500 text-white' },
+          { line: 'A', color: 'bg-blue-600 text-white' },
+          { line: 'C', color: 'bg-blue-600 text-white' },
+          { line: 'NYC Ferry', color: 'bg-cyan-500 text-slate-950' }
+        ],
+        stack: ['Elixir', 'Go', 'TimescaleDB', 'TypeScript'],
+        openRolesCount: 2,
+        perks: [
+          'Panoramic East River & Manhattan Bridge views right off Brooklyn Bridge Park',
+          'Indoor bike storage, showers, and subsidized NYC Ferry + subway passes',
+          'Family-friendly core hours (10am–4:30pm in-office) for stress-free commutes',
+          '401(k) 4% match + clean-energy home utility credit'
+        ],
+        cultureQuote: '"DUMBO gives our team quiet waterfront focus without the Midtown scramble, and 3 days together keeps our distributed systems architecture tightly aligned."'
+      },
+      {
+        id: 'hudsonledger',
+        name: 'Vanguardia Compute',
+        badge: 'FOUNDING PARTNER #04',
+        logoBg: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
+        initials: 'VC',
+        tagline: 'High-throughput developer observability & eBPF kernel telemetry.',
+        neighborhood: 'Hudson Yards',
+        address: '55 Hudson Yards, Floor 28',
+        cadence: 'Full In-Office',
+        cadenceNote: '5 days/wk in-office • High-ownership startup pace',
+        transit: [
+          { line: '7', color: 'bg-purple-600 text-white' },
+          { line: 'A', color: 'bg-blue-600 text-white' },
+          { line: 'C', color: 'bg-blue-600 text-white' },
+          { line: 'E', color: 'bg-blue-600 text-white' },
+          { line: 'LIRR', color: 'bg-slate-600 text-white' }
+        ],
+        stack: ['C / eBPF', 'Rust', 'ClickHouse', 'Go'],
+        openRolesCount: 2,
+        perks: [
+          'Breakfast, lunch, and dinner provided daily + on-site Equinox fitness access',
+          '1-minute indoor connection to the 7 train & Penn Station / LIRR / NJ Transit',
+          'Top-of-market cash + meaningful early Series B equity grants',
+          'Direct mentorship from ex-kernel & hyperscaler principal engineers'
+        ],
+        cultureQuote: '"We are unapologetically in-person 5 days a week because we move at 2x speed—and we compensate and support our engineers accordingly."'
+      },
+      {
+        id: 'nomadhealth',
+        name: 'Kinetix BioCompute',
+        badge: 'FOUNDING PARTNER #05',
+        logoBg: 'bg-rose-500/20 text-rose-300 border-rose-500/40',
+        initials: 'KB',
+        tagline: 'Cloud wet-lab automation & clinical genomics data pipelines.',
+        neighborhood: 'NoMad',
+        address: '1140 Broadway, Floor 9 (26th St)',
+        cadence: '3 Days/Wk',
+        cadenceNote: 'Mon / Tue / Thu in NoMad',
+        transit: [
+          { line: 'R', color: 'bg-amber-400 text-slate-950' },
+          { line: 'W', color: 'bg-amber-400 text-slate-950' },
+          { line: '1', color: 'bg-rose-600 text-white' },
+          { line: 'PATH', color: 'bg-sky-600 text-white' }
+        ],
+        stack: ['TypeScript', 'Python', 'GraphQL', 'AWS'],
+        openRolesCount: 1,
+        perks: [
+          'Steps from PATH (23rd St), R/W, and 1 trains—ideal for NJ & Manhattan commuters',
+          'Weekly team dinners, rooftop terrace access, and $200/mo wellness stipend',
+          '16 weeks fully paid parental leave + generous PTO',
+          'Modern ergonomic Herman Miller workstations & quiet library zone'
+        ],
+        cultureQuote: '"Having computational biologists and full-stack engineers in the same room turns complex lab workflows into intuitive software."'
+      }
+    ];
+
+    // -----------------------------------------------------------------------
+    // 2. Mock Data: Live NYC Hybrid & In-Office Jobs
+    // -----------------------------------------------------------------------
+    const jobsData = [
+      {
+        id: 'job-1',
+        title: 'Staff Distributed Systems Engineer (Settlement Core)',
+        company: 'Rampart Clearing',
+        partnerId: 'rampart',
+        isFoundingPartner: true,
+        salary: '$235k – $275k + Equity',
+        neighborhood: 'Flatiron',
+        subway: 'N/R/W/6 at 23rd St (2 min walk)',
+        cadence: '4 Days/Wk',
+        stack: ['Rust', 'Go', 'PostgreSQL', 'Systems'],
+        posted: 'Pinned',
+        summary: 'Architect sub-10ms clearing ledgers and deterministic state machines powering real-time institutional settlement across NYC financial institutions.',
+        requirements: [
+          '6+ years building fault-tolerant distributed systems in Rust, Go, or C++',
+          'Deep familiarity with consensus protocols, PostgreSQL internals, and strict idempotency',
+          'Excited to collaborate in-person Mon–Thu in our Flatiron office'
+        ]
+      },
+      {
+        id: 'job-2',
+        title: 'Senior Research Engineer — 3D World Models',
+        company: 'Meridian Spatial AI',
+        partnerId: 'meridian',
+        isFoundingPartner: true,
+        salary: '$220k – $265k + Equity',
+        neighborhood: 'SoHo',
+        subway: '6/R/W/A/C/E at Spring & Canal (3 min walk)',
+        cadence: '3 Days/Wk',
+        stack: ['AI / ML', 'Python', 'PyTorch', 'C++'],
+        posted: 'Pinned',
+        summary: 'Train and optimize real-time spatial neural rendering models on our dedicated H100 cluster in SoHo.',
+        requirements: [
+          'Strong production experience with PyTorch, CUDA optimization, and 3D vision/NeRFs/Gaussian Splatting',
+          'Track record shipping low-latency inference pipelines',
+          'Available Tue–Thu at our Broome St loft in SoHo'
+        ]
+      },
+      {
+        id: 'job-3',
+        title: 'Senior Backend Engineer — Grid Telemetry & Dispatch',
+        company: 'HarborGrid Energy',
+        partnerId: 'harbor',
+        isFoundingPartner: true,
+        salary: '$195k – $230k + Equity',
+        neighborhood: 'DUMBO',
+        subway: 'F at York St / A/C at High St (4 min walk)',
+        cadence: '3 Days/Wk',
+        stack: ['Elixir', 'Go', 'TimescaleDB', 'Systems'],
+        posted: 'Pinned',
+        summary: 'Build real-time telemetry ingestion pipelines controlling megawatt-scale battery storage systems across NYC and the Northeast.',
+        requirements: [
+          '4+ years building high-concurrency backend services in Elixir, Go, or Rust',
+          'Experience with time-series databases, MQTT/IoT protocols, or event-driven architectures',
+          'Hybrid Tue–Thu at our DUMBO waterfront office'
+        ]
+      },
+      {
+        id: 'job-4',
+        title: 'Kernel & eBPF Systems Engineer',
+        company: 'Vanguardia Compute',
+        partnerId: 'hudsonledger',
+        isFoundingPartner: true,
+        salary: '$240k – $290k + Equity',
+        neighborhood: 'Hudson Yards',
+        subway: '7 at 34th St–Hudson Yards (1 min walk)',
+        cadence: 'Full In-Office',
+        stack: ['C / eBPF', 'Rust', 'Systems', 'Go'],
+        posted: 'Pinned',
+        summary: 'Write zero-overhead Linux kernel probes in C and Rust to capture microservice network and CPU telemetry at hyperscale.',
+        requirements: [
+          'Hands-on experience with Linux kernel internals, eBPF, XDP, or low-level C/Rust',
+          'Obsessed with CPU cache efficiency and sub-1% instrumentation overhead',
+          'Full 5-day in-office collaboration at 55 Hudson Yards'
+        ]
+      },
+      {
+        id: 'job-5',
+        title: 'Senior Full-Stack Product Engineer (Design Systems)',
+        company: 'Rampart Clearing',
+        partnerId: 'rampart',
+        isFoundingPartner: true,
+        salary: '$190k – $225k + Equity',
+        neighborhood: 'Flatiron',
+        subway: 'N/R/W/6 at 23rd St (2 min walk)',
+        cadence: '4 Days/Wk',
+        stack: ['TypeScript', 'React', 'GraphQL'],
+        posted: 'Pinned',
+        summary: 'Own the institutional treasury workstation UI—building keyboard-first financial grids, real-time liquidity charts, and approval workflows.',
+        requirements: [
+          '4+ years with TypeScript, React, and high-frequency UI state management',
+          'Sharp eye for typography, micro-interactions, and sub-50ms UI responsiveness',
+          '4 days/week in our Flatiron office'
+        ]
+      },
+      {
+        id: 'job-6',
+        title: 'Full-Stack Software Engineer — Wet-Lab Platform',
+        company: 'Kinetix BioCompute',
+        partnerId: 'nomadhealth',
+        isFoundingPartner: true,
+        salary: '$185k – $215k + Equity',
+        neighborhood: 'NoMad',
+        subway: 'R/W at 28th St / PATH at 23rd St (3 min walk)',
+        cadence: '3 Days/Wk',
+        stack: ['TypeScript', 'Python', 'React', 'GraphQL'],
+        posted: 'Pinned',
+        summary: 'Build visual protocol builders and automated sample-tracking software used daily by clinical genomics labs.',
+        requirements: [
+          '3+ years across TypeScript/React and Python backend services',
+          'Ability to partner directly with scientists to translate complex assays into clean workflows',
+          '3 days/week in NoMad (Mon/Tue/Thu)'
+        ]
+      },
+      {
+        id: 'job-7',
+        title: 'Senior Frontend & WebGL Engineer',
+        company: 'Meridian Spatial AI',
+        partnerId: 'meridian',
+        isFoundingPartner: true,
+        salary: '$200k – $235k + Equity',
+        neighborhood: 'SoHo',
+        subway: '6/R/W/A/C/E at Spring & Canal (3 min walk)',
+        cadence: '3 Days/Wk',
+        stack: ['TypeScript', 'React', 'WebGL'],
+        posted: '2d ago',
+        summary: 'Craft browser-based 3D viewport tooling allowing architects and robotics teams to inspect neural scene reconstructions at 60fps.',
+        requirements: [
+          'Deep expertise in TypeScript, React, Three.js / WebGL / WebGPU shaders',
+          'Passion for spatial UI and developer creative tools',
+          'Tue–Thu in-office in SoHo'
+        ]
+      },
+      {
+        id: 'job-8',
+        title: 'Staff Infrastructure & ClickHouse Engineer',
+        company: 'Vanguardia Compute',
+        partnerId: 'hudsonledger',
+        isFoundingPartner: true,
+        salary: '$230k – $270k + Equity',
+        neighborhood: 'Hudson Yards',
+        subway: '7 at 34th St–Hudson Yards (1 min walk)',
+        cadence: 'Full In-Office',
+        stack: ['Go', 'Rust', 'ClickHouse', 'Systems'],
+        posted: '3d ago',
+        summary: 'Scale multi-petabyte ClickHouse ingestion clusters handling millions of trace spans per second with strict multi-tenant isolation.',
+        requirements: [
+          'Proven track record scaling ClickHouse, Kafka, or high-volume OLAP storage engines',
+          'Strong Go or Rust systems programming skills',
+          '5 days/week in-office at Hudson Yards'
+        ]
+      }
+    ];
+
+    // -----------------------------------------------------------------------
+    // 3. Render Founding Partners Grid
+    // -----------------------------------------------------------------------
+    function renderPartners() {
+      const grid = document.getElementById('partnersGrid');
+      grid.innerHTML = foundingPartners.map(partner => `
+        <article
+          onclick="openPartnerModal('${partner.id}')"
+          class="group bg-slate-900/90 hover:bg-slate-900 border border-slate-800 hover:border-amber-400/60 rounded-2xl p-6 flex flex-col justify-between transition-all duration-200 shadow-lg hover:shadow-amber-400/5 cursor-pointer"
+        >
+          <div class="space-y-4">
+            <!-- Top Row: Logo + Founding Badge -->
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-xl border ${partner.logoBg} font-mono font-extrabold text-sm flex items-center justify-center shrink-0">
+                  ${partner.initials}
+                </div>
+                <div>
+                  <h3 class="font-bold text-white text-base group-hover:text-amber-300 transition">
+                    ${partner.name}
+                  </h3>
+                  <div class="flex items-center gap-1.5 text-xs text-slate-400 mt-0.5">
+                    <svg class="w-3.5 h-3.5 text-cyan-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                      <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    <span>${partner.neighborhood}</span>
+                  </div>
+                </div>
+              </div>
+
+              <span class="font-mono text-[10px] font-bold px-2 py-1 rounded-md bg-amber-400/15 text-amber-300 border border-amber-400/30 shrink-0">
+                FOUNDING PARTNER
+              </span>
+            </div>
+
+            <!-- Tagline -->
+            <p class="text-sm text-slate-300 leading-relaxed">
+              ${partner.tagline}
+            </p>
+
+            <!-- Hybrid Cadence & Subway Badges -->
+            <div class="flex flex-wrap items-center gap-2 pt-1">
+              <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg bg-cyan-500/10 text-cyan-300 border border-cyan-500/25">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                ${partner.cadence}
+              </span>
+
+              <div class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-slate-950 border border-slate-800">
+                ${partner.transit.slice(0, 4).map(t => `
+                  <span class="inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full text-[10px] font-bold ${t.color}">
+                    ${t.line}
+                  </span>
+                `).join('')}
+              </div>
+            </div>
+
+            <!-- Stack Pills -->
+            <div class="flex flex-wrap gap-1.5 pt-1">
+              ${partner.stack.map(tech => `
+                <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-slate-800/90 text-slate-300 border border-slate-700/70">
+                  ${tech}
+                </span>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- Card Footer Action -->
+          <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs">
+            <span class="font-semibold text-emerald-400">
+              ${partner.openRolesCount} Open NYC ${partner.openRolesCount === 1 ? 'Role' : 'Roles'}
+            </span>
+            <span class="font-semibold text-slate-300 group-hover:text-amber-300 flex items-center gap-1 transition">
+              <span>Office &amp; Culture Spotlight</span>
+              <span>&rarr;</span>
+            </span>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    // -----------------------------------------------------------------------
+    // 4. Render & Filter Live Job Board Feed
+    // -----------------------------------------------------------------------
+    function applyFilters() {
+      const searchVal = document.getElementById('searchInput').value.trim().toLowerCase();
+      const neighborhoodVal = document.getElementById('neighborhoodSelect').value;
+      const cadenceVal = document.getElementById('cadenceSelect').value;
+
+      // Sync quick tabs visual state
+      document.querySelectorAll('.cadence-tab').forEach(btn => {
+        if (btn.dataset.tab === cadenceVal) {
+          btn.className = 'cadence-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-400 text-slate-950 transition cursor-pointer';
+        } else {
+          btn.className = 'cadence-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition cursor-pointer';
+        }
+      });
+
+      const filtered = jobsData.filter(job => {
+        const matchesSearch =
+          !searchVal ||
+          job.title.toLowerCase().includes(searchVal) ||
+          job.company.toLowerCase().includes(searchVal) ||
+          job.neighborhood.toLowerCase().includes(searchVal) ||
+          job.stack.some(s => s.toLowerCase().includes(searchVal));
+
+        const matchesNeighborhood =
+          neighborhoodVal === 'ALL' || job.neighborhood === neighborhoodVal;
+
+        const matchesCadence =
+          cadenceVal === 'ALL' || job.cadence === cadenceVal;
+
+        return matchesSearch && matchesNeighborhood && matchesCadence;
+      });
+
+      renderJobs(filtered);
+    }
+
+    function quickFilter(keyword) {
+      document.getElementById('searchInput').value = keyword;
+      applyFilters();
+      document.getElementById('jobs-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function setCadenceTab(cadence) {
+      document.getElementById('cadenceSelect').value = cadence;
+      applyFilters();
+    }
+
+    function resetFilters() {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('neighborhoodSelect').value = 'ALL';
+      document.getElementById('cadenceSelect').value = 'ALL';
+      applyFilters();
+    }
+
+    function renderJobs(list) {
+      const container = document.getElementById('jobsList');
+      const emptyState = document.getElementById('emptyJobsState');
+      const countBadge = document.getElementById('jobCountBadge');
+
+      countBadge.textContent = `${list.length} ${list.length === 1 ? 'Role' : 'Roles'}`;
+
+      if (list.length === 0) {
+        container.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+
+      container.innerHTML = list.map(job => {
+        const partner = foundingPartners.find(p => p.id === job.partnerId);
+        const initials = partner ? partner.initials : 'NY';
+        const logoBg = partner ? partner.logoBg : 'bg-slate-800 text-white border-slate-700';
+
+        return `
+          <div
+            onclick="openJobModal('${job.id}')"
+            class="group bg-slate-900/90 hover:bg-slate-900 border ${job.isFoundingPartner ? 'border-slate-700/90 hover:border-amber-400/70' : 'border-slate-800 hover:border-cyan-400/50'} rounded-2xl p-5 sm:p-6 transition-all duration-200 cursor-pointer shadow-md"
+          >
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+              <!-- Left Info: Logo, Title, Company & Meta -->
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl border ${logoBg} font-mono font-extrabold text-sm flex items-center justify-center shrink-0 mt-0.5">
+                  ${initials}
+                </div>
+
+                <div class="space-y-1.5">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="text-sm font-bold text-slate-300">${job.company}</span>
+                    ${job.isFoundingPartner ? `
+                      <span class="inline-flex items-center gap-1 font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-amber-400/15 text-amber-300 border border-amber-400/30">
+                        ★ PINNED FOUNDING PARTNER
+                      </span>
+                    ` : ''}
+                  </div>
+
+                  <h3 class="text-base sm:text-lg font-extrabold text-white group-hover:text-cyan-300 transition">
+                    ${job.title}
+                  </h3>
+
+                  <!-- Location, Subway & Cadence Metadata -->
+                  <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-slate-400 pt-0.5">
+                    <span class="inline-flex items-center gap-1 text-slate-200 font-medium">
+                      <svg class="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                      </svg>
+                      ${job.neighborhood}
+                    </span>
+
+                    <span class="inline-flex items-center gap-1 font-semibold text-amber-300">
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                      </svg>
+                      ${job.cadence}
+                    </span>
+
+                    <span class="hidden sm:inline text-slate-500">&bull;</span>
+                    <span class="text-slate-400">${job.subway}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Info: Salary, Stack Pills & CTA -->
+              <div class="flex flex-col sm:flex-row lg:flex-col items-start sm:items-center lg:items-end justify-between gap-3 pt-3 lg:pt-0 border-t lg:border-t-0 border-slate-800/80 shrink-0">
+                <div class="font-mono text-sm sm:text-base font-extrabold text-emerald-400">
+                  ${job.salary}
+                </div>
+
+                <div class="flex flex-wrap items-center gap-1.5">
+                  ${job.stack.map(tech => `
+                    <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-slate-950 text-slate-300 border border-slate-800">
+                      ${tech}
+                    </span>
+                  `).join('')}
+                  <span class="ml-1 inline-flex items-center px-3 py-1 rounded-lg bg-slate-800 group-hover:bg-cyan-400 group-hover:text-slate-950 text-xs font-bold text-white transition">
+                    View &rarr;
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // -----------------------------------------------------------------------
+    // 5. Modal Controllers (Partner Spotlight, Job Detail, Employer Inquiry)
+    // -----------------------------------------------------------------------
+    function openPartnerModal(partnerId) {
+      const partner = foundingPartners.find(p => p.id === partnerId);
+      if (!partner) return;
+
+      const modal = document.getElementById('partnerModal');
+      const content = document.getElementById('partnerModalContent');
+
+      content.innerHTML = `
+        <div class="space-y-6">
+          <!-- Header -->
+          <div class="flex items-start gap-4 pr-8">
+            <div class="w-14 h-14 rounded-2xl border ${partner.logoBg} font-mono font-extrabold text-lg flex items-center justify-center shrink-0">
+              ${partner.initials}
+            </div>
+            <div class="space-y-1">
+              <span class="inline-block font-mono text-[11px] font-bold px-2.5 py-0.5 rounded bg-amber-400/15 text-amber-300 border border-amber-400/30">
+                ${partner.badge} &bull; OFFICE &amp; CULTURE SPOTLIGHT
+              </span>
+              <h3 class="text-2xl font-extrabold text-white">${partner.name}</h3>
+              <p class="text-sm text-slate-300">${partner.tagline}</p>
+            </div>
+          </div>
+
+          <!-- NYC Office & Commute Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-950 border border-slate-800 rounded-2xl p-4 sm:p-5">
+            <div class="space-y-1">
+              <div class="text-[11px] font-mono uppercase tracking-wider text-slate-500">NYC Office Location</div>
+              <div class="text-sm font-bold text-white">${partner.neighborhood}</div>
+              <div class="text-xs text-slate-400">${partner.address}</div>
+            </div>
+
+            <div class="space-y-1">
+              <div class="text-[11px] font-mono uppercase tracking-wider text-slate-500">Verified Hybrid Cadence</div>
+              <div class="text-sm font-bold text-amber-400">${partner.cadence}</div>
+              <div class="text-xs text-slate-400">${partner.cadenceNote}</div>
+            </div>
+
+            <div class="sm:col-span-2 pt-2 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2">
+              <span class="text-xs font-semibold text-slate-400">Direct Subway / Transit Access:</span>
+              <div class="flex items-center gap-1.5">
+                ${partner.transit.map(t => `
+                  <span class="inline-flex items-center justify-center min-w-[24px] h-6 px-1.5 rounded-full text-xs font-extrabold ${t.color}">
+                    ${t.line}
+                  </span>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+
+          <!-- Engineering Culture Quote -->
+          <blockquote class="bg-cyan-500/10 border-l-4 border-cyan-400 rounded-r-xl p-4 text-sm italic text-cyan-100 leading-relaxed">
+            ${partner.cultureQuote}
+          </blockquote>
+
+          <!-- In-Office Perks & Environment -->
+          <div class="space-y-3">
+            <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-slate-400">
+              Why Engineers Love Commuting Here
+            </h4>
+            <ul class="space-y-2.5">
+              ${partner.perks.map(perk => `
+                <li class="flex items-start gap-2.5 text-sm text-slate-200">
+                  <svg class="w-4 h-4 text-emerald-400 shrink-0 mt-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span>${perk}</span>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+
+          <!-- Footer Actions -->
+          <div class="pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex flex-wrap gap-1.5">
+              ${partner.stack.map(s => `<span class="font-mono text-xs px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300">${s}</span>`).join('')}
+            </div>
+            <button
+              onclick="filterByCompany('${partner.name}')"
+              class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-sm transition cursor-pointer"
+            >
+              See ${partner.openRolesCount} Open ${partner.openRolesCount === 1 ? 'Role' : 'Roles'} &rarr;
+            </button>
+          </div>
+        </div>
+      `;
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function filterByCompany(companyName) {
+      closeModal('partnerModal');
+      document.getElementById('searchInput').value = companyName;
+      document.getElementById('neighborhoodSelect').value = 'ALL';
+      document.getElementById('cadenceSelect').value = 'ALL';
+      applyFilters();
+      document.getElementById('jobs-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function openJobModal(jobId) {
+      const job = jobsData.find(j => j.id === jobId);
+      if (!job) return;
+      const partner = foundingPartners.find(p => p.id === job.partnerId);
+
+      const modal = document.getElementById('jobModal');
+      const content = document.getElementById('jobModalContent');
+
+      content.innerHTML = `
+        <div class="space-y-6">
+          <div class="space-y-2 pr-8">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-sm font-bold text-cyan-400">${job.company}</span>
+              ${job.isFoundingPartner ? `<span class="font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-amber-400/15 text-amber-300 border border-amber-400/30">FOUNDING PARTNER</span>` : ''}
+            </div>
+            <h3 class="text-xl sm:text-2xl font-extrabold text-white">${job.title}</h3>
+            <div class="font-mono text-lg font-extrabold text-emerald-400">${job.salary}</div>
+          </div>
+
+          <!-- Key Commute & Cadence Metadata -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs">
+            <div>
+              <span class="text-slate-500 block font-mono uppercase">Neighborhood &amp; Transit</span>
+              <span class="text-white font-semibold mt-0.5 block">${job.neighborhood} &bull; ${job.subway}</span>
+            </div>
+            <div>
+              <span class="text-slate-500 block font-mono uppercase">In-Office Schedule</span>
+              <span class="text-amber-300 font-semibold mt-0.5 block">${job.cadence} ${partner ? `(${partner.cadenceNote})` : ''}</span>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-slate-400">Role Overview</h4>
+            <p class="text-sm text-slate-300 leading-relaxed">${job.summary}</p>
+          </div>
+
+          <div class="space-y-2.5">
+            <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-slate-400">What We're Looking For</h4>
+            <ul class="space-y-2">
+              ${job.requirements.map(req => `
+                <li class="flex items-start gap-2.5 text-sm text-slate-300">
+                  <span class="text-cyan-400 font-bold mt-0.5">&bull;</span>
+                  <span>${req}</span>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+
+          <div class="pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+            ${partner ? `
+              <button
+                onclick="closeModal('jobModal'); openPartnerModal('${partner.id}')"
+                class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition cursor-pointer"
+              >
+                Tour ${partner.name} Office Spotlight
+              </button>
+            ` : '<div></div>'}
+
+            <button
+              onclick="triggerDirectApply('${job.title.replace(/'/g, "\\'")}', '${job.company.replace(/'/g, "\\'")}')"
+              class="w-full sm:w-auto px-6 py-3 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-extrabold text-sm transition shadow-lg shadow-cyan-400/20 cursor-pointer"
+            >
+              Direct Apply to Engineering Team &rarr;
+            </button>
+          </div>
+        </div>
+      `;
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function triggerDirectApply(title, company) {
+      closeModal('jobModal');
+      showToast(`Direct application portal opened for ${company} — ${title}`);
+    }
+
+    function openInquiryModal(defaultPackage) {
+      const modal = document.getElementById('inquiryModal');
+      const select = document.getElementById('inquiryPackage');
+      if (defaultPackage && select) {
+        select.value = defaultPackage;
+      }
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function submitPartnerInquiry(event) {
+      event.preventDefault();
+      closeModal('inquiryModal');
+      event.target.reset();
+      showToast('Founding Partner request received! We will reach out within 24h.');
+    }
+
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function closeModalOnBackdrop(event, modalId) {
+      if (event.target.id === modalId) {
+        closeModal(modalId);
+      }
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastText = document.getElementById('toastText');
+      toastText.textContent = message;
+      toast.classList.remove('hidden');
+      toast.classList.add('flex');
+
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        toast.classList.add('hidden');
+        toast.classList.remove('flex');
+      }, 3600);
+    }
+
+    // Close modals with Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        ['partnerModal', 'jobModal', 'inquiryModal'].forEach(closeModal);
+      }
+    });
+
+    // Initialize Page
+    renderPartners();
+    renderJobs(jobsData);
+  </script>
+</body>
+</html>
